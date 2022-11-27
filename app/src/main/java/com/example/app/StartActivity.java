@@ -36,6 +36,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -74,6 +75,10 @@ public class StartActivity extends AppCompatActivity {
         gsc = GoogleSignIn.getClient(this, gso);
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
 
+        Map<String,Object> us_info = new HashMap<>();
+        us_info.put("name", "roee");
+        us_info.put("fam", "tal");
+        FirebaseDatabase.getInstance().getReference().child("First").updateChildren(us_info);
 
         googleBtn.setOnClickListener(new View.OnClickListener() {
             @Override

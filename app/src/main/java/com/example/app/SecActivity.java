@@ -42,6 +42,7 @@ public class SecActivity extends AppCompatActivity {
             email.setText(personEmail);
         }
 
+
         signOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
