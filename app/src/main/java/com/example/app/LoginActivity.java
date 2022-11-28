@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -75,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                     us_info.put("FullName", user.getText().toString());
                     us_info.put("Email", email.getText().toString());
                     us_info.put("is_user", 1);
+                    FirebaseDatabase.getInstance().getReference().child("Users").push().updateChildren(us_info);
                     df.set(us_info);
                     Toast.makeText(LoginActivity.this, "success, verify email", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
