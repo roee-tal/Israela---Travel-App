@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "57913591124",
+    "firebase_url": "https://appaap-default-rtdb.firebaseio.com",
     "project_id": "appaap",
     "storage_bucket": "appaap.appspot.com"
   },

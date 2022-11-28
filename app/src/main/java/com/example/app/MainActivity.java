@@ -1,24 +1,38 @@
 package com.example.app;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity
 {
+    private StorageReference myStorage;
 
-    public static ArrayList<Shape> shapeList = new ArrayList<Shape>();
+    public static ArrayList<Site> shapeList = new ArrayList<Site>();
 
     private ListView listView;
     private Button sortButton;
@@ -44,6 +58,26 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        myStorage = FirebaseStorage.getInstance().getReference().child("picture/shvil.jpg");
+        try {
+            final File localTempFile = File.createTempFile("shvil", "jpg");
+            myStorage.getFile(localTempFile)
+                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(MainActivity.this, "Picture Retrieved",Toast.LENGTH_SHORT).show();
+                            Bitmap bitmap = BitmapFactory.decodeFile(localTempFile.getAbsolutePath());
+                            ((ImageView) findViewById(R.id.mainImage)).setImageBitmap(bitmap);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(MainActivity.this, "Error During Picture Retrieved",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 
         initSearchWidgets();
         initWidgets();
@@ -131,23 +165,23 @@ public class MainActivity extends AppCompatActivity
             public boolean onQueryTextChange(String s)
             {
                 currentSearchText = s;
-                ArrayList<Shape> filteredShapes = new ArrayList<Shape>();
+                ArrayList<Site> filteredShapes = new ArrayList<Site>();
 
-                for(Shape shape: shapeList)
+                for(Site site : shapeList)
                 {
-                    if(shape.getName().toLowerCase().contains(s.toLowerCase()))
+                    if(site.getName().toLowerCase().contains(s.toLowerCase()))
                     {
                         if(selectedFilters.contains("all"))
                         {
-                            filteredShapes.add(shape);
+                            filteredShapes.add(site);
                         }
                         else
                         {
                             for(String filter: selectedFilters)
                             {
-                                if (shape.getName().toLowerCase().contains(filter))
+                                if (site.getName().toLowerCase().contains(filter))
                                 {
-                                    filteredShapes.add(shape);
+                                    filteredShapes.add(site);
                                 }
                             }
                         }
@@ -162,34 +196,34 @@ public class MainActivity extends AppCompatActivity
 
     private void setupData()
     {
-        Shape circle = new Shape("0", "Circle", R.drawable.circle);
+        Site circle = new Site("0", "Circle", "picture/shvil.jpg");
         shapeList.add(circle);
 
-        Shape triangle = new Shape("1","Triangle", R.drawable.triangle);
+        Site triangle = new Site("1","Triangle", "picture/shvil.jpg");
         shapeList.add(triangle);
 
-        Shape square = new Shape("2","Square", R.drawable.square);
+        Site square = new Site("2","Square", "picture/shvil.jpg");
         shapeList.add(square);
 
-        Shape rectangle = new Shape("3","Rectangle", R.drawable.rectangle);
+        Site rectangle = new Site("3","Rectangle", "picture/shvil.jpg");
         shapeList.add(rectangle);
 
-        Shape octagon = new Shape("4","Octagon", R.drawable.octagon);
+        Site octagon = new Site("4","Octagon", "picture/shvil.jpg");
         shapeList.add(octagon);
 
-        Shape circle2 = new Shape("5", "Circle 2", R.drawable.circle);
+        Site circle2 = new Site("5", "Circle 2", "picture/shvil.jpg");
         shapeList.add(circle2);
 
-        Shape triangle2 = new Shape("6","Triangle 2", R.drawable.triangle);
+        Site triangle2 = new Site("6","Triangle 2", "picture/shvil.jpg");
         shapeList.add(triangle2);
 
-        Shape square2 = new Shape("7","Square 2", R.drawable.square);
+        Site square2 = new Site("7","Square 2", "picture/shvil.jpg");
         shapeList.add(square2);
 
-        Shape rectangle2 = new Shape("8","Rectangle 2", R.drawable.rectangle);
+        Site rectangle2 = new Site("8","Rectangle 2", "picture/shvil.jpg");
         shapeList.add(rectangle2);
 
-        Shape octagon2 = new Shape("9","Octagon 2", R.drawable.octagon);
+        Site octagon2 = new Site("9","Octagon 2", "picture/shvil.jpg");
         shapeList.add(octagon2);
     }
 
@@ -206,7 +240,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l)
             {
-                Shape selectShape = (Shape) (listView.getItemAtPosition(position));
+                Site selectShape = (Site) (listView.getItemAtPosition(position));
                 Intent showDetail = new Intent(getApplicationContext(), DetailActivity.class);
                 showDetail.putExtra("id",selectShape.getId());
                 startActivity(showDetail);
@@ -222,23 +256,23 @@ public class MainActivity extends AppCompatActivity
         if(status != null && !selectedFilters.contains(status))
             selectedFilters.add(status);
 
-        ArrayList<Shape> filteredShapes = new ArrayList<Shape>();
+        ArrayList<Site> filteredShapes = new ArrayList<Site>();
 
-        for(Shape shape: shapeList)
+        for(Site site : shapeList)
         {
             for(String filter: selectedFilters)
             {
-                if(shape.getName().toLowerCase().contains(filter))
+                if(site.getName().toLowerCase().contains(filter))
                 {
                     if(currentSearchText == "")
                     {
-                        filteredShapes.add(shape);
+                        filteredShapes.add(site);
                     }
                     else
                     {
-                        if(shape.getName().toLowerCase().contains(currentSearchText.toLowerCase()))
+                        if(site.getName().toLowerCase().contains(currentSearchText.toLowerCase()))
                         {
-                            filteredShapes.add(shape);
+                            filteredShapes.add(site);
                         }
                     }
                 }
@@ -358,7 +392,7 @@ public class MainActivity extends AppCompatActivity
 
     public void idASCTapped(View view)
     {
-        Collections.sort(shapeList, Shape.idAscending);
+        Collections.sort(shapeList, Site.idAscending);
         checkForFilter();
         unSelectAllSortButtons();
         lookSelected(idAscButton);
@@ -366,7 +400,7 @@ public class MainActivity extends AppCompatActivity
 
     public void idDESCTapped(View view)
     {
-        Collections.sort(shapeList, Shape.idAscending);
+        Collections.sort(shapeList, Site.idAscending);
         Collections.reverse(shapeList);
         checkForFilter();
         unSelectAllSortButtons();
@@ -375,7 +409,7 @@ public class MainActivity extends AppCompatActivity
 
     public void nameASCTapped(View view)
     {
-        Collections.sort(shapeList, Shape.nameAscending);
+        Collections.sort(shapeList, Site.nameAscending);
         checkForFilter();
         unSelectAllSortButtons();
         lookSelected(nameAscButton);
@@ -383,7 +417,7 @@ public class MainActivity extends AppCompatActivity
 
     public void nameDESCTapped(View view)
     {
-        Collections.sort(shapeList, Shape.nameAscending);
+        Collections.sort(shapeList, Site.nameAscending);
         Collections.reverse(shapeList);
         checkForFilter();
         unSelectAllSortButtons();
@@ -400,12 +434,12 @@ public class MainActivity extends AppCompatActivity
             }
             else
             {
-                ArrayList<Shape> filteredShapes = new ArrayList<Shape>();
-                for(Shape shape: shapeList)
+                ArrayList<Site> filteredShapes = new ArrayList<Site>();
+                for(Site site : shapeList)
                 {
-                    if(shape.getName().toLowerCase().contains(currentSearchText))
+                    if(site.getName().toLowerCase().contains(currentSearchText))
                     {
-                        filteredShapes.add(shape);
+                        filteredShapes.add(site);
                     }
                 }
                 setAdapter(filteredShapes);
@@ -417,7 +451,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void setAdapter(ArrayList<Shape> shapeList)
+    private void setAdapter(ArrayList<Site> shapeList)
     {
         ShapeAdapter adapter = new ShapeAdapter(getApplicationContext(), 0, shapeList);
         listView.setAdapter(adapter);
