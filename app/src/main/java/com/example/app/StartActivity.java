@@ -44,6 +44,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.auth.User;
 
 
@@ -165,10 +166,12 @@ public class StartActivity extends AppCompatActivity {
                 String uid = user.getUid();
                 if (authResult.getAdditionalUserInfo().isNewUser()) {
                     String e_mail = user.getEmail();
+                    DocumentReference df = fstore.collection("Users").document(user.getUid());
                     Map<String,Object> us_info = new HashMap<>();
                     us_info.put("ID", uid);
                     us_info.put("Email", e_mail);
                     us_info.put("isUser", 1);
+                    df.set(us_info);
                     FirebaseDatabase.getInstance().getReference().child("Users").push().updateChildren(us_info);
                     Toast.makeText(getApplicationContext(), "account created", Toast.LENGTH_SHORT).show();
                 } else {
@@ -193,53 +196,41 @@ public class StartActivity extends AppCompatActivity {
         auth.signInWithEmailAndPassword(txt_email, pas_email).addOnCompleteListener(StartActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
+//                if (task.isSuccessful()) {
                     FirebaseUser user = auth.getCurrentUser();
+                    assert user != null;
                     if(user.isEmailVerified()) {
                         Toast.makeText(StartActivity.this, "success", Toast.LENGTH_LONG).show();
                         checkUserAccessLevel(user.getUid());
                         finish();
-                    }
-                    else{
-                        Toast.makeText(StartActivity.this, "Please verify your email", Toast.LENGTH_LONG).show();
-                    }
+//                    }
+//                    else{
+//                        Toast.makeText(StartActivity.this, "Please verify your email", Toast.LENGTH_LONG).show();
+//                    }
                 }
             }
-//        auth.signInWithEmailAndPassword(txt_email, pas_email).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-//            @Override
-//            public void onSuccess(AuthResult authResult) {
-//                Toast.makeText(StartActivity.this, "successful", Toast.LENGTH_LONG).show();
-//                startActivity(new Intent(StartActivity.this, MainActivity.class));
-//                finish();
-//            }
         });
     }
 
     private void checkUserAccessLevel(String uid) {
-        String s =uid;
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
-        FirebaseDatabase ss =ref.getDatabase();
-        ref.child(uid).child("isAdmin").addListenerForSingleValueEvent(new ValueEventListener() {
+        DocumentReference df =  fstore.collection("Users").document(uid);
+        df.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                Toast.makeText(StartActivity.this, "balblabla", Toast.LENGTH_LONG).show();
 
-                if(snapshot.exists()){
-                        startActivity(new Intent(StartActivity.this, AdminActivity.class));
-                        finish();
+                if (document.exists()) {
+                        Log.d("TAG", "DocumentSnapshot data: " + document.getData());
+                        if (document.getString("is_user").equals("1")) {
+                            startActivity(new Intent(StartActivity.this, AdminActivity.class));
+                            finish();
+//                        }
                     }
-                else {
-                    startActivity(new Intent(StartActivity.this, MainActivity.class));
-                    finish();
                 }
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(StartActivity.this, "wrong", Toast.LENGTH_LONG).show();
-            }
         });
-
-//        DocumentReference df =  fstore.collection("Users").document(uid);
 //        df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
 //            @Override
 //            public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -249,7 +240,7 @@ public class StartActivity extends AppCompatActivity {
 //                    finish();
 //                }
 //                if(documentSnapshot.getString("isUser")!=null){
-//                    startActivity(new Intent(StartActivity.this, MainActivity.class));
+//                    startActivity(new Intent(StartActivity.this, SecActivity.class));
 //                    finish();
 //                }
 //            }
