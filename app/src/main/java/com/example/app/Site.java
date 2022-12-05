@@ -4,16 +4,47 @@ import android.widget.ImageView;
 
 import java.util.Comparator;
 
+
 class Site
 {
     private String id;
     private String name;
     private String image;
+    private double rate;
+    private String detail;
+    private Location location;
 
-    public Site(String id, String name, String image) {
+    public Site(String id, String name, String image, double rate, String detail, Location location) {
         this.id = id;
         this.name = name;
         this.image = image;
+        this.detail = detail;
+        this.location = location;
+        this.rate = rate;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public String getId() {

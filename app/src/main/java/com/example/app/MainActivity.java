@@ -196,34 +196,34 @@ public class MainActivity extends AppCompatActivity
 
     private void setupData()
     {
-        Site circle = new Site("0", "Circle", "picture/shvil.jpg");
+        Site circle = new Site("0", "Circle", "picture/shvil.jpg", 9, "bla lba", Location.Center);
         shapeList.add(circle);
 
-        Site triangle = new Site("1","Triangle", "picture/shvil.jpg");
+        Site triangle = new Site("1","Triangle", "picture/shvil.jpg", 0, "bla lba", Location.Center);
         shapeList.add(triangle);
 
-        Site square = new Site("2","Square", "picture/shvil.jpg");
+        Site square = new Site("2","Square", "picture/shvil.jpg", 3, "bla lba", Location.South);
         shapeList.add(square);
 
-        Site rectangle = new Site("3","Rectangle", "picture/shvil.jpg");
+        Site rectangle = new Site("3","Rectangle", "picture/shvil.jpg", 1, "bla lba", Location.South);
         shapeList.add(rectangle);
 
-        Site octagon = new Site("4","Octagon", "picture/shvil.jpg");
+        Site octagon = new Site("4","Octagon", "picture/shvil.jpg", 7.6, "bla lba", Location.North);
         shapeList.add(octagon);
 
-        Site circle2 = new Site("5", "Circle 2", "picture/shvil.jpg");
+        Site circle2 = new Site("5", "Circle 2", "picture/shvil.jpg", 1.2, "bla lba", Location.North);
         shapeList.add(circle2);
 
-        Site triangle2 = new Site("6","Triangle 2", "picture/shvil.jpg");
+        Site triangle2 = new Site("6","Triangle 2", "picture/shvil.jpg", 9, "bla lba", Location.Center);
         shapeList.add(triangle2);
 
-        Site square2 = new Site("7","Square 2", "picture/shvil.jpg");
+        Site square2 = new Site("7","Square 2", "picture/shvil.jpg", 9, "bla lba", Location.Center);
         shapeList.add(square2);
 
-        Site rectangle2 = new Site("8","Rectangle 2", "picture/shvil.jpg");
+        Site rectangle2 = new Site("8","Rectangle 2", "picture/shvil.jpg", 9, "bla lba", Location.Center);
         shapeList.add(rectangle2);
 
-        Site octagon2 = new Site("9","Octagon 2", "picture/shvil.jpg");
+        Site octagon2 = new Site("9","Octagon 2", "picture/shvil.jpg", 9, "bla lba", Location.Center);
         shapeList.add(octagon2);
     }
 

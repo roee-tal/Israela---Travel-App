@@ -36,10 +36,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.auth.User;
 
 
 import java.util.Arrays;
@@ -71,14 +77,20 @@ public class StartActivity extends AppCompatActivity {
         googleBtn = findViewById(R.id.faceb);
         auth = FirebaseAuth.getInstance();
         fstore = FirebaseFirestore.getInstance();
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).
+                requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         gsc = GoogleSignIn.getClient(this, gso);
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
 
-        Map<String,Object> us_info = new HashMap<>();
-        us_info.put("name", "roee");
-        us_info.put("fam", "tal");
-        FirebaseDatabase.getInstance().getReference().child("First").updateChildren(us_info);
+//        Map<String,Object> us_info = new HashMap<>();
+//        us_info.put("name", "roee");
+//        us_info.put("fam", "tal");
+//        FirebaseDatabase.getInstance().getReference().child("Users").updateChildren(us_info);
+//        Map<String,Object> us_info2 = new HashMap<>();
+//        us_info.put("name", "sivan");
+//        us_info.put("fam", "cohen");
+//        FirebaseDatabase.getInstance().getReference().child("First7").updateChildren(us_info2);
+
 
         googleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +140,7 @@ public class StartActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-//                firebaseauthwithgoogle(account);
+                firebaseauthwithgoogle(account);
 //                GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
 //                task.getResult(ApiException.class);
 //                FirebaseUser fu = auth.getCurrentUser();
@@ -137,7 +149,7 @@ public class StartActivity extends AppCompatActivity {
 //                us_info.put("FullName", personName.getText().toString());
 //                us_info.put("Email", email.getText().toString());
 //                df.set(us_info);
-                navigateToSecondActivity();
+//                navigateToSecondActivity();
             } catch (ApiException e) {
                 Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
             }
@@ -145,22 +157,31 @@ public class StartActivity extends AppCompatActivity {
 
     }
 
-//    private void firebaseauthwithgoogle(GoogleSignInAccount account) {
-//        AuthCredential cred = GoogleAuthProvider.getCredential(account.getIdToken(),null);
-//        auth.signInWithCredential(cred).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//            @Override
-//            public void onComplete(@NonNull Task<AuthResult> task) {
-//                if(task.isSuccessful()){
-//                    FirebaseUser user = auth.getCurrentUser();
-//                DocumentReference df = fstore.collection("Users").document(user.getUid());
-//                Map<String,Object> us_info = new HashMap<>();
-//                email.setText(account.getEmail());
-//                us_info.put("Email", email.toString());
-//                df.set(us_info);
-//                }
-//            }
-//        });
-//    }
+    private void firebaseauthwithgoogle(GoogleSignInAccount account) {
+        AuthCredential cred = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        auth.signInWithCredential(cred).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                FirebaseUser user = auth.getCurrentUser();
+                String uid = user.getUid();
+                if (authResult.getAdditionalUserInfo().isNewUser()) {
+                    String e_mail = user.getEmail();
+                    DocumentReference df = fstore.collection("Users").document(user.getUid());
+                    Map<String,Object> us_info = new HashMap<>();
+                    us_info.put("ID", uid);
+                    us_info.put("Email", e_mail);
+                    us_info.put("isUser", 1);
+                    df.set(us_info);
+                    FirebaseDatabase.getInstance().getReference().child("Users").push().updateChildren(us_info);
+                    Toast.makeText(getApplicationContext(), "account created", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Exist", Toast.LENGTH_SHORT).show();
+                }
+                checkUserAccessLevel(uid);
+            }
+        });
+    }
+
 
     void navigateToSecondActivity(){
         finish();
@@ -175,47 +196,55 @@ public class StartActivity extends AppCompatActivity {
         auth.signInWithEmailAndPassword(txt_email, pas_email).addOnCompleteListener(StartActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    FirebaseUser user = auth.getCurrentUser();
-                    if(user.isEmailVerified()) {
-                        Toast.makeText(StartActivity.this, "success", Toast.LENGTH_LONG).show();
-                        checkUserAccessLevel(user.getUid());
-                        finish();
-                    }
-                    else{
-                        Toast.makeText(StartActivity.this, "Please verify your email", Toast.LENGTH_LONG).show();
-                    }
+//                if (task.isSuccessful()) {
+                FirebaseUser user = auth.getCurrentUser();
+                Toast.makeText(StartActivity.this, "TEST", Toast.LENGTH_LONG).show();
+                assert user != null;
+                if(user.isEmailVerified()) {
+                    Toast.makeText(StartActivity.this, "success", Toast.LENGTH_LONG).show();
+                    checkUserAccessLevel(user.getUid());
+                    finish();
+//                    }
+//                    else{
+//                        Toast.makeText(StartActivity.this, "Please verify your email", Toast.LENGTH_LONG).show();
+//                    }
                 }
             }
-//        auth.signInWithEmailAndPassword(txt_email, pas_email).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-//            @Override
-//            public void onSuccess(AuthResult authResult) {
-//                Toast.makeText(StartActivity.this, "successful", Toast.LENGTH_LONG).show();
-//                startActivity(new Intent(StartActivity.this, MainActivity.class));
-//                finish();
-//            }
-
         });
-
-
     }
 
     private void checkUserAccessLevel(String uid) {
         DocumentReference df =  fstore.collection("Users").document(uid);
-        df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        df.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Log.d("TAG", "onSuccess" + documentSnapshot.getData());
-                if(documentSnapshot.getString("isAdmin")!=null){
-                    startActivity(new Intent(StartActivity.this, AdminActivity.class));
-                    finish();
-                }
-                if(documentSnapshot.getString("isUser")!=null){
-                    startActivity(new Intent(StartActivity.this, MainActivity.class));
-                    finish();
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                Toast.makeText(StartActivity.this, "balblabla", Toast.LENGTH_LONG).show();
+
+                if (document.exists()) {
+                    Log.d("TAG", "DocumentSnapshot data: " + document.getData());
+                    if (document.getString("is_user").equals("1")) {
+                        startActivity(new Intent(StartActivity.this, AdminActivity.class));
+                        finish();
+//                        }
+                    }
                 }
             }
         });
+//        df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                Log.d("TAG", "onSuccess" + documentSnapshot.getData());
+//                if(documentSnapshot.getString("isAdmin")!=null){
+//                    startActivity(new Intent(StartActivity.this, AdminActivity.class));
+//                    finish();
+//                }
+//                if(documentSnapshot.getString("isUser")!=null){
+//                    startActivity(new Intent(StartActivity.this, SecActivity.class));
+//                    finish();
+//                }
+//            }
+//        });
     }
 }
-
