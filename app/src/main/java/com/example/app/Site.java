@@ -14,6 +14,8 @@ class Site
     private String detail;
     private Location location;
 
+    public Site(){};
+
     public Site(String id, String name, String image, double rate, String detail, Location location) {
         this.id = id;
         this.name = name;

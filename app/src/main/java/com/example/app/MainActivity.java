@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -17,8 +18,15 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -58,10 +66,10 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        myStorage = FirebaseStorage.getInstance().getReference().child("picture/shvil.jpg");
+        myStorage = FirebaseStorage.getInstance().getReference();
         try {
             final File localTempFile = File.createTempFile("shvil", "jpg");
-            myStorage.getFile(localTempFile)
+            myStorage.child("picture/shvil.jpg").getFile(localTempFile)
                     .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
@@ -196,8 +204,28 @@ public class MainActivity extends AppCompatActivity
 
     private void setupData()
     {
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         Site circle = new Site("0", "Circle", "picture/shvil.jpg", 9, "bla lba", Location.Center);
         shapeList.add(circle);
+
+//        final String[] ans = new String[1];
+//        mDatabase.child("site").child("1").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DataSnapshot> task) {
+//                if (!task.isSuccessful()) {
+//                    Log.e("firebase", "Error getting data", task.getException());
+//                }
+//                else {
+//                    ans[0] = String.valueOf(task.getResult().getValue());
+//                    Toast.makeText(MainActivity.this, ans[0], Toast.LENGTH_LONG).show();
+//
+//                    Log.d("firebase", "ans[0]");
+//                    Log.d("firebase", ans[0]);
+//                }
+//            }
+//        });
 
         Site triangle = new Site("1","Triangle", "picture/shvil.jpg", 0, "bla lba", Location.Center);
         shapeList.add(triangle);
@@ -225,6 +253,50 @@ public class MainActivity extends AppCompatActivity
 
         Site octagon2 = new Site("9","Octagon 2", "picture/shvil.jpg", 9, "bla lba", Location.Center);
         shapeList.add(octagon2);
+        //--------------------------------------------
+        // push all the objects to firebase:
+        for (Site site: shapeList) {
+            mDatabase.child("site").push().setValue(site);
+        }
+        //--------------------------------------------
+        // this will hold our collection of all Site's.
+        final ArrayList<Site> siteList = new ArrayList<Site>();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference();
+        databaseReference.child("site").addValueEventListener(new ValueEventListener() {
+            /**
+             * This method will be invoked any time the data on the database changes.
+             * Additionally, it will be invoked as soon as we connect the listener, so that we can get an initial snapshot of the data on the database.
+             * @param dataSnapshot
+             */
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // get all of the children at this level.
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+
+                // shake hands with each of them.'
+                for (DataSnapshot child : children) {
+                    Site s = child.getValue(Site.class);
+                    siteList.add(s);
+                    assert s != null;
+                }
+                //        shapeList.clear(); //only for self check of data loading
+                for (Site site:siteList) {
+//            shapeList.add(site);
+                    Log.d("firebase0129", site.getRate() +"---"+ site.getName());
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }});
+        //--------------------------------------------
+////        shapeList.clear(); //only for self check of data loading
+//        for (Site site:siteList) {
+////            shapeList.add(site);
+//            Log.d("firebase0129", site.getRate() +"---"+ site.getName());
+//        }
+
     }
 
     private void setUpList()
@@ -266,13 +338,13 @@ public class MainActivity extends AppCompatActivity
                 {
                     if(currentSearchText == "")
                     {
-                        filteredShapes.add(site);
+                        filteredShapes.add(site); //Todo: add here wheris.. query and delete 'for(Site site : shapeList)'
                     }
                     else
                     {
                         if(site.getName().toLowerCase().contains(currentSearchText.toLowerCase()))
                         {
-                            filteredShapes.add(site);
+                            filteredShapes.add(site); //Todo: add here wheris.. query
                         }
                     }
                 }
