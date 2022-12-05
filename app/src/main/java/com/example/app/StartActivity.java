@@ -117,6 +117,8 @@ public class StartActivity extends AppCompatActivity {
                     Toast.makeText(StartActivity.this, "Empty Credentials!", Toast.LENGTH_SHORT).show();
                 } else {
                     loginu(txt_email , pas_email);
+                    startActivity(new Intent(StartActivity.this, MainActivity.class));
+                    finish();
                 }
             }
         });
@@ -196,17 +198,17 @@ public class StartActivity extends AppCompatActivity {
         auth.signInWithEmailAndPassword(txt_email, pas_email).addOnCompleteListener(StartActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-//                if (task.isSuccessful()) {
+                if (task.isSuccessful()) {
                     FirebaseUser user = auth.getCurrentUser();
                     assert user != null;
                     if(user.isEmailVerified()) {
                         Toast.makeText(StartActivity.this, "success", Toast.LENGTH_LONG).show();
                         checkUserAccessLevel(user.getUid());
                         finish();
-//                    }
-//                    else{
-//                        Toast.makeText(StartActivity.this, "Please verify your email", Toast.LENGTH_LONG).show();
-//                    }
+                    }
+                    else{
+                        Toast.makeText(StartActivity.this, "Please verify your email", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
