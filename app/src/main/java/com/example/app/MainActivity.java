@@ -18,10 +18,8 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,9 +49,13 @@ public class MainActivity extends AppCompatActivity
 
     boolean sortHidden = true;
     boolean filterHidden = true;
+    Location[] allLocations = {Location.Center, Location.North, Location.South}; //Location.All,
+    boolean centerSelected = false;
+    boolean southSelected = false;
+    boolean northSelected = false;
 
-    private Button circleButton, squareButton, rectangleButton, triangleButton, octagonButton, allButton;
-    private Button idAscButton, idDescButton, nameAscButton, nameDescButton;
+    private Button southButton, centetButton, northButton, allButton;
+    private Button down2upRateButton, up2downRateButton, nameAscButton, nameDescButton;
 
     private ArrayList<String> selectedFilters = new ArrayList<String>();
     private String currentSearchText = "";
@@ -95,8 +97,10 @@ public class MainActivity extends AppCompatActivity
         hideFilter();
         hideSort();
         initColors();
-        lookSelected(idAscButton);
+        unSelectAllSortButtons();
+        lookSelected(up2downRateButton);
         lookSelected(allButton);
+        unSelectAllFilterButtons();
         selectedFilters.add("all");
     }
 
@@ -107,11 +111,10 @@ public class MainActivity extends AppCompatActivity
         darkGray = ContextCompat.getColor(getApplicationContext(), R.color.darkerGray);
     }
 
-
     private void unSelectAllSortButtons()
     {
-        lookUnSelected(idAscButton);
-        lookUnSelected(idDescButton);
+        lookUnSelected(down2upRateButton);
+        lookUnSelected(up2downRateButton);
         lookUnSelected(nameAscButton);
         lookUnSelected(nameDescButton);
     }
@@ -119,11 +122,9 @@ public class MainActivity extends AppCompatActivity
     private void unSelectAllFilterButtons()
     {
         lookUnSelected(allButton);
-        lookUnSelected(circleButton);
-        lookUnSelected(rectangleButton);
-        lookUnSelected(octagonButton);
-        lookUnSelected(triangleButton);
-        lookUnSelected(squareButton);
+        lookUnSelected(northButton);
+        lookUnSelected(centetButton);
+        lookUnSelected(southButton);
     }
 
     private void lookSelected(Button parsedButton)
@@ -146,15 +147,13 @@ public class MainActivity extends AppCompatActivity
         filterView2 = (LinearLayout) findViewById(R.id.filterTabsLayout2);
         sortView = (LinearLayout) findViewById(R.id.sortTabsLayout2);
 
-        circleButton = (Button) findViewById(R.id.circleFilter);
-        squareButton = (Button) findViewById(R.id.squareFilter);
-        rectangleButton = (Button) findViewById(R.id.rectangleFilter);
-        triangleButton  = (Button) findViewById(R.id.triangleFilter);
-        octagonButton  = (Button) findViewById(R.id.octagonFilter);
+        southButton = (Button) findViewById(R.id.southFilter);
+        centetButton = (Button) findViewById(R.id.centerFilter);
+        northButton = (Button) findViewById(R.id.northFilter);
         allButton  = (Button) findViewById(R.id.allFilter);
 
-        idAscButton  = (Button) findViewById(R.id.idAsc);
-        idDescButton  = (Button) findViewById(R.id.idDesc);
+        down2upRateButton = (Button) findViewById(R.id.down2upRate);
+        up2downRateButton = (Button) findViewById(R.id.up2downRate);
         nameAscButton  = (Button) findViewById(R.id.nameAsc);
         nameDescButton  = (Button) findViewById(R.id.nameDesc);
     }
@@ -207,7 +206,7 @@ public class MainActivity extends AppCompatActivity
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        Site circle = new Site("0", "Circle", "picture/shvil.jpg", 9, "bla lba", Location.Center);
+        Site circle = new Site("0", "Jerusalem Forest", "picture/shvil.jpg", 9, "bla lba", Location.Center);
         shapeList.add(circle);
 
 //        final String[] ans = new String[1];
@@ -227,10 +226,10 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
 
-        Site triangle = new Site("1","Triangle", "picture/shvil.jpg", 0, "bla lba", Location.Center);
+        Site triangle = new Site("1","Tel Aviv beach", "picture/shvil.jpg", 0, "bla lba", Location.Center);
         shapeList.add(triangle);
 
-        Site square = new Site("2","Square", "picture/shvil.jpg", 3, "bla lba", Location.South);
+        Site square = new Site("2","Herzliya beach", "picture/shvil.jpg", 3, "bla lba", Location.South);
         shapeList.add(square);
 
         Site rectangle = new Site("3","Rectangle", "picture/shvil.jpg", 1, "bla lba", Location.South);
@@ -253,12 +252,12 @@ public class MainActivity extends AppCompatActivity
 
         Site octagon2 = new Site("9","Octagon 2", "picture/shvil.jpg", 9, "bla lba", Location.Center);
         shapeList.add(octagon2);
-        //--------------------------------------------
-        // push all the objects to firebase:
-        for (Site site: shapeList) {
-            mDatabase.child("site").push().setValue(site);
-        }
-        //--------------------------------------------
+//        //--------------------------------------------
+//        // push all the objects to firebase:
+//        for (Site site: shapeList) {
+//            mDatabase.child("site").push().setValue(site);
+//        }
+//        //--------------------------------------------
         // this will hold our collection of all Site's.
         final ArrayList<Site> siteList = new ArrayList<Site>();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -321,11 +320,13 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
-
     private void filterList(String status)
     {
-        if(status != null && !selectedFilters.contains(status))
+        String location;
+        if(status != null && selectedFilters.contains(status)) { // in case of second click on location
+            selectedFilters.remove(status); //in this case remove location from the filter list
+        }
+        else if (status != null)
             selectedFilters.add(status);
 
         ArrayList<Site> filteredShapes = new ArrayList<Site>();
@@ -334,7 +335,9 @@ public class MainActivity extends AppCompatActivity
         {
             for(String filter: selectedFilters)
             {
-                if(site.getName().toLowerCase().contains(filter))
+                // filter for location name:
+                location = isLocation(filter);
+                if(!location.equals("NOTHING") && site.getLocation().name().equals(location))
                 {
                     if(currentSearchText == "")
                     {
@@ -348,14 +351,37 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 }
+                
+//                // filter for other free text:            //Todo: verify that not need this 'else if':
+//                else if(site.getName().toLowerCase().contains(filter))
+//                {
+//                    if(currentSearchText == "")
+//                    {
+//                        filteredShapes.add(site); //Todo: add here wheris.. query and delete 'for(Site site : shapeList)'
+//                    }
+//                    else
+//                    {
+//                        if(site.getName().toLowerCase().contains(currentSearchText.toLowerCase()))
+//                        {
+//                            filteredShapes.add(site); //Todo: add here wheris.. query
+//                        }
+//                    }
+//                }
             }
         }
 
         setAdapter(filteredShapes);
     }
 
-
-
+    private String isLocation(String filter) {
+        for (Location l:allLocations) {
+            if (filter.equals(l.name())) {
+                Log.println(Log.DEBUG, "check1236", "Find Location - " + l.name().toLowerCase());
+                return l.name();
+            }
+        }
+        return "NOTHING";
+    }
 
     public void allFilterTapped(View view)
     {
@@ -368,41 +394,44 @@ public class MainActivity extends AppCompatActivity
         setAdapter(shapeList);
     }
 
-    public void triangleFilterTapped(View view)
+    public void centerFilterTapped(View view)
     {
-        filterList("triangle");
-        lookSelected(triangleButton);
-        lookUnSelected(allButton);
+        filterList("Center");
+        if (!centerSelected) {
+            lookSelected(centetButton);
+            lookUnSelected(allButton);
+        }
+        else {
+            lookUnSelected(centetButton);
+        }
+        centerSelected = !centerSelected;
     }
 
-    public void squareFilterTapped(View view)
+    public void southFilterTapped(View view)
     {
-        filterList("square");
-        lookSelected(squareButton);
-        lookUnSelected(allButton);
+        filterList("South");
+        if (!southSelected) {
+            lookSelected(southButton);
+            lookUnSelected(allButton);
+        }
+        else {
+            lookUnSelected(southButton);
+        }
+        southSelected = !southSelected;
     }
 
-    public void octagonFilterTapped(View view)
+    public void northFilterTapped(View view)
     {
-        filterList("octagon");
-        lookSelected(octagonButton);
-        lookUnSelected(allButton);
+        filterList("North");
+        if (!northSelected) {
+            lookSelected(northButton);
+            lookUnSelected(allButton);
+        }
+        else {
+            lookUnSelected(northButton);
+        }
+        northSelected = !northSelected;
     }
-
-    public void rectangleFilterTapped(View view)
-    {
-        filterList("rectangle");
-        lookSelected(rectangleButton);
-        lookUnSelected(allButton);
-    }
-
-    public void circleFilterTapped(View view)
-    {
-        filterList("circle");
-        lookSelected(circleButton);
-        lookUnSelected(allButton);
-    }
-
 
     public void showFilterTapped(View view)
     {
@@ -432,8 +461,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
-
     private void hideFilter()
     {
         searchView.setVisibility(View.GONE);
@@ -462,21 +489,21 @@ public class MainActivity extends AppCompatActivity
         sortButton.setText("HIDE");
     }
 
-    public void idASCTapped(View view)
+    public void down2upRateApped(View view)
     {
-        Collections.sort(shapeList, Site.idAscending);
+        Collections.sort(shapeList, Site.rateSort);
         checkForFilter();
         unSelectAllSortButtons();
-        lookSelected(idAscButton);
+        lookSelected(down2upRateButton);
     }
 
-    public void idDESCTapped(View view)
+    public void up2downRateApped(View view)
     {
-        Collections.sort(shapeList, Site.idAscending);
+        Collections.sort(shapeList, Site.rateSort);
         Collections.reverse(shapeList);
         checkForFilter();
         unSelectAllSortButtons();
-        lookSelected(idDescButton);
+        lookSelected(up2downRateButton);
     }
 
     public void nameASCTapped(View view)

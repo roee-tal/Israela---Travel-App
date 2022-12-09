@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/app_name"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="30sp" />
 
@@ -77,21 +77,11 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="Triangle"
+            android:text="Center"
             android:textColor="@color/red"
-            android:id="@+id/triangleFilter"
+            android:id="@+id/centerFilter"
             android:background="@color/darkerGray"
-            android:onClick="triangleFilterTapped"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="Square"
-            android:textColor="@color/red"
-            android:id="@+id/squareFilter"
-            android:background="@color/darkerGray"
-            android:onClick="squareFilterTapped"/>
+            android:onClick="centerFilterTapped"/>
 
     </LinearLayout>
 
@@ -104,28 +94,20 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="Octagon"
-            android:id="@+id/octagonFilter"
+            android:text="North"
+            android:id="@+id/northFilter"
             android:background="@color/darkerGray"
-            android:onClick="octagonFilterTapped"/>
+            android:onClick="northFilterTapped"/>
 
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="Rectangle"
-            android:id="@+id/rectangleFilter"
+            android:text="South"
+            android:textColor="@color/red"
+            android:id="@+id/southFilter"
             android:background="@color/darkerGray"
-            android:onClick="rectangleFilterTapped"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="Circle"
-            android:id="@+id/circleFilter"
-            android:background="@color/darkerGray"
-            android:onClick="circleFilterTapped"/>
+            android:onClick="southFilterTapped"/>
 
     </LinearLayout>
 
@@ -139,19 +121,19 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="ID ASC"
-            android:id="@+id/idAsc"
+            android:text="Upside Rate"
+            android:id="@+id/down2upRate"
             android:background="@color/darkerGray"
-            android:onClick="idASCTapped"/>
+            android:onClick="down2upRateApped"/>
 
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="ID DESC"
-            android:id="@+id/idDesc"
+            android:text="Rate"
+            android:id="@+id/up2downRate"
             android:background="@color/darkerGray"
-            android:onClick="idDESCTapped"/>
+            android:onClick="up2downRateApped"/>
 
         <Button
             android:layout_width="0dp"
