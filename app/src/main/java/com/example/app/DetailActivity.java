@@ -2,6 +2,7 @@ package com.example.app;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,6 +24,16 @@ import java.io.IOException;
 
 public class DetailActivity extends AppCompatActivity
 {
+    // creating object of ViewPager
+    ViewPager mViewPager;
+
+    // images array
+    int[] images = {R.drawable.facebook, R.drawable.pic, R.drawable.pic2, R.drawable.facebook,
+            R.drawable.pic, R.drawable.pic2, R.drawable.facebook, R.drawable.pic};
+
+    // Creating Object of ViewPagerAdapter
+    ViewPagerAdapter mViewPagerAdapter;
+
     Site selectedShape;
     private StorageReference myStorage;
 
@@ -30,9 +41,20 @@ public class DetailActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_detail);
+//        getSelectedShape();
+//        setValues();
+
         setContentView(R.layout.activity_detail);
-        getSelectedShape();
-        setValues();
+
+        // Initializing the ViewPager Object
+        mViewPager = (ViewPager)findViewById(R.id.viewPagerMain);
+
+        // Initializing the ViewPagerAdapter
+        mViewPagerAdapter = new ViewPagerAdapter(DetailActivity.this, images);
+
+        // Adding the Adapter to the ViewPager
+        mViewPager.setAdapter(mViewPagerAdapter);
 
     }
 
