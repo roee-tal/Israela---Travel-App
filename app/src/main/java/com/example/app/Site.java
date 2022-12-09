@@ -1,7 +1,5 @@
 package com.example.app;
 
-import android.widget.ImageView;
-
 import java.util.Comparator;
 
 
@@ -73,15 +71,15 @@ class Site
         this.image = image;
     }
 
-    public static Comparator<Site> idAscending = new Comparator<Site>()
+    public static Comparator<Site> rateSort = new Comparator<Site>()
     {
         @Override
         public int compare(Site shape1, Site shape2)
         {
-            int id1 = Integer.valueOf(shape1.getId());
-            int id2 = Integer.valueOf(shape2.getId());
+            double id1 = Double.valueOf(shape1.getRate());
+            double id2 = Double.valueOf(shape2.getRate());
 
-            return Integer.compare(id1, id2);
+            return Double.compare(id1, id2);
         }
     };
 

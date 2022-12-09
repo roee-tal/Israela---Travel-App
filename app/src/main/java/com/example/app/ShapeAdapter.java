@@ -42,10 +42,12 @@ public class ShapeAdapter extends ArrayAdapter<Site>
         {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.shape_cell, parent, false);
         }
-        TextView tv = (TextView) convertView.findViewById(R.id.shapeName);
+        TextView name = (TextView) convertView.findViewById(R.id.shapeName);
+        TextView rate = (TextView) convertView.findViewById(R.id.siteRate);
 //        ImageView iv = (ImageView) convertView.findViewById(R.id.mainImage);
 
-        tv.setText(site.getId() + " - " + site.getName());
+        name.setText(site.getName());
+        rate.setText("\n" + site.getRate() + "/10");
 //        iv.setImageResource(site.getImage());
         this.setimageView(site.getImage(), convertView);
 

@@ -6,14 +6,26 @@
     android:background="@color/colorAccent">
 
     <TextView
+        android:id="@+id/shapeName"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/shapeName"
+        android:layout_marginLeft="20dp"
         android:gravity="center_vertical"
         android:text="site name"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="20dp"
-        android:layout_marginLeft="20dp"/>
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/siteRate"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/shapeName"
+        android:layout_marginStart="200dp"
+        android:layout_marginBottom="-121dp"
+        android:gravity="center_vertical"
+        android:text="site rate"
+        android:textColor="@color/teal_700"
+        android:textSize="15sp" />
 
     <ImageView
         android:id="@+id/mainImage"
