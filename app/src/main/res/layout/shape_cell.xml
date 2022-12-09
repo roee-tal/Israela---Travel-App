@@ -6,7 +6,7 @@
     android:background="@color/colorAccent">
 
     <TextView
-        android:id="@+id/shapeName"
+        android:id="@+id/siteName"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginLeft="20dp"
@@ -19,7 +19,7 @@
         android:id="@+id/siteRate"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_above="@+id/shapeName"
+        android:layout_above="@+id/siteName"
         android:layout_marginStart="200dp"
         android:layout_marginBottom="-121dp"
         android:gravity="center_vertical"

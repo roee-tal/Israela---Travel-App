@@ -6,33 +6,35 @@
     android:background="@color/colorAccent">
 
     <TextView
-        android:id="@+id/shapeName"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:layout_marginStart="300dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="300dp"
+        android:id="@+id/siteName"
+        android:layout_width="258dp"
+        android:layout_height="97dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="375dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="300dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center_vertical"
         android:text="site name"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="20dp" />
+        android:textSize="35dp" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPagerMain"
-        android:layout_width="255dp"
-        android:layout_height="317dp"
+        android:layout_width="370dp"
+        android:layout_height="340dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/siteDetail"
-        android:layout_width="391dp"
-        android:layout_height="422dp"
+        android:layout_width="358dp"
+        android:layout_height="368dp"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="500dp"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"

@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,11 +40,11 @@ public class DetailActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_detail);
-//        getSelectedShape();
-//        setValues();
-
         setContentView(R.layout.activity_detail);
+        getSelectedShape();
+        setValues();
+
+//        setContentView(R.layout.activity_detail);
 
         // Initializing the ViewPager Object
         mViewPager = (ViewPager)findViewById(R.id.viewPagerMain);
@@ -77,12 +76,19 @@ public class DetailActivity extends AppCompatActivity
 
     private void setValues()
     {
-        TextView tv = (TextView) findViewById(R.id.shapeName);
-        ImageView iv = (ImageView) findViewById(R.id.mainImage);
+//        Site selectedShape = new Site("2","Herzliya beach", "picture/shvil.jpg", 3, "bla lba", Location.South);
 
-        tv.setText(selectedShape.getId() + " - " + selectedShape.getName());
-        this.setimageView(selectedShape.getImage());
-//        iv.setImageResource(selectedShape.getImage());
+        TextView siteName = (TextView) findViewById(R.id.siteName);
+        TextView siteDetail = (TextView) findViewById(R.id.siteDetail);
+//        ImageView iv = (ImageView) findViewById(R.id.mainImage);
+        String detail = "Name: " + selectedShape.getName() +
+                        "\n\nArea: " + selectedShape.getLocation() +
+                        "\n\nRate: " + selectedShape.getRate() + "/10" +
+                        "\n\nDetail: " + selectedShape.getDetail();
+        siteName.setText(selectedShape.getName());
+        siteDetail.setText(detail);
+//        this.setimageView(selectedShape.getImage());
+//        iv.setImageResource(selectedShape.getImage()); //Todo: do all image like this
     }
 
     private void setimageView(String pictureName) {

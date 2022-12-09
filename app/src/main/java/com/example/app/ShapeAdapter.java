@@ -42,7 +42,7 @@ public class ShapeAdapter extends ArrayAdapter<Site>
         {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.shape_cell, parent, false);
         }
-        TextView name = (TextView) convertView.findViewById(R.id.shapeName);
+        TextView name = (TextView) convertView.findViewById(R.id.siteName);
         TextView rate = (TextView) convertView.findViewById(R.id.siteRate);
 //        ImageView iv = (ImageView) convertView.findViewById(R.id.mainImage);
 
