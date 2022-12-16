@@ -75,6 +75,9 @@ public class MainActivity extends AppCompatActivity
                     .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+//                            Log.d("firebaseFailed", "in!");
+//                            Log.d("firebaseFailed", localTempFile.getName());
+
                             Toast.makeText(MainActivity.this, "Picture Retrieved",Toast.LENGTH_SHORT).show();
                             Bitmap bitmap = BitmapFactory.decodeFile(localTempFile.getAbsolutePath());
                             ((ImageView) findViewById(R.id.mainImage)).setImageBitmap(bitmap);
@@ -206,7 +209,7 @@ public class MainActivity extends AppCompatActivity
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        Site circle = new Site("0", "Jerusalem Forest", "picture/shvil.jpg", 9, "bla lba", Location.Center);
+        Site circle = new Site("11", "Jerusalem Forest", "picture/shvil.jpg", 9, "bla lba", Location.Center);
         shapeList.add(circle);
 
 //        final String[] ans = new String[1];
@@ -314,6 +317,7 @@ public class MainActivity extends AppCompatActivity
                 Site selectShape = (Site) (listView.getItemAtPosition(position));
                 Intent showDetail = new Intent(getApplicationContext(), DetailActivity.class);
                 showDetail.putExtra("id",selectShape.getId());
+                showDetail.putExtra("name",selectShape.getName());
                 startActivity(showDetail);
             }
         });
