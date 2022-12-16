@@ -29,6 +29,7 @@
 
     <ImageView
         android:id="@+id/mainImage"
+        android:src="@drawable/pic2"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_alignParentEnd="true"

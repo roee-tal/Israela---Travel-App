@@ -1,44 +1,37 @@
 package com.example.app;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import com.google.firebase.database.Query;
 
-import java.io.File;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
-    private StorageReference myStorage;
+    private FirebaseDatabase myRealTimeDB;
 
     public static ArrayList<Site> shapeList = new ArrayList<Site>();
+//    private List<SortType> sortTypeList = new ArrayList<SortType>();
+    private ShapeAdapter adapter;
 
     private ListView listView;
     private Button sortButton;
@@ -68,34 +61,35 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        myStorage = FirebaseStorage.getInstance().getReference();
-        try {
-            final File localTempFile = File.createTempFile("shvil", "jpg");
-            myStorage.child("picture/shvil.jpg").getFile(localTempFile)
-                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                            Log.d("firebaseFailed", "in!");
-//                            Log.d("firebaseFailed", localTempFile.getName());
+        myRealTimeDB = FirebaseDatabase.getInstance();
+//        try {
+//            final File localTempFile = File.createTempFile("shvil", "jpg");
+//            myRealTimeDB.child("picture/shvil.jpg").getFile(localTempFile)
+//                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+////                            Log.d("firebaseFailed", "in!");
+////                            Log.d("firebaseFailed", localTempFile.getName());
+//
+//                            Toast.makeText(MainActivity.this, "Picture Retrieved",Toast.LENGTH_SHORT).show();
+//                            Bitmap bitmap = BitmapFactory.decodeFile(localTempFile.getAbsolutePath());
+//                            ((ImageView) findViewById(R.id.mainImage)).setImageBitmap(bitmap);
+//                        }
+//                    }).addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            Toast.makeText(MainActivity.this, "Error During Picture Retrieved",Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//        }catch (IOException e){
+//            e.printStackTrace();
+//        }
+        setUpList();
 
-                            Toast.makeText(MainActivity.this, "Picture Retrieved",Toast.LENGTH_SHORT).show();
-                            Bitmap bitmap = BitmapFactory.decodeFile(localTempFile.getAbsolutePath());
-                            ((ImageView) findViewById(R.id.mainImage)).setImageBitmap(bitmap);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(MainActivity.this, "Error During Picture Retrieved",Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-
+//        setAdapter(null);
         initSearchWidgets();
         initWidgets();
-        setupData();
-        setUpList();
+//        setupData();
         setUpOnclickListener();
         hideFilter();
         hideSort();
@@ -104,7 +98,46 @@ public class MainActivity extends AppCompatActivity
         lookSelected(up2downRateButton);
         lookSelected(allButton);
         unSelectAllFilterButtons();
+        allFilterTappedForStart();
+//        selectedFilters.add("all");
+    }
+
+    private void allFilterTappedForStart() {
+        selectedFilters.clear();
         selectedFilters.add("all");
+
+        unSelectAllFilterButtons();
+        lookSelected(allButton);
+
+        shapeList.clear();
+        Query query = myRealTimeDB.getReference().child("site");
+        // Execute the query and retrieve the matching items
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                // get all of the children at this level.
+                Iterable<DataSnapshot> children = snapshot.getChildren();
+                Log.d("allFilterTapped", "empty:" + shapeList.size());
+                for (DataSnapshot child : children) {
+                    Site s = child.getValue(Site.class);
+                    assert s != null;
+                    if (!shapeList.contains(s))
+                        shapeList.add(s);
+                    Log.d("allFilterTapped", "shapeList.size=" + shapeList.size());
+                    Log.d("v", "site name=" + s.getName());
+                }
+
+                Log.d("allFilterTapped", "shapeList.size=" + shapeList.size());
+                adapter.notifyDataSetChanged();
+                Log.d("allFilterTapped", "shapeList.size=" + shapeList.size());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Handle error
+            }
+        });
     }
 
     private void initColors()
@@ -172,32 +205,65 @@ public class MainActivity extends AppCompatActivity
             }
 
             @Override
-            public boolean onQueryTextChange(String s)
+            public boolean onQueryTextChange(String str)
             {
-                currentSearchText = s;
-                ArrayList<Site> filteredShapes = new ArrayList<Site>();
+                shapeList.clear();
+                currentSearchText = str;
+                Log.d("initSearchWidgets", "str="+str);
 
-                for(Site site : shapeList)
-                {
-                    if(site.getName().toLowerCase().contains(s.toLowerCase()))
-                    {
-                        if(selectedFilters.contains("all"))
-                        {
-                            filteredShapes.add(site);
+                Query query = myRealTimeDB.getReference().child("site").orderByChild("name").startAt(str).endAt(str + "\uf8ff");
+                // Execute the query and retrieve the matching items
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        // get all of the children at this level.
+                        Iterable<DataSnapshot> children = snapshot.getChildren();
+                        shapeList.clear();
+                        Log.d("initSearchWidgets", "empty:"+shapeList.size());
+                        for (DataSnapshot child : children) {
+                            Site s = child.getValue(Site.class);
+                            assert s != null;
+                            shapeList.add(s);
+                            Log.d("initSearchWidgets", "shapeList.size="+shapeList.size());
+                            Log.d("initSearchWidgets", "site name="+s.getName());
                         }
-                        else
-                        {
-                            for(String filter: selectedFilters)
-                            {
-                                if (site.getName().toLowerCase().contains(filter))
-                                {
-                                    filteredShapes.add(site);
-                                }
-                            }
-                        }
+
+                        Log.d("initSearchWidgets", "shapeList.size="+shapeList.size());
+                        adapter.notifyDataSetChanged();
+                        Log.d("initSearchWidgets", "shapeList.size="+shapeList.size());
+
                     }
-                }
-                setAdapter(filteredShapes);
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Handle error
+                    }
+                });
+
+
+//                ArrayList<Site> filteredShapes = new ArrayList<Site>();
+//
+//                for(Site site : shapeList)
+//                {
+//                    if(site.getName().toLowerCase().contains(str.toLowerCase()))
+//                    {
+//                        if(selectedFilters.contains("all"))
+//                        {
+//                            filteredShapes.add(site);
+//                        }
+//                        else
+//                        {
+//                            for(String filter: selectedFilters)
+//                            {
+//                                if (site.getName().toLowerCase().contains(filter))
+//                                {
+//                                    filteredShapes.add(site);
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//                setAdapter(filteredShapes);
 
                 return false;
             }
@@ -209,7 +275,7 @@ public class MainActivity extends AppCompatActivity
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        Site circle = new Site("11", "Jerusalem Forest", "picture/shvil.jpg", 9, "bla lba", Location.Center);
+        Site circle = new Site("11", "Jerusalem Forest", "Jerusalem Forest/image1.jfif", 9, "bla lba", Location.Center);
         shapeList.add(circle);
 
 //        final String[] ans = new String[1];
@@ -229,7 +295,7 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
 
-        Site triangle = new Site("1","Tel Aviv beach", "picture/shvil.jpg", 0, "bla lba", Location.Center);
+        Site triangle = new Site("1","Tel Aviv beach", "Tel Aviv beach/telAviv1.jfif", 0, "bla lba", Location.Center);
         shapeList.add(triangle);
 
         Site square = new Site("2","Herzliya beach", "picture/shvil.jpg", 3, "bla lba", Location.South);
@@ -324,7 +390,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void filterList(String status)
+    private void filterList(String status, SortType type)
     {
         String location;
         if(status != null && selectedFilters.contains(status)) { // in case of second click on location
@@ -333,31 +399,70 @@ public class MainActivity extends AppCompatActivity
         else if (status != null)
             selectedFilters.add(status);
 
-        ArrayList<Site> filteredShapes = new ArrayList<Site>();
-
-        for(Site site : shapeList)
-        {
-            for(String filter: selectedFilters)
-            {
-                // filter for location name:
-                location = isLocation(filter);
-                if(!location.equals("NOTHING") && site.getLocation().name().equals(location))
+        shapeList.clear();
+        Log.d("filterList", "status="+status);
+        for (String filter : selectedFilters) {
+            Query query = myRealTimeDB.getReference().child("site").orderByChild("location").equalTo(filter);
+            // Execute the query and retrieve the matching items
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot)
                 {
-                    if(currentSearchText == "")
-                    {
-                        filteredShapes.add(site); //Todo: add here wheris.. query and delete 'for(Site site : shapeList)'
+                    // get all of the children at this level.
+                    Iterable<DataSnapshot> children = snapshot.getChildren();
+                    Log.d("initSearchWidgets", "empty:" + shapeList.size());
+                    for (DataSnapshot child : children) {
+                        Site s = child.getValue(Site.class);
+                        assert s != null;
+                        if (!shapeList.contains(s))
+                            shapeList.add(s);
+                        Log.d("initSearchWidgets", "shapeList.size=" + shapeList.size());
+                        Log.d("initSearchWidgets", "site name=" + s.getName());
                     }
-                    else
-                    {
-                        if(site.getName().toLowerCase().contains(currentSearchText.toLowerCase()))
-                        {
-                            filteredShapes.add(site); //Todo: add here wheris.. query
-                        }
+                    if (type != null)
+                        sortList(type);
+                    Log.d("initSearchWidgets", "shapeList.size=" + shapeList.size());
+                    adapter.notifyDataSetChanged();
+                    Log.d("initSearchWidgets", "shapeList.size=" + shapeList.size());
+
+                }
+
+                private void sortList(SortType type) {
+                    switch (type) {
+                        case RateUp2Down:
+                            Collections.sort(shapeList, Site.rateSort);
+                            Collections.reverse(shapeList);
+                            break;
+                        case RateDown2Up:
+                            Collections.sort(shapeList, Site.rateSort);
+                            break;
+                        case NameUp2Down:
+                            Collections.sort(shapeList, Site.nameAscending);
+                            Collections.reverse(shapeList);
+                            break;
+                        case NameDown2Up:
+                            Collections.sort(shapeList, Site.nameAscending);
+                            break;
+                        default:
+                            Log.d("sortList", "default !" + type);
+                            break;
                     }
                 }
-                
-//                // filter for other free text:            //Todo: verify that not need this 'else if':
-//                else if(site.getName().toLowerCase().contains(filter))
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Handle error
+                }
+            });
+        }
+//        ArrayList<Site> filteredShapes = new ArrayList<Site>();
+//        for(Site site : shapeList)
+//        {
+//            for(String filter: selectedFilters)
+//            {
+//                // filter for location name:
+//                location = isLocation(filter);
+//                if(!location.equals("NOTHING") && site.getLocation().name().equals(location))
 //                {
 //                    if(currentSearchText == "")
 //                    {
@@ -371,10 +476,26 @@ public class MainActivity extends AppCompatActivity
 //                        }
 //                    }
 //                }
-            }
-        }
-
-        setAdapter(filteredShapes);
+//
+////                // filter for other free text:            //Todo: verify that not need this 'else if':
+////                else if(site.getName().toLowerCase().contains(filter))
+////                {
+////                    if(currentSearchText == "")
+////                    {
+////                        filteredShapes.add(site); //Todo: add here wheris.. query and delete 'for(Site site : shapeList)'
+////                    }
+////                    else
+////                    {
+////                        if(site.getName().toLowerCase().contains(currentSearchText.toLowerCase()))
+////                        {
+////                            filteredShapes.add(site); //Todo: add here wheris.. query
+////                        }
+////                    }
+////                }
+//            }
+//        }
+//
+//        setAdapter(filteredShapes);
     }
 
     private String isLocation(String filter) {
@@ -395,12 +516,43 @@ public class MainActivity extends AppCompatActivity
         unSelectAllFilterButtons();
         lookSelected(allButton);
 
-        setAdapter(shapeList);
+        shapeList.clear();
+        Query query = myRealTimeDB.getReference().child("site");
+        // Execute the query and retrieve the matching items
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                // get all of the children at this level.
+                Iterable<DataSnapshot> children = snapshot.getChildren();
+                Log.d("allFilterTapped", "empty:" + shapeList.size());
+                for (DataSnapshot child : children) {
+                    Site s = child.getValue(Site.class);
+                    assert s != null;
+                    if (!shapeList.contains(s))
+                        shapeList.add(s);
+                    Log.d("allFilterTapped", "shapeList.size=" + shapeList.size());
+                    Log.d("v", "site name=" + s.getName());
+                }
+
+                Log.d("allFilterTapped", "shapeList.size=" + shapeList.size());
+                adapter.notifyDataSetChanged();
+                Log.d("allFilterTapped", "shapeList.size=" + shapeList.size());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Handle error
+            }
+        });
+
+
+//        setAdapter(shapeList);
     }
 
     public void centerFilterTapped(View view)
     {
-        filterList("Center");
+        filterList("Center", null);
         if (!centerSelected) {
             lookSelected(centetButton);
             lookUnSelected(allButton);
@@ -413,7 +565,7 @@ public class MainActivity extends AppCompatActivity
 
     public void southFilterTapped(View view)
     {
-        filterList("South");
+        filterList("South", null);
         if (!southSelected) {
             lookSelected(southButton);
             lookUnSelected(allButton);
@@ -426,7 +578,7 @@ public class MainActivity extends AppCompatActivity
 
     public void northFilterTapped(View view)
     {
-        filterList("North");
+        filterList("North", null);
         if (!northSelected) {
             lookSelected(northButton);
             lookUnSelected(allButton);
@@ -495,68 +647,56 @@ public class MainActivity extends AppCompatActivity
 
     public void down2upRateApped(View view)
     {
-        Collections.sort(shapeList, Site.rateSort);
-        checkForFilter();
+//        Collections.sort(shapeList, Site.rateSort);
+        checkForFilter(SortType.RateDown2Up);
+//        shapeList.add(new sortType(SortType.RateDown2Up));
+//        adapter.notifyDataSetChanged();
         unSelectAllSortButtons();
         lookSelected(down2upRateButton);
     }
 
     public void up2downRateApped(View view)
     {
-        Collections.sort(shapeList, Site.rateSort);
-        Collections.reverse(shapeList);
-        checkForFilter();
+//        Collections.sort(shapeList, Site.rateSort);
+//        Collections.reverse(shapeList);
+        checkForFilter(SortType.RateUp2Down);
         unSelectAllSortButtons();
         lookSelected(up2downRateButton);
     }
 
     public void nameASCTapped(View view)
     {
-        Collections.sort(shapeList, Site.nameAscending);
-        checkForFilter();
+//        Collections.sort(shapeList, Site.nameAscending);
+        checkForFilter(SortType.NameDown2Up);
         unSelectAllSortButtons();
         lookSelected(nameAscButton);
     }
 
     public void nameDESCTapped(View view)
     {
-        Collections.sort(shapeList, Site.nameAscending);
-        Collections.reverse(shapeList);
-        checkForFilter();
+//        Collections.sort(shapeList, Site.nameAscending);
+//        Collections.reverse(shapeList);
+        checkForFilter(SortType.NameUp2Down);
         unSelectAllSortButtons();
         lookSelected(nameDescButton);
     }
 
-    private void checkForFilter()
+    private void checkForFilter(SortType type)
     {
         if(selectedFilters.contains("all"))
         {
-            if(currentSearchText.equals(""))
-            {
-                setAdapter(shapeList);
-            }
-            else
-            {
-                ArrayList<Site> filteredShapes = new ArrayList<Site>();
-                for(Site site : shapeList)
-                {
-                    if(site.getName().toLowerCase().contains(currentSearchText))
-                    {
-                        filteredShapes.add(site);
-                    }
-                }
-                setAdapter(filteredShapes);
-            }
+            filterList(currentSearchText, type);
+
         }
         else
         {
-            filterList(null);
+            filterList(null, type);
         }
     }
 
     private void setAdapter(ArrayList<Site> shapeList)
     {
-        ShapeAdapter adapter = new ShapeAdapter(getApplicationContext(), 0, shapeList);
+        adapter = new ShapeAdapter(getApplicationContext(), 0, this.shapeList);
         listView.setAdapter(adapter);
     }
 }
