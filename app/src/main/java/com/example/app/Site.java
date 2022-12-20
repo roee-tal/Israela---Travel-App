@@ -100,3 +100,11 @@ class Site
 
 }
 
+//class sortType extends Site {
+//    SortType type;
+//    public sortType(SortType type) {
+//        super();
+//        this.type = type;
+//    }
+//}
+
