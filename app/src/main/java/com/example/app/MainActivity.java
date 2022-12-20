@@ -98,11 +98,10 @@ public class MainActivity extends AppCompatActivity
         lookSelected(up2downRateButton);
         lookSelected(allButton);
         unSelectAllFilterButtons();
-        allFilterTappedForStart();
-//        selectedFilters.add("all");
+        allFilterTappedForFlow(SortType.RateUp2Down);
     }
 
-    private void allFilterTappedForStart() {
+    private void allFilterTappedForFlow(SortType type) {
         selectedFilters.clear();
         selectedFilters.add("all");
 
@@ -126,11 +125,34 @@ public class MainActivity extends AppCompatActivity
                     Log.d("allFilterTapped", "shapeList.size=" + shapeList.size());
                     Log.d("v", "site name=" + s.getName());
                 }
+                if (type != null)
+                    sortList(type);
 
                 Log.d("allFilterTapped", "shapeList.size=" + shapeList.size());
                 adapter.notifyDataSetChanged();
                 Log.d("allFilterTapped", "shapeList.size=" + shapeList.size());
+            }
 
+            private void sortList(SortType type) {
+                switch (type) {
+                    case RateUp2Down:
+                        Collections.sort(shapeList, Site.rateSort);
+                        Collections.reverse(shapeList);
+                        break;
+                    case RateDown2Up:
+                        Collections.sort(shapeList, Site.rateSort);
+                        break;
+                    case NameUp2Down:
+                        Collections.sort(shapeList, Site.nameAscending);
+                        Collections.reverse(shapeList);
+                        break;
+                    case NameDown2Up:
+                        Collections.sort(shapeList, Site.nameAscending);
+                        break;
+                    default:
+                        Log.d("sortList", "default !" + type);
+                        break;
+                }
             }
 
             @Override
@@ -396,8 +418,11 @@ public class MainActivity extends AppCompatActivity
         if(status != null && selectedFilters.contains(status)) { // in case of second click on location
             selectedFilters.remove(status); //in this case remove location from the filter list
         }
-        else if (status != null)
+        else if (status != null) {
             selectedFilters.add(status);
+            if (!status.equals("all") && selectedFilters.contains("all"))
+                selectedFilters.remove("all");
+        }
 
         shapeList.clear();
         Log.d("filterList", "status="+status);
@@ -685,8 +710,7 @@ public class MainActivity extends AppCompatActivity
     {
         if(selectedFilters.contains("all"))
         {
-            filterList(currentSearchText, type);
-
+            allFilterTappedForFlow(type);
         }
         else
         {
