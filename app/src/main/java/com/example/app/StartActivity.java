@@ -117,8 +117,8 @@ public class StartActivity extends AppCompatActivity {
                     Toast.makeText(StartActivity.this, "Empty Credentials!", Toast.LENGTH_SHORT).show();
                 } else {
                     loginu(txt_email , pas_email);
-                    startActivity(new Intent(StartActivity.this, MainActivity.class)); // Todo: disable this to skip authentication phase - Debug Mode
-                    finish();
+//                    startActivity(new Intent(StartActivity.this, MainActivity.class)); // Todo: disable this to not skip authentication phase - Debug Mode
+//                    finish();
                 }
             }
         });
