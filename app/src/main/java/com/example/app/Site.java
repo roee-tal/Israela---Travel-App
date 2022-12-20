@@ -8,27 +8,36 @@ class Site
     private String id;
     private String name;
     private String image;
-    private double rate;
+    private double mainRate;
+    private int mainRateReviewNum;
+    private double shadeRate;
+    private int shadeRateReviewNum;
     private String detail;
     private Location location;
-
     public Site(){};
 
-    public Site(String id, String name, String image, double rate, String detail, Location location) {
+    public Site(String id, String name, String image, double rate, String detail, Location location, double shadeRate) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.detail = detail;
         this.location = location;
-        this.rate = rate;
+        this.shadeRate = rate;
+        this.shadeRateReviewNum = 0;
+        this.mainRate = rate;
+        this.mainRateReviewNum = 0;
     }
 
     public double getRate() {
-        return rate;
+        return mainRate;
     }
 
-    public void setRate(double rate) {
-        this.rate = rate;
+    public void updateRate(double rate) {
+        this.mainRate = (mainRate * mainRateReviewNum + rate) / (++mainRateReviewNum);
+    }
+
+    public void updateShadeRate(double rate) {
+        this.mainRate = (shadeRate * shadeRateReviewNum + rate) / (++shadeRateReviewNum);
     }
 
     public String getDetail() {
@@ -99,12 +108,3 @@ class Site
 
 
 }
-
-//class sortType extends Site {
-//    SortType type;
-//    public sortType(SortType type) {
-//        super();
-//        this.type = type;
-//    }
-//}
-

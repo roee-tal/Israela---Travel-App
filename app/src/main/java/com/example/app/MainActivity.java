@@ -297,7 +297,7 @@ public class MainActivity extends AppCompatActivity
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        Site circle = new Site("11", "Jerusalem Forest", "Jerusalem Forest/image1.jfif", 9, "bla lba", Location.Center);
+        Site circle = new Site("11", "Jerusalem Forest", "Jerusalem Forest/image1.jfif", 9, "bla lba", Location.Center, 3);
         shapeList.add(circle);
 
 //        final String[] ans = new String[1];
@@ -317,31 +317,31 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
 
-        Site triangle = new Site("1","Tel Aviv beach", "Tel Aviv beach/telAviv1.jfif", 0, "bla lba", Location.Center);
+        Site triangle = new Site("1","Tel Aviv beach", "Tel Aviv beach/telAviv1.jfif", 0, "bla lba", Location.Center, 3);
         shapeList.add(triangle);
 
-        Site square = new Site("2","Herzliya beach", "picture/shvil.jpg", 3, "bla lba", Location.South);
+        Site square = new Site("2","Herzliya beach", "picture/shvil.jpg", 3, "bla lba", Location.South, 3);
         shapeList.add(square);
 
-        Site rectangle = new Site("3","Rectangle", "picture/shvil.jpg", 1, "bla lba", Location.South);
+        Site rectangle = new Site("3","Rectangle", "picture/shvil.jpg", 1, "bla lba", Location.South, 3);
         shapeList.add(rectangle);
 
-        Site octagon = new Site("4","Octagon", "picture/shvil.jpg", 7.6, "bla lba", Location.North);
+        Site octagon = new Site("4","Octagon", "picture/shvil.jpg", 7.6, "bla lba", Location.North, 3);
         shapeList.add(octagon);
 
-        Site circle2 = new Site("5", "Circle 2", "picture/shvil.jpg", 1.2, "bla lba", Location.North);
+        Site circle2 = new Site("5", "Circle 2", "picture/shvil.jpg", 1.2, "bla lba", Location.North, 3);
         shapeList.add(circle2);
 
-        Site triangle2 = new Site("6","Triangle 2", "picture/shvil.jpg", 9, "bla lba", Location.Center);
+        Site triangle2 = new Site("6","Triangle 2", "picture/shvil.jpg", 9, "bla lba", Location.Center, 3);
         shapeList.add(triangle2);
 
-        Site square2 = new Site("7","Square 2", "picture/shvil.jpg", 9, "bla lba", Location.Center);
+        Site square2 = new Site("7","Square 2", "picture/shvil.jpg", 9, "bla lba", Location.Center, 3);
         shapeList.add(square2);
 
-        Site rectangle2 = new Site("8","Rectangle 2", "picture/shvil.jpg", 9, "bla lba", Location.Center);
+        Site rectangle2 = new Site("8","Rectangle 2", "picture/shvil.jpg", 9, "bla lba", Location.Center, 3);
         shapeList.add(rectangle2);
 
-        Site octagon2 = new Site("9","Octagon 2", "picture/shvil.jpg", 9, "bla lba", Location.Center);
+        Site octagon2 = new Site("9","Octagon 2", "picture/shvil.jpg", 9, "bla lba", Location.Center, 3);
         shapeList.add(octagon2);
 //        //--------------------------------------------
 //        // push all the objects to firebase:
