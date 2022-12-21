@@ -1,5 +1,7 @@
 package com.example.app;
 
+import android.util.Log;
+
 import java.util.Comparator;
 
 
@@ -16,24 +18,38 @@ class Site
     private Location location;
     public Site(){};
 
-    public Site(String id, String name, String image, double rate, String detail, Location location, double shadeRate) {
+    public double getRate() {
+        return mainRate;
+    }
+
+    public int getMainRateReviewNum() {
+        return mainRateReviewNum;
+    }
+
+    public double getShadeRate() {
+        return shadeRate;
+    }
+
+    public int getShadeRateReviewNum() {
+        return shadeRateReviewNum;
+    }
+
+    public Site(String id, String name, String image, double mainRate, String detail, Location location, double shadeRate, int shadeRateReviewNum, int mainRateReviewNum) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.detail = detail;
         this.location = location;
-        this.shadeRate = rate;
-        this.shadeRateReviewNum = 0;
-        this.mainRate = rate;
-        this.mainRateReviewNum = 0;
-    }
-
-    public double getRate() {
-        return mainRate;
+        this.shadeRate = shadeRate;
+        this.shadeRateReviewNum = 1;
+        this.mainRate = mainRate;
+        this.mainRateReviewNum = 1;
     }
 
     public void updateRate(double rate) {
-        this.mainRate = (mainRate * mainRateReviewNum + rate) / (++mainRateReviewNum);
+        this.mainRate = ((mainRate * mainRateReviewNum + rate) / (mainRateReviewNum + 1.0)); //Todo:something wrong with this calculation (every time decraese number)
+//        mainRateReviewNum++;
+        Log.d("Site", "mainRate="+mainRate + " mainRateReviewNum="+mainRateReviewNum + " rate="+rate);
     }
 
     public void updateShadeRate(double rate) {

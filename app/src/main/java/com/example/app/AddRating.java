@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +15,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddRating extends AppCompatActivity {
     String selectedShapeName;
@@ -44,7 +46,7 @@ public class AddRating extends AppCompatActivity {
 
                     final FirebaseDatabase database = FirebaseDatabase.getInstance();
                     final DatabaseReference databaseReference = database.getReference();
-                    databaseReference.child("site").orderByChild("id").equalTo(shapeID).addValueEventListener(new ValueEventListener() {
+                    databaseReference.child("site").orderByChild("id").equalTo(shapeID).addListenerForSingleValueEvent(new ValueEventListener() {
                         /**
                          * This method will be invoked any time the data on the database changes.
                          * Additionally, it will be invoked as soon as we connect the listener, so that we can get an initial snapshot of the data on the database.
@@ -55,9 +57,11 @@ public class AddRating extends AppCompatActivity {
                             // get all of the children at this level.
                             Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                             for (DataSnapshot child : children) { //not really for, have only one with this ID!
+                                String objectDB_Id = child.getKey();
+                                Log.d("AddRating", "child.getKey()="+objectDB_Id);
                                 Site s = child.getValue(Site.class);
-                                s.updateRate(rating);
-                                this.updateSite(s);
+//                                s.updateRate(rating);
+                                this.updateSite(s, objectDB_Id);
                                 Log.d("AddRating", "s.getName()="+s.getName());
                                 assert s != null;
                             }
@@ -65,13 +69,21 @@ public class AddRating extends AppCompatActivity {
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
                         }
-                        private void updateSite(Site s)
+                        private void updateSite(Site s, String objectDB_Id)
                         {
-                            databaseReference.child("site").orderByChild("id").getRef().setValue(s);
+                            s.updateRate(rating);
+                            Map<String, Object> updates = new HashMap<>();
+                            updates.put("rate", s.getRate());
+                            updates.put("mainRateReviewNum", (s.getMainRateReviewNum()+1));
+                            String path = "site/" + objectDB_Id;
+                            database.getReference(path).updateChildren(updates);
                             Log.d("AddRating", "in update - s.rate="+s.getRate());
                         }
                     });
-
+                Intent showDetail = new Intent(getApplicationContext(), DetailActivity.class);
+                showDetail.putExtra("id",shapeID);
+                showDetail.putExtra("name",shapeName);
+                startActivity(showDetail);
             }
         });
     }
