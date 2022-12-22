@@ -68,7 +68,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-
                     FirebaseUser fu = auth.getCurrentUser();
                     fu.sendEmailVerification();
                     DocumentReference df = fstore.collection("Users").document(fu.getUid());
@@ -76,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                     us_info.put("ID", fu.getUid());
                     us_info.put("Email", email.getText().toString());
                     us_info.put("isUser", "1");
+                    us_info.put("LettersNum","0");
                     FirebaseDatabase.getInstance().getReference().child("Users").push().updateChildren(us_info);
                     df.set(us_info);
                     Toast.makeText(LoginActivity.this, "success, verify email", Toast.LENGTH_LONG).show();

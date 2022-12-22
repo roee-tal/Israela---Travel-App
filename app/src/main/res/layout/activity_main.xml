@@ -156,7 +156,16 @@
     </LinearLayout>
 
 
-
+    <Button
+        android:id="@+id/contact"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="0dp"
+        android:text="צור קשר"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -27,6 +27,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class UsersActivity extends AppCompatActivity
 {
@@ -34,10 +35,11 @@ public class UsersActivity extends AppCompatActivity
     public static ArrayList<User> shapeList = new ArrayList<User>();
 
     private ListView listView;
-
+    private Button nameAscButton, messages, allButton;
     private ArrayList<String> selectedFilters = new ArrayList<String>();
     private String currentSearchText = "";
     private SearchView searchView;
+    Location[] allLocations = {Location.Center, Location.North, Location.South};
 
     private int white, darkGray, red;
 
@@ -50,14 +52,13 @@ public class UsersActivity extends AppCompatActivity
         initSearchWidgets();
         initWidgets();
         setupData();
+//        allTapped();
         setUpList();
         setUpOnclickListener();
-//        hideFilter();
-//        hideSort();
         initColors();
-//        lookSelected(idAscButton);
-//        lookSelected(allButton);
-        selectedFilters.add("all");
+        lookSelected(nameAscButton);
+        lookSelected(allButton);
+//        selectedFilters.add("all");
     }
 
     private void initColors()
@@ -67,11 +68,23 @@ public class UsersActivity extends AppCompatActivity
         darkGray = ContextCompat.getColor(getApplicationContext(), R.color.darkerGray);
     }
 
+    private void lookSelected(Button parsedButton)
+    {
+        parsedButton.setTextColor(white);
+        parsedButton.setBackgroundColor(red);
+    }
 
     private void lookUnSelected(Button parsedButton)
     {
         parsedButton.setTextColor(red);
         parsedButton.setBackgroundColor(darkGray);
+    }
+
+    private void unSelectAllFilterButtons()
+    {
+        lookUnSelected(allButton);
+        lookUnSelected(messages);
+        lookUnSelected(nameAscButton);
     }
 
     private void initWidgets()
@@ -81,11 +94,11 @@ public class UsersActivity extends AppCompatActivity
 //        filterView1 = (LinearLayout) findViewById(R.id.filterTabsLayout);
 //        filterView2 = (LinearLayout) findViewById(R.id.filterTabsLayout2);
 //        sortView = (LinearLayout) findViewById(R.id.sortTabsLayout2);
-
-
-
+        nameAscButton  = (Button) findViewById(R.id.nameAsc);
+        messages = (Button) findViewById(R.id.Messag);
+        allButton = (Button) findViewById(R.id.all);
     }
-
+//
     private void initSearchWidgets()
     {
         searchView = (SearchView) findViewById(R.id.shapeListSearchView);
@@ -151,16 +164,16 @@ public class UsersActivity extends AppCompatActivity
                                 String email = document.getString("Email");
                                 String id = document.getString("ID");
                                 String user = document.getString("isUser");
-                                User u = new User(email,id,user);
+                                String mes = document.getString("LettersNum");
+                                User u = new User(email,id,user,mes);
                                 shapeList.add(u);
                             }
+
                         } else {
                             Log.d("TAG", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
-
     }
 
     private void setUpList()
@@ -177,12 +190,140 @@ public class UsersActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l)
             {
                 User selectShape = (User) (listView.getItemAtPosition(position));
-                Intent showDetail = new Intent(getApplicationContext(), DetailActivity.class);
+                Intent showDetail = new Intent(getApplicationContext(), DetailUserActivity.class);
                 showDetail.putExtra("id",selectShape.getId());
                 startActivity(showDetail);
             }
         });
+    }
 
+    private void filterList(String status)
+    {
+        String location;
+        if(status != null && selectedFilters.contains(status)) { // in case of second click on location
+            selectedFilters.remove(status); //in this case remove location from the filter list
+        }
+        else if (status != null)
+            selectedFilters.add(status);
+
+        ArrayList<User> filteredShapes = new ArrayList<User>();
+
+        for(User site : shapeList)
+        {
+            for(String filter: selectedFilters)
+            {
+                // filter for location name:
+                location = isLocation(filter);
+                if(!location.equals("NOTHING"))
+                {
+                    if(currentSearchText == "")
+                    {
+                        filteredShapes.add(site); //Todo: add here wheris.. query and delete 'for(Site site : shapeList)'
+                    }
+                    else
+                    {
+                        if(site.getEmail().toLowerCase().contains(currentSearchText.toLowerCase()))
+                        {
+                            filteredShapes.add(site); //Todo: add here wheris.. query
+                        }
+                    }
+                }
+
+//                // filter for other free text:            //Todo: verify that not need this 'else if':
+//                else if(site.getName().toLowerCase().contains(filter))
+//                {
+//                    if(currentSearchText == "")
+//                    {
+//                        filteredShapes.add(site); //Todo: add here wheris.. query and delete 'for(Site site : shapeList)'
+//                    }
+//                    else
+//                    {
+//                        if(site.getName().toLowerCase().contains(currentSearchText.toLowerCase()))
+//                        {
+//                            filteredShapes.add(site); //Todo: add here wheris.. query
+//                        }
+//                    }
+//                }
+            }
+        }
+
+        setAdapter(filteredShapes);
+    }
+
+    private String isLocation(String filter) {
+        for (Location l:allLocations) {
+            if (filter.equals(l.name())) {
+                Log.println(Log.DEBUG, "check1236", "Find Location - " + l.name().toLowerCase());
+                return l.name();
+            }
+        }
+        return "NOTHING";
+    }
+
+    public void AllTapped(View view)
+    {
+        Collections.sort(shapeList, User.nameAscending);
+        checkForFilter();
+        unSelectAllFilterButtons();
+        lookSelected(nameAscButton);
+    }
+
+    public void nameASCTapped(View view)
+    {
+        selectedFilters.clear();
+        selectedFilters.add("all");
+
+        lookSelected(allButton);
+
+        setAdapter(shapeList);
+    }
+
+    public void messageTapped(View view)
+    {
+        Collections.sort(shapeList, User.mesAscending);
+        checkForMessageFilter();
+        unSelectAllFilterButtons();
+        lookSelected(messages);
+    }
+
+    private void checkForMessageFilter() {
+        ArrayList<User> filteredShapes = new ArrayList<User>();
+        for(User user : shapeList){
+            String mes_num = user.getLetters();
+            int num = Integer.parseInt(mes_num);
+            if ((num>0)){
+                filteredShapes.add(user);
+            }
+        }
+        setAdapter(filteredShapes);
+
+    }
+
+    private void checkForFilter()
+    {
+        if(selectedFilters.contains("all"))
+        {
+            if(currentSearchText.equals(""))
+            {
+                setAdapter(shapeList);
+            }
+            else
+            {
+                ArrayList<User> filteredShapes = new ArrayList<User>();
+                for(User site : shapeList)
+                {
+                    if(site.getEmail().toLowerCase().contains(currentSearchText))
+                    {
+                        filteredShapes.add(site);
+                    }
+                }
+                setAdapter(filteredShapes);
+            }
+        }
+//        else
+//        {
+//            filterList(null);
+//        }
     }
 
     private void setAdapter(ArrayList<User> shapeList)
