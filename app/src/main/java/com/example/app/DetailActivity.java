@@ -122,7 +122,8 @@ public class DetailActivity extends AppCompatActivity
 //        ImageView iv = (ImageView) findViewById(R.id.mainImage);
                 String detail = "Name: " + s.getName() +
                         "\n\nArea: " + s.getLocation() +
-                        "\n\nRate: " + s.getRate() + "/10" +
+                        "\n\nRate: " + s.getRate() + "/5" +
+                        "\n\nShade Rate: " + s.getShadeRate() + "/5" +
                         "\n\nDetail: " + s.getDetail();
                 siteName.setText(s.getName());
                 siteDetail.setText(detail);
