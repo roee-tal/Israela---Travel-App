@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity
     boolean southSelected = false;
     boolean northSelected = false;
 
-    private Button southButton, centetButton, northButton, allButton;
+    private Button southButton, centetButton, northButton, allButton, contact;
     private Button down2upRateButton, up2downRateButton, nameAscButton, nameDescButton;
 
     private ArrayList<String> selectedFilters = new ArrayList<String>();
@@ -84,6 +84,14 @@ public class MainActivity extends AppCompatActivity
 //        }catch (IOException e){
 //            e.printStackTrace();
 //        }
+        contact = findViewById(R.id.contact);
+        contact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, ContactActivity.class));
+                finish();
+            }
+        });
         setUpList();
 
 //        setAdapter(null);
