@@ -1,5 +1,7 @@
 package com.example.app;
 
+import android.util.Log;
+
 import java.util.Comparator;
 
 
@@ -9,26 +11,52 @@ class Site
     private String name;
     private String image;
     private double rate;
+    private int mainRateReviewNum;
+    private double shadeRate;
+    private int shadeRateReviewNum;
     private String detail;
     private Location location;
-
     public Site(){};
-
-    public Site(String id, String name, String image, double rate, String detail, Location location) {
-        this.id = id;
-        this.name = name;
-        this.image = image;
-        this.detail = detail;
-        this.location = location;
-        this.rate = rate;
-    }
 
     public double getRate() {
         return rate;
     }
 
-    public void setRate(double rate) {
-        this.rate = rate;
+    public int getMainRateReviewNum() {
+        return mainRateReviewNum;
+    }
+
+    public double getShadeRate() {
+        return shadeRate;
+    }
+
+    public int getShadeRateReviewNum() {
+        return shadeRateReviewNum;
+    }
+
+    public Site(String id, String name, String image, double mainRate, String detail, Location location, double shadeRate, int shadeRateReviewNum, int mainRateReviewNum) {
+        this.id = id;
+        this.name = name;
+        this.image = image;
+        this.rate = mainRate;
+        this.detail = detail;
+        this.location = location;
+        this.shadeRate = shadeRate;
+        this.shadeRateReviewNum = 1;
+        this.mainRateReviewNum = 1;
+    }
+
+    public void updateRate(double rate) {
+        Log.d("Site", "mainRate="+ this.rate + " mainRateReviewNum="+mainRateReviewNum + " rate="+rate);
+        this.rate = ((this.rate * mainRateReviewNum + rate) / (mainRateReviewNum + 1.0));
+        Log.d("Site", "mainRate="+ this.rate + " mainRateReviewNum="+mainRateReviewNum + " rate="+rate);
+    }
+
+    public void updateShadeRate(double rate) {
+        Log.d("Site", "shadeRate="+ this.shadeRate + " shadeRateReviewNum="+shadeRateReviewNum + " rate="+rate);
+        this.shadeRate = (shadeRate * shadeRateReviewNum + rate) / (shadeRateReviewNum + 1.0);
+        Log.d("Site", "shadeRate="+ this.shadeRate + " shadeRateReviewNum="+shadeRateReviewNum + " rate="+rate);
+
     }
 
     public String getDetail() {
@@ -99,12 +127,3 @@ class Site
 
 
 }
-
-//class sortType extends Site {
-//    SortType type;
-//    public sortType(SortType type) {
-//        super();
-//        this.type = type;
-//    }
-//}
-

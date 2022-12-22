@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ public class DetailActivity extends AppCompatActivity
 
     Site selectedShape;
     String selectedShapeName;
+    String selectedShapeID;
     private StorageReference myStorage;
 
     @Override
@@ -73,11 +75,11 @@ public class DetailActivity extends AppCompatActivity
     private void getSelectedShape()
     {
         Intent previousIntent = getIntent();
-        String parsedStringID = previousIntent.getStringExtra("id");
+        selectedShapeID = previousIntent.getStringExtra("id");
         selectedShapeName = previousIntent.getStringExtra("name");
         Log.d("updateSelectedName", "name="+selectedShapeName);
-        Log.d("updateSelectedName", "id="+parsedStringID);
-        getParsedShape(parsedStringID);
+        Log.d("updateSelectedName", "id="+selectedShapeID);
+        getParsedShape(selectedShapeID);
     }
 
     private void getParsedShape(String parsedID)
@@ -120,7 +122,8 @@ public class DetailActivity extends AppCompatActivity
 //        ImageView iv = (ImageView) findViewById(R.id.mainImage);
                 String detail = "Name: " + s.getName() +
                         "\n\nArea: " + s.getLocation() +
-                        "\n\nRate: " + s.getRate() + "/10" +
+                        "\n\nRate: " + s.getRate() + "/5" +
+                        "\n\nShade Rate: " + s.getShadeRate() + "/5" +
                         "\n\nDetail: " + s.getDetail();
                 siteName.setText(s.getName());
                 siteDetail.setText(detail);
@@ -211,6 +214,16 @@ public class DetailActivity extends AppCompatActivity
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void addRatingTapped(View view){
+        Intent AddRate = new Intent(getApplicationContext(), AddRating.class);
+        AddRate.putExtra("id",selectedShapeID);
+        AddRate.putExtra("name",selectedShapeName);
+        startActivity(AddRate);
+
+//        startActivity(new Intent(DetailActivity.this, AddRating.class)); // Todo: disable this to skip authentication phase - Debug Mode
+//        finish();
     }
 
 //    private void setimageView(String shapeName) {

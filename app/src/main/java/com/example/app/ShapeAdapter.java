@@ -64,7 +64,7 @@ public class ShapeAdapter extends ArrayAdapter<Site>
 //        ImageView iv = (ImageView) convertView.findViewById(R.id.mainImage);
 
             name.setText(site.getName());
-            rate.setText("\n" + site.getRate() + "/10");
+            rate.setText("\n" + site.getRate() + "/5");
 //        iv.setImageResource(site.getImage());
             this.setimageView(site.getImage(), convertView);
 //        }
