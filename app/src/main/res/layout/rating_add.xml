@@ -8,13 +8,48 @@
     android:paddingTop="12dp"
     tools:context=".AddRating">
 
+    <TextView
+        android:id="@+id/shadeRateBarText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="190dp"
+        android:text="Shade Rate:"
+        android:textColor="@color/black"
+        android:textSize="26dp"
+        android:textStyle="bold"/>
+
     <RatingBar
-        android:id="@+id/simpleRatingBar"
+        android:id="@+id/shadeRateBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/shadeRateBarText"
+        android:background="#0099FF"
+        android:progressTint="#FFF200"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:rating="2" />
+
+    <TextView
+        android:id="@+id/mainRateBarText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
-        android:background="#0f0"
+        android:text="Main Rate:"
+        android:textColor="@color/black"
+        android:textSize="26dp"
+        android:textStyle="bold"/>
+
+    <RatingBar
+        android:id="@+id/mainRateBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/mainRateBarText"
+        android:background="#0099FF"
+        android:progressTint="#FFF200"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:rating="2" />

@@ -10,7 +10,7 @@ class Site
     private String id;
     private String name;
     private String image;
-    private double mainRate;
+    private double rate;
     private int mainRateReviewNum;
     private double shadeRate;
     private int shadeRateReviewNum;
@@ -19,7 +19,7 @@ class Site
     public Site(){};
 
     public double getRate() {
-        return mainRate;
+        return rate;
     }
 
     public int getMainRateReviewNum() {
@@ -38,22 +38,25 @@ class Site
         this.id = id;
         this.name = name;
         this.image = image;
+        this.rate = mainRate;
         this.detail = detail;
         this.location = location;
         this.shadeRate = shadeRate;
         this.shadeRateReviewNum = 1;
-        this.mainRate = mainRate;
         this.mainRateReviewNum = 1;
     }
 
     public void updateRate(double rate) {
-        this.mainRate = ((mainRate * mainRateReviewNum + rate) / (mainRateReviewNum + 1.0)); //Todo:something wrong with this calculation (every time decraese number)
-//        mainRateReviewNum++;
-        Log.d("Site", "mainRate="+mainRate + " mainRateReviewNum="+mainRateReviewNum + " rate="+rate);
+        Log.d("Site", "mainRate="+ this.rate + " mainRateReviewNum="+mainRateReviewNum + " rate="+rate);
+        this.rate = ((this.rate * mainRateReviewNum + rate) / (mainRateReviewNum + 1.0));
+        Log.d("Site", "mainRate="+ this.rate + " mainRateReviewNum="+mainRateReviewNum + " rate="+rate);
     }
 
     public void updateShadeRate(double rate) {
-        this.mainRate = (shadeRate * shadeRateReviewNum + rate) / (++shadeRateReviewNum);
+        Log.d("Site", "shadeRate="+ this.shadeRate + " shadeRateReviewNum="+shadeRateReviewNum + " rate="+rate);
+        this.shadeRate = (shadeRate * shadeRateReviewNum + rate) / (shadeRateReviewNum + 1.0);
+        Log.d("Site", "shadeRate="+ this.shadeRate + " shadeRateReviewNum="+shadeRateReviewNum + " rate="+rate);
+
     }
 
     public String getDetail() {

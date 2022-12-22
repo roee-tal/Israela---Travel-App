@@ -32,16 +32,19 @@ public class AddRating extends AppCompatActivity {
         final String shapeName = selectedShapeName;
         final String shapeID = selectedShapeID;
         // initiate rating bar and a button
-        final RatingBar simpleRatingBar = (RatingBar) findViewById(R.id.simpleRatingBar);
+        final RatingBar mainRateBar = (RatingBar) findViewById(R.id.mainRateBar);
+        final RatingBar shadeRateBar = (RatingBar) findViewById(R.id.shadeRateBar);
         Button submitButton = (Button) findViewById(R.id.submitButton);
         // perform click event on button
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // get values and then displayed in a toast
-                int totalStars =  simpleRatingBar.getNumStars();
-                final double rating = simpleRatingBar.getRating();
+                int totalStars =  mainRateBar.getNumStars();
+                final double rating = mainRateBar.getRating();
+                final double shdeRating = shadeRateBar.getRating();
                 Log.d("AddRating", "totalStars=" + totalStars + " rating=" + rating);
+                Log.d("AddRating", "Shade rating=" + shdeRating);
 
 
                     final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -72,9 +75,12 @@ public class AddRating extends AppCompatActivity {
                         private void updateSite(Site s, String objectDB_Id)
                         {
                             s.updateRate(rating);
+                            s.updateShadeRate(shdeRating);
                             Map<String, Object> updates = new HashMap<>();
                             updates.put("rate", s.getRate());
                             updates.put("mainRateReviewNum", (s.getMainRateReviewNum()+1));
+                            updates.put("shadeRate", s.getShadeRate());
+                            updates.put("shadeRateReviewNum", (s.getShadeRateReviewNum()+1));
                             String path = "site/" + objectDB_Id;
                             database.getReference(path).updateChildren(updates);
                             Log.d("AddRating", "in update - s.rate="+s.getRate());
