@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity
 //        setAdapter(null);
         initSearchWidgets();
         initWidgets();
-//        setupData();
+        setupData();
         setUpOnclickListener();
         hideFilter();
         hideSort();
@@ -345,9 +345,10 @@ public class MainActivity extends AppCompatActivity
         shapeList.add(octagon2);
 //        //--------------------------------------------
 //        // push all the objects to firebase:
-//        for (Site site: shapeList) {
-//            mDatabase.child("site").push().setValue(site);
-//        }
+        for (Site site: shapeList) {
+            mDatabase.child("site").push().setValue(site);
+//            mDatabase.child("site").child(site.getId()).push().setValue("reviews");
+        }
 //        //--------------------------------------------
         // this will hold our collection of all Site's.
         final ArrayList<Site> siteList = new ArrayList<Site>();
@@ -383,7 +384,7 @@ public class MainActivity extends AppCompatActivity
         //--------------------------------------------
 ////        shapeList.clear(); //only for self check of data loading
 //        for (Site site:siteList) {
-////            shapeList.add(site);
+//            shapeList.add(site);
 //            Log.d("firebase0129", site.getRate() +"---"+ site.getName());
 //        }
 

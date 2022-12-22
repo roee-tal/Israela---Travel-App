@@ -73,9 +73,9 @@ public class LoginActivity extends AppCompatActivity {
                     fu.sendEmailVerification();
                     DocumentReference df = fstore.collection("Users").document(fu.getUid());
                     Map<String,Object> us_info = new HashMap<>();
-                    us_info.put("FullName", user.getText().toString());
+                    us_info.put("ID", fu.getUid());
                     us_info.put("Email", email.getText().toString());
-                    us_info.put("isUser", 1);
+                    us_info.put("isUser", "1");
                     FirebaseDatabase.getInstance().getReference().child("Users").push().updateChildren(us_info);
                     df.set(us_info);
                     Toast.makeText(LoginActivity.this, "success, verify email", Toast.LENGTH_LONG).show();
