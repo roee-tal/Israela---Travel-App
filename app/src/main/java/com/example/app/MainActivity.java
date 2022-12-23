@@ -1,5 +1,6 @@
 package com.example.app;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -13,24 +14,29 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.Query;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
     private FirebaseDatabase myRealTimeDB;
 
     public static ArrayList<Site> shapeList = new ArrayList<Site>();
-//    private List<SortType> sortTypeList = new ArrayList<SortType>();
+    //    private List<SortType> sortTypeList = new ArrayList<SortType>();
     private ShapeAdapter adapter;
 
     private ListView listView;
@@ -305,7 +311,7 @@ public class MainActivity extends AppCompatActivity
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        Site circle = new Site("11", "Jerusalem Forest", "Jerusalem Forest/image1.jfif", 5, "bla lba", Location.Center, 3,1,1);
+        Site circle = new Site("11", "Jerusalem Forest", "Jerusalem Forest/image1.jfif", 5, "bla lba", Location.Center, 3,1,1, null);
         shapeList.add(circle);
 
 //        final String[] ans = new String[1];
@@ -325,38 +331,38 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
 
-        Site triangle = new Site("1","Tel Aviv beach", "Tel Aviv beach/telAviv1.jfif", 0.2, "bla lba", Location.Center, 3,1,1);
+        Site triangle = new Site("1","Tel Aviv beach", "Tel Aviv beach/telAviv1.jfif", 0.2, "bla lba", Location.Center, 3,1,1, null);
         shapeList.add(triangle);
 
-        Site square = new Site("2","Herzliya beach", "picture/shvil.jpg", 3, "bla lba", Location.South, 3,1,1);
+        Site square = new Site("2","Herzliya beach", "Tel Aviv beach/telAviv1.jfif", 3, "bla lba", Location.South, 3,1,1, null);
         shapeList.add(square);
 
-        Site rectangle = new Site("3","Rectangle", "picture/shvil.jpg", 1, "bla lba", Location.South, 3,1,1);
+        Site rectangle = new Site("3","Rectangle", "Tel Aviv beach/telAviv1.jfif", 1, "bla lba", Location.South, 3,1,1, null);
         shapeList.add(rectangle);
 
-        Site octagon = new Site("4","Octagon", "picture/shvil.jpg", 2.6, "bla lba", Location.North, 3,1,1);
+        Site octagon = new Site("4","Octagon", "Tel Aviv beach/telAviv1.jfif", 2.6, "bla lba", Location.North, 3,1,1, null);
         shapeList.add(octagon);
 
-        Site circle2 = new Site("5", "Circle 2", "picture/shvil.jpg", 1.2, "bla lba", Location.North, 3,1,1);
+        Site circle2 = new Site("5", "Circle 2", "Tel Aviv beach/telAviv1.jfif", 1.2, "bla lba", Location.North, 3,1,1, null);
         shapeList.add(circle2);
 
-        Site triangle2 = new Site("6","Triangle 2", "picture/shvil.jpg", 4, "bla lba", Location.Center, 3,1,1);
+        Site triangle2 = new Site("6","Triangle 2", "Tel Aviv beach/telAviv1.jfif", 4, "bla lba", Location.Center, 3,1,1, null);
         shapeList.add(triangle2);
 
-        Site square2 = new Site("7","Square 2", "picture/shvil.jpg", 4, "bla lba", Location.Center, 3,1,1);
+        Site square2 = new Site("7","Square 2", "Tel Aviv beach/telAviv1.jfif", 4, "bla lba", Location.Center, 3,1,1, null);
         shapeList.add(square2);
 
-        Site rectangle2 = new Site("8","Rectangle 2", "picture/shvil.jpg", 3, "bla lba", Location.Center, 3,1,1);
+        Site rectangle2 = new Site("8","Rectangle 2", "Tel Aviv beach/telAviv1.jfif", 3, "bla lba", Location.Center, 3,1,1, null);
         shapeList.add(rectangle2);
 
-        Site octagon2 = new Site("9","Octagon 2", "picture/shvil.jpg", 1.8, "bla lba", Location.Center, 3,1,1);
+        Site octagon2 = new Site("9","Octagon 2", "Tel Aviv beach/telAviv1.jfif", 1.8, "bla lba", Location.Center, 3,1,1, null);
         shapeList.add(octagon2);
 //        //--------------------------------------------
 //        // push all the objects to firebase:
-        for (Site site: shapeList) {
-            mDatabase.child("site").push().setValue(site);
-//            mDatabase.child("site").child(site.getId()).push().setValue("reviews");
-        }
+//        for (Site site: shapeList) {
+//            mDatabase.child("site").push().setValue(site);
+////            mDatabase.child("site").child(site.getId()).push().setValue("reviews");
+//        }
 //        //--------------------------------------------
         // this will hold our collection of all Site's.
         final ArrayList<Site> siteList = new ArrayList<Site>();
@@ -411,11 +417,58 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l)
             {
-                Site selectShape = (Site) (listView.getItemAtPosition(position));
-                Intent showDetail = new Intent(getApplicationContext(), DetailActivity.class);
+                final Site selectShape = (Site) (listView.getItemAtPosition(position));
+                Intent showDetail;
+//                if (is_admin(selectShape)) {
+//                    showDetail = new Intent(getApplicationContext(), AdminDetailActivity.class);
+//                    Log.d("MainActivity", "----ADMIN Done :)");
+//                }
+//                else {
+                    showDetail = new Intent(getApplicationContext(), DetailActivity.class); //Todo: change detail load by user not work with my user
+//                    Log.d("MainActivity", "----admin NOT done");
+//                }
+
                 showDetail.putExtra("id",selectShape.getId());
                 showDetail.putExtra("name",selectShape.getName());
                 startActivity(showDetail);
+            }
+
+            private boolean is_admin(Site selectShape) {
+                FirebaseFirestore fstore;
+                FirebaseAuth auth;
+                auth = FirebaseAuth.getInstance();
+                FirebaseUser user = auth.getCurrentUser();
+                String id = user.getUid();
+                Log.d("MainActivity", "id = "+ id);
+                fstore = FirebaseFirestore.getInstance();
+                final boolean[] is_admin = new boolean[1];
+                final Intent[] showDetail = new Intent[1];
+
+                fstore.collection("Users").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        Log.d("MainActivity", "in onComplete");
+                        DocumentSnapshot doc = task.getResult();
+                        if(doc.exists()){
+                            String is_us = doc.getString("isUser");
+                            if(is_us.equals("0")){
+                                Log.d("MainActivity", "is admin");
+                                showDetail[0] = new Intent(getApplicationContext(), AdminDetailActivity.class);
+                                Log.d("MainActivity", "ADMIN LOADED :)");
+                            }
+                            else {
+                                Log.d("MainActivity", "is NOT admin");
+                                showDetail[0] = new Intent(getApplicationContext(), DetailActivity.class);
+                                Log.d("MainActivity", "admin NOT loaded");
+                            }
+                            showDetail[0].putExtra("id",selectShape.getId());
+                            showDetail[0].putExtra("name",selectShape.getName());
+                            startActivity(showDetail[0]);
+                        }
+                    }
+                });
+//                Log.d("MainActivity", "is admin = " + is_admin[0]);
+                return true; //is_admin[0];
             }
         });
 

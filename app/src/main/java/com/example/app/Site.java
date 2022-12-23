@@ -16,6 +16,7 @@ class Site
     private int shadeRateReviewNum;
     private String detail;
     private Location location;
+    private GroupEvent event;
     public Site(){};
 
     public double getRate() {
@@ -34,7 +35,15 @@ class Site
         return shadeRateReviewNum;
     }
 
-    public Site(String id, String name, String image, double mainRate, String detail, Location location, double shadeRate, int shadeRateReviewNum, int mainRateReviewNum) {
+    public GroupEvent getEvent() {
+        return event;
+    }
+
+    public void setEvent(GroupEvent event) {
+        this.event = event;
+    }
+
+    public Site(String id, String name, String image, double mainRate, String detail, Location location, double shadeRate, int shadeRateReviewNum, int mainRateReviewNum, GroupEvent event) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -44,6 +53,7 @@ class Site
         this.shadeRate = shadeRate;
         this.shadeRateReviewNum = 1;
         this.mainRateReviewNum = 1;
+        this.event = event;
     }
 
     public void updateRate(double rate) {
