@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -49,126 +48,134 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <SearchView
+
+        <SearchView
+            android:id="@+id/shapeListSearchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/darkerGray"
+            android:iconifiedByDefault="false"
+            android:queryHint="Shape Name"></SearchView>
+
+
+        <LinearLayout
+            android:id="@+id/filterTabsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/allFilter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/darkerGray"
+                android:onClick="allFilterTapped"
+                android:text="All"
+                android:textColor="@color/red" />
+
+            <Button
+                android:id="@+id/centerFilter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/darkerGray"
+                android:onClick="centerFilterTapped"
+                android:text="Center"
+                android:textColor="@color/red" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/filterTabsLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/northFilter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/darkerGray"
+                android:onClick="northFilterTapped"
+                android:text="North" />
+
+            <Button
+                android:id="@+id/southFilter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/darkerGray"
+                android:onClick="southFilterTapped"
+                android:text="South"
+                android:textColor="@color/red" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sortTabsLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/down2upRate"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/darkerGray"
+                android:onClick="down2upRateApped"
+                android:text="Upside Rate" />
+
+            <Button
+                android:id="@+id/up2downRate"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/darkerGray"
+                android:onClick="up2downRateApped"
+                android:text="Rate" />
+
+            <Button
+                android:id="@+id/nameAsc"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/darkerGray"
+                android:onClick="nameASCTapped"
+                android:text="NAME ASC" />
+
+            <Button
+                android:id="@+id/nameDesc"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/darkerGray"
+                android:onClick="nameDESCTapped"
+                android:text="NAME DESC" />
+
+        </LinearLayout>
+
+
+        <ListView
+            android:id="@+id/shapesListView"
+            android:layout_width="match_parent"
+            android:layout_height="658dp">
+
+        </ListView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/shapeListSearchView"
-        android:iconifiedByDefault="false"
-        android:background="@color/darkerGray"
-        android:queryHint="Shape Name"></SearchView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/filterTabsLayout">
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="All"
-            android:id="@+id/allFilter"
-            android:textColor="@color/red"
-            android:background="@color/darkerGray"
-            android:onClick="allFilterTapped"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="Center"
-            android:textColor="@color/red"
-            android:id="@+id/centerFilter"
-            android:background="@color/darkerGray"
-            android:onClick="centerFilterTapped"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/filterTabsLayout2">
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="North"
-            android:id="@+id/northFilter"
-            android:background="@color/darkerGray"
-            android:onClick="northFilterTapped"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="South"
-            android:textColor="@color/red"
-            android:id="@+id/southFilter"
-            android:background="@color/darkerGray"
-            android:onClick="southFilterTapped"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/sortTabsLayout2">
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="Upside Rate"
-            android:id="@+id/down2upRate"
-            android:background="@color/darkerGray"
-            android:onClick="down2upRateApped"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="Rate"
-            android:id="@+id/up2downRate"
-            android:background="@color/darkerGray"
-            android:onClick="up2downRateApped"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="NAME ASC"
-            android:id="@+id/nameAsc"
-            android:background="@color/darkerGray"
-            android:onClick="nameASCTapped"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="NAME DESC"
-            android:id="@+id/nameDesc"
-            android:background="@color/darkerGray"
-            android:onClick="nameDESCTapped"/>
-
-    </LinearLayout>
-
-
-    <Button
-        android:id="@+id/contact"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="0dp"
-        android:text="צור קשר"
+        android:id="@+id/bottom_nav"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/shapesListView"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/bottom_nav_menu"/>
+
+
+
 
 </LinearLayout>

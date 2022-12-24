@@ -8,41 +8,41 @@
     android:orientation="vertical"
     tools:context=".ContactActivity">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:textSize="54sp"
-        android:hint="   email"
-        android:id="@+id/emailContact"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
 
-            android:inputType="text"/>
-</com.google.android.material.textfield.TextInputLayout>
-  <com.google.android.material.textfield.TextInputLayout
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="53dp"
+        android:text="        Send the message in the box"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.182" />
+
+    <com.google.android.material.textfield.TextInputLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:hint="..."
       android:id="@+id/Message"
-      android:layout_marginTop="76dp"
+      android:layout_marginTop="66dp"
       android:layout_marginEnd="16dp"
       android:layout_marginStart="16dp"
       style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
       <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:gravity="top"
           android:inputType="textMultiLine"
           android:lines="10"
-          android:gravity="top"
-          android:scrollbars="vertical"
           android:scrollbarStyle="insideInset"
-          android:scrollHorizontally="false"
-          />
+          android:scrollbars="vertical"
+          android:scrollHorizontally="false" />
 
 
   </com.google.android.material.textfield.TextInputLayout>
@@ -51,13 +51,38 @@
         android:id="@+id/send"
         android:layout_width="150dp"
         android:layout_height="60dp"
-        android:layout_marginTop="13dp"
         android:layout_marginLeft="130dp"
+        android:layout_marginTop="53dp"
         android:text="send"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="426dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="33dp"
+        android:layout_marginLeft= "22dp"
+        android:text="You will recive the answer on your E-mail!"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="416dp"
+        android:layout_height="170dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.03" />
 
 
 </LinearLayout>

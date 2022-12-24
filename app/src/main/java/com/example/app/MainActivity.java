@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -18,6 +21,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,13 +61,15 @@ public class MainActivity extends AppCompatActivity
     boolean southSelected = false;
     boolean northSelected = false;
 
-    private Button southButton, centetButton, northButton, allButton, contact;
+    private Button southButton, centetButton, northButton, allButton;
     private Button down2upRateButton, up2downRateButton, nameAscButton, nameDescButton;
 
     private ArrayList<String> selectedFilters = new ArrayList<String>();
     private String currentSearchText = "";
     private SearchView searchView;
-
+    private BottomNavigationView nav;
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
     private int white, darkGray, red;
 
     @Override
@@ -90,14 +100,29 @@ public class MainActivity extends AppCompatActivity
 //        }catch (IOException e){
 //            e.printStackTrace();
 //        }
-        contact = findViewById(R.id.contact);
-        contact.setOnClickListener(new View.OnClickListener() {
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this,gso);
+        nav = findViewById(R.id.bottom_nav);
+        nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, ContactActivity.class));
-                finish();
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()){
+                    case R.id.contactt:
+                        startActivity(new Intent(MainActivity.this, ContactActivity.class));
+                        break;
+
+                    case R.id.sign_out:
+                        areYouSureMessage();
+
+                    default:
+
+                }
+
+                return true;
             }
         });
+
         setUpList();
 
 //        setAdapter(null);
@@ -113,6 +138,39 @@ public class MainActivity extends AppCompatActivity
         lookSelected(allButton);
         unSelectAllFilterButtons();
         allFilterTappedForFlow(SortType.RateUp2Down);
+    }
+
+
+    private void areYouSureMessage(){
+        new AlertDialog.Builder(this).setMessage("Are you sure you want to exit?").
+                setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        signOut();
+                    }
+                })
+                .setNegativeButton("No",null).show();
+    }
+
+
+    void signOut(){
+        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(Task<Void> task) {
+                if (task.isSuccessful()) {
+
+                    finish();
+                    startActivity(new Intent(MainActivity.this, StartActivity.class));
+                }
+                else {
+                    startActivity(new Intent(MainActivity.this, StartActivity.class));
+                }
+            }
+
+        });
+
+
+
     }
 
     private void allFilterTappedForFlow(SortType type) {
