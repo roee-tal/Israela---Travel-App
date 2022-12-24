@@ -50,8 +50,7 @@ public class DetailActivity extends AppCompatActivity
     // images array
     final ArrayList<Bitmap>  images = new ArrayList<Bitmap>();
     final ArrayList<Site>  siteSingalAtList = new ArrayList<Site>();
-//            {R.drawable.facebook, R.drawable.pic, R.drawable.pic2, R.drawable.facebook,
-//            R.drawable.pic, R.drawable.pic2, R.drawable.facebook, R.drawable.pic};
+
 
     // Creating Object of ViewPagerAdapter
     ViewPagerAdapter mViewPagerAdapter;
@@ -155,7 +154,6 @@ public class DetailActivity extends AppCompatActivity
                     eventGroup.setVisibility(View.GONE);
 //        setImageList();
 
-//        iv.setImageResource(selectedShape.getImage()); //Todo: do all image like this
             }});
         //--------------------------------------------
 ////        shapeList.clear(); //only for self check of data loading
