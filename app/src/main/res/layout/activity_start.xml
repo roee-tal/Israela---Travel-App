@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/pic2"
+    android:background="@color/green4"
     tools:context=".StartActivity">
 
-    <Button
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/create"
         android:layout_width="150dp"
         android:layout_height="60dp"
@@ -15,12 +16,12 @@
         android:text="Create an account"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.56" />
 
-
-
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/login"
         android:layout_width="150dp"
         android:layout_height="60dp"
@@ -28,9 +29,10 @@
         android:text="login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.562" />
 
     <EditText
         android:id="@+id/email"
@@ -38,18 +40,18 @@
         android:layout_height="70dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="511dp"
+        android:layout_marginBottom="424dp"
         android:background="#30ffffff"
+        android:drawableLeft="@drawable/ic_baseline_email_24"
         android:ems="10"
         android:hint="  email"
-        android:drawableLeft="@drawable/ic_baseline_email_24"
         android:inputType="textEmailAddress"
-        android:textColorHint="@color/white"
+        android:textColorHint="@color/black"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/password"
@@ -61,32 +63,58 @@
         android:drawableLeft="@drawable/ic_baseline_password_24"
         android:hint="  password"
         android:inputType="textPassword"
-        android:textColorHint="@color/white"
+        android:textColorHint="@color/black"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/create"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email"
-        app:layout_constraintVertical_bias="0.221" />
+        app:layout_constraintVertical_bias="0.116" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="364dp"
+        android:layout_height="210dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.03" />
+
+
+    <EditText
+        android:layout_width="184dp"
+        android:layout_height="81dp"
+        android:layout_marginEnd="88dp"
+        android:hint="or continue with"
+        android:textColorHint="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.821" />
 
     <LinearLayout
         android:id="@+id/linearLayout13"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="1299dp"
         android:layout_marginBottom="172dp"
+        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/email"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center"
-        android:layout_marginTop="1299dp">
+        app:layout_constraintVertical_bias="0.539">
 
 
         <ImageView
+            android:id="@+id/faceb"
             android:layout_width="68dp"
             android:layout_height="68dp"
             android:src="@drawable/logogoogle"
-            android:id="@+id/faceb"
             tools:layout_editor_absoluteX="169dp"
             tools:layout_editor_absoluteY="644dp" />
     </LinearLayout>

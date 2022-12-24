@@ -71,6 +71,7 @@ public class ContactAdminActivity extends AppCompatActivity
         getSelectedShape();
 //        setupData(String text);
         setUpList();
+
         setUpOnclickListener();
         selectedFilters.add("all");
     }
@@ -121,7 +122,6 @@ public class ContactAdminActivity extends AppCompatActivity
     }
 
 
-
     private void setUpList()
     {
         listView = (ListView) findViewById(R.id.shapesListView);
@@ -149,38 +149,9 @@ public class ContactAdminActivity extends AppCompatActivity
 
     public void messageTapped(View view)
     {
-        Collections.sort(shapeList, Message.nameAscending);
-        checkForFilter();
-//        unSelectAllSortButtons();
-//        lookSelected(messages);
+        setAdapter(shapeList);
     }
 
-    private void checkForFilter()
-    {
-//        if(selectedFilters.contains("all"))
-//        {
-//            if(currentSearchText.equals(""))
-//            {
-                setAdapter(shapeList);
-//            }
-//            else
-//            {
-//                ArrayList<Message> filteredShapes = new ArrayList<Message>();
-//                for(Message site : shapeList)
-//                {
-//                    if(site.getText().toLowerCase().contains(currentSearchText))
-//                    {
-//                        filteredShapes.add(site);
-//                    }
-//                }
-//                setAdapter(filteredShapes);
-//            }
-//        }
-//        else
-//        {
-//            filterList(null);
-//        }
-    }
 
     private void setAdapter(ArrayList<Message> shapeList)
     {

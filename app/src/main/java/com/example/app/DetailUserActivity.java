@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -86,11 +88,14 @@ public class DetailUserActivity extends AppCompatActivity
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent previousIntent = getIntent();
-                String parsedStringID = previousIntent.getStringExtra("id");
-                deleteAccount(parsedStringID);
+                areYouSureMessage();
+//                Intent previousIntent = getIntent();
+//                String parsedStringID = previousIntent.getStringExtra("id");
+//                deleteAccount(parsedStringID);
             }
         });
+
+
 
 //        contact.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -99,6 +104,19 @@ public class DetailUserActivity extends AppCompatActivity
 //                finish();
 //            }
 //        });
+    }
+
+    private void areYouSureMessage(){
+        new AlertDialog.Builder(this).setMessage("Are you sure you want to delete?").
+                setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent previousIntent = getIntent();
+                        String parsedStringID = previousIntent.getStringExtra("id");
+                        deleteAccount(parsedStringID);
+                    }
+                })
+                .setNegativeButton("No",null).show();
     }
 
     private void getSelectedShape()

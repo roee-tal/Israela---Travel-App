@@ -36,9 +36,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         Message site = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.shape_cell, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.shape_cell_users, parent, false);
         }
-        TextView tv = (TextView) convertView.findViewById(R.id.siteName);
+        TextView tv = (TextView) convertView.findViewById(R.id.Usern);
 //        ImageView iv = (ImageView) convertView.findViewById(R.id.mainImage);
 
         tv.setText(site.getText());
