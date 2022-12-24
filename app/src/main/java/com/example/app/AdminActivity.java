@@ -64,7 +64,7 @@ public class AdminActivity extends AppCompatActivity {
         messages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AdminActivity.this, MessageActivity.class));
+                startActivity(new Intent(AdminActivity.this, MainActivity.class));
 
             }
         });
