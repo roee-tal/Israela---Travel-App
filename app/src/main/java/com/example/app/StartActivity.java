@@ -117,8 +117,8 @@ public class StartActivity extends AppCompatActivity {
                     Toast.makeText(StartActivity.this, "Empty Credentials!", Toast.LENGTH_SHORT).show();
                 } else {
                     loginu(txt_email , pas_email);
-                    startActivity(new Intent(StartActivity.this, MainActivity.class)); // Todo: disable this to skip authentication phase - Debug Mode
-                    finish();
+//                    startActivity(new Intent(StartActivity.this, MainActivity.class)); // Todo: disable this to skip authentication phase - Debug Mode
+//                    finish();
                 }
             }
         });
@@ -226,11 +226,11 @@ public class StartActivity extends AppCompatActivity {
                 if (document.exists()) {
                         Log.d("TAG", "DocumentSnapshot data: " + document.getData());
                         if (document.getString("isUser").equals("1")) {
-                            startActivity(new Intent(StartActivity.this, AdminActivity.class));
+                            startActivity(new Intent(StartActivity.this, MainActivity.class));
                             finish();
                         }
                         else{
-                            startActivity(new Intent(StartActivity.this, MainActivity.class));
+                            startActivity(new Intent(StartActivity.this, AdminActivity.class));
                             finish();
                         }
                     }

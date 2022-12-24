@@ -50,8 +50,7 @@ public class DetailActivity extends AppCompatActivity
     // images array
     final ArrayList<Bitmap>  images = new ArrayList<Bitmap>();
     final ArrayList<Site>  siteSingalAtList = new ArrayList<Site>();
-//            {R.drawable.facebook, R.drawable.pic, R.drawable.pic2, R.drawable.facebook,
-//            R.drawable.pic, R.drawable.pic2, R.drawable.facebook, R.drawable.pic};
+
 
     // Creating Object of ViewPagerAdapter
     ViewPagerAdapter mViewPagerAdapter;
@@ -69,7 +68,7 @@ public class DetailActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.try2);
+        setContentView(R.layout.activity_detail);
         getSelectedShape();
 //        updateSelectedName();
         this.updateImageDetailList(selectedShapeName);
@@ -155,7 +154,6 @@ public class DetailActivity extends AppCompatActivity
                     eventGroup.setVisibility(View.GONE);
 //        setImageList();
 
-//        iv.setImageResource(selectedShape.getImage()); //Todo: do all image like this
             }});
         //--------------------------------------------
 ////        shapeList.clear(); //only for self check of data loading
@@ -319,84 +317,6 @@ public class DetailActivity extends AppCompatActivity
 
 
     public void showGroupEvent(View view){
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        //get site DB - ID
-//        final DatabaseReference databaseReference = database.getReference();
-////        databaseReference.child("site").orderByChild("id").equalTo(selectedShapeID).addListenerForSingleValueEvent(new ValueEventListener() {
-////            @Override
-////            public void onDataChange(DataSnapshot dataSnapshot)
-////            {
-////                // get all of the children at this level.
-////                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-////                for (DataSnapshot child : children) { //not really for, have only one with this ID!
-////                    String objectDB_Id = child.getKey();
-////                    Site s = child.getValue(Site.class);
-////                    this.updateSite(s, objectDB_Id);
-////                    assert s != null;
-////                }
-////            }
-////            @Override
-////            public void onCancelled(DatabaseError databaseError) {
-////            }
-////            private void updateSite(Site s, String objectDB_Id)
-////            {
-////                // show data from Firebase
-////                builder.setTitle("Group Event");
-////                builder.setMessage("Date: " + s.getEvent().getDateEvent() +
-////                                "\nParticipants: " + s.getEvent().getPeopleEvent() +
-////                                  "\nDetail: " + s.getEvent().getMeetingDetail());
-////                final EditText input = new EditText(DetailActivity.this);
-////            }
-////        });
-//        builder.setPositiveButton("Join", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which)
-//            {
-//                //get site DB - ID
-//                final DatabaseReference databaseReference = database.getReference();
-//                databaseReference.child("site").orderByChild("id").equalTo(selectedShapeID).addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot)
-//                    {
-//                        // get all of the children at this level.
-//                        Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-//                        for (DataSnapshot child : children) { //not really for, have only one with this ID!
-//                            String objectDB_Id = child.getKey();
-//                            Log.d("adminDetailActivity", "child.getKey()="+objectDB_Id);
-//                            Site s = child.getValue(Site.class);
-////                                s.updateRate(rating);
-//                            this.updateSite(s, objectDB_Id);
-//                            Log.d("adminDetailActivity", "s.getName()="+s.getName());
-//                            assert s != null;
-//                        }
-//                    }
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//                    }
-//                    private void updateSite(Site s, String objectDB_Id)
-//                    {
-//                        // show data from Firebase
-//                        builder.setTitle("Group Event");
-//                        builder.setMessage("Date: " + s.getEvent().getDateEvent() +
-//                                "\nParticipants: " + s.getEvent().getPeopleEvent() +
-//                                "\nDetail: " + s.getEvent().getMeetingDetail());
-//                        final EditText input = new EditText(DetailActivity.this);
-//                        // Update data in Firebase
-//                        Map<String, Object> updates = new HashMap<>();
-//                        updates.put("event/peopleEvent", (s.getEvent().getPeopleEvent() + 1));
-//                        String path = "site/" + objectDB_Id;
-//                        database.getReference(path).updateChildren(updates);
-//                    }
-//                });
-//            }
-//        });
-//
-//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.cancel();
-//            }
-//        });
         //start dialog:
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -406,7 +326,7 @@ public class DetailActivity extends AppCompatActivity
         builder = new AlertDialog.Builder(this);
         //get site DB - ID
         final DatabaseReference databaseReference = database.getReference();
-        databaseReference.child("site").orderByChild("id").equalTo(selectedShapeID).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("site").orderByChild("id").equalTo(selectedShapeID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
@@ -415,7 +335,8 @@ public class DetailActivity extends AppCompatActivity
                 for (DataSnapshot child : children) { //not really for, have only one with this ID!
                     String objectDB_Id = child.getKey();
                     Site s = child.getValue(Site.class);
-                    this.updateSite(s, objectDB_Id);
+                    if (s.getEvent() != null)
+                        this.updateSite(s, objectDB_Id);
                     assert s != null;
                 }
             }

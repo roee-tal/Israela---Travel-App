@@ -30,6 +30,7 @@
             android:layout_height="50dp"
             android:text="Edit name"
             android:textStyle="italic"
+            android:textSize="13dp"
             android:onClick="nameEditButtonClicked" />
 
         <TextView
@@ -48,15 +49,25 @@
             android:id="@+id/editTabsLayout">
 
             <Button
+                android:id="@+id/addEvent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:text="Add Event"
+                android:textStyle="italic"
+                android:textSize="13dp"
+                android:onClick="addEventButtonClicked" />
+            <Button
                 android:id="@+id/editRating"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
                 android:layout_weight="1"
-                android:background="@color/darkerGray"
-                android:onClick="rateEditButtonClicked"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
                 android:text="Edit Rating"
-                android:textColor="@color/white" />
+                android:textSize="13dp"
+                android:textStyle="italic"
+                android:onClick="rateEditButtonClicked" />
 
             <Button
                 android:id="@+id/editLocation"
@@ -65,6 +76,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:onClick="locationEditButtonClicked"
+                android:textSize="13dp"
                 android:text="Edit Location"
                 android:textStyle="italic" />
 
@@ -76,16 +88,9 @@
                 android:layout_gravity="end"
                 android:text="Edit Detail"
                 android:textStyle="italic"
+                android:textSize="13dp"
                 android:onClick="detailEditButtonClicked" />
-            <Button
-                android:id="@+id/addEvent"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:text="Add Event"
-                android:textStyle="italic"
-                android:onClick="addEventButtonClicked" />
+
         </LinearLayout>
 
     </LinearLayout>
