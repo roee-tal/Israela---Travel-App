@@ -352,11 +352,12 @@ public class MainActivity extends AppCompatActivity
         Site octagon2 = new Site("9","Octagon 2", "picture/shvil.jpg", 1.8, "bla lba", Location.Center, 3,1,1);
         shapeList.add(octagon2);
 //        //--------------------------------------------
+//        ******************************************************************8
 //        // push all the objects to firebase:
-        for (Site site: shapeList) {
-            mDatabase.child("site").push().setValue(site);
-//            mDatabase.child("site").child(site.getId()).push().setValue("reviews");
-        }
+//        for (Site site: shapeList) {
+//            mDatabase.child("site").push().setValue(site);
+////            mDatabase.child("site").child(site.getId()).push().setValue("reviews");
+//        }
 //        //--------------------------------------------
         // this will hold our collection of all Site's.
         final ArrayList<Site> siteList = new ArrayList<Site>();
