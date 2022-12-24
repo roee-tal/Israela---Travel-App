@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity
     private Button filterButton;
     private LinearLayout filterView1;
     private LinearLayout filterView2;
+    private LinearLayout filterView3;
     private LinearLayout sortView;
 
     boolean sortHidden = true;
@@ -61,7 +62,11 @@ public class MainActivity extends AppCompatActivity
     boolean southSelected = false;
     boolean northSelected = false;
 
-    private Button southButton, centetButton, northButton, allButton;
+    boolean swimmingSelected = false;
+    boolean trackSelected = false;
+    boolean picnicSelected = false;
+
+    private Button southButton, centetButton, northButton, allButton, picnicButton, swimmingButton, trackButton;
     private Button down2upRateButton, up2downRateButton, nameAscButton, nameDescButton;
 
     private ArrayList<String> selectedFilters = new ArrayList<String>();
@@ -255,6 +260,9 @@ public class MainActivity extends AppCompatActivity
         lookUnSelected(northButton);
         lookUnSelected(centetButton);
         lookUnSelected(southButton);
+        lookUnSelected(trackButton);
+        lookUnSelected(swimmingButton);
+        lookUnSelected(picnicButton);
     }
 
     private void lookSelected(Button parsedButton)
@@ -275,12 +283,17 @@ public class MainActivity extends AppCompatActivity
         filterButton = (Button) findViewById(R.id.filterButton);
         filterView1 = (LinearLayout) findViewById(R.id.filterTabsLayout);
         filterView2 = (LinearLayout) findViewById(R.id.filterTabsLayout2);
+        filterView3 = (LinearLayout) findViewById(R.id.filterTabsLayout3);
         sortView = (LinearLayout) findViewById(R.id.sortTabsLayout2);
 
         southButton = (Button) findViewById(R.id.southFilter);
         centetButton = (Button) findViewById(R.id.centerFilter);
         northButton = (Button) findViewById(R.id.northFilter);
         allButton  = (Button) findViewById(R.id.allFilter);
+
+        picnicButton = (Button) findViewById(R.id.picnicFilter);
+        swimmingButton = (Button) findViewById(R.id.swimmingFilter);
+        trackButton  = (Button) findViewById(R.id.trackFilter);
 
         down2upRateButton = (Button) findViewById(R.id.down2upRate);
         up2downRateButton = (Button) findViewById(R.id.up2downRate);
@@ -369,7 +382,7 @@ public class MainActivity extends AppCompatActivity
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        Site circle = new Site("11", "Jerusalem Forest", "Jerusalem Forest/image1.jfif", 5, "bla lba", Location.Center, 3,1,1, null);
+        Site circle = new Site("11", "Jerusalem Forest", "Jerusalem Forest/image1.jfif", 5, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(circle);
 
 //        final String[] ans = new String[1];
@@ -389,40 +402,42 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
 
-        Site triangle = new Site("1","Tel Aviv beach", "Tel Aviv beach/telAviv1.jfif", 0.2, "bla lba", Location.Center, 3,1,1, null);
+        Site triangle = new Site("1","Tel Aviv beach", "Tel Aviv beach/telAviv1.jfif", 0.2, "bla lba", Location.Center, 3,1,1, null, Category.swimming);
         shapeList.add(triangle);
 
-        Site square = new Site("2","Herzliya beach", "Tel Aviv beach/telAviv1.jfif", 3, "bla lba", Location.South, 3,1,1, null);
+        Site square = new Site("2","Herzliya beach", "Tel Aviv beach/telAviv1.jfif", 3, "bla lba", Location.South, 3,1,1, null, Category.swimming);
         shapeList.add(square);
 
-        Site rectangle = new Site("3","Rectangle", "Tel Aviv beach/telAviv1.jfif", 1, "bla lba", Location.South, 3,1,1, null);
+        Site rectangle = new Site("3","Mezada", "Tel Aviv beach/telAviv1.jfif", 1, "bla lba", Location.South, 3,1,1, null, Category.track);
         shapeList.add(rectangle);
 
-        Site octagon = new Site("4","Octagon", "Tel Aviv beach/telAviv1.jfif", 2.6, "bla lba", Location.North, 3,1,1, null);
+        Site octagon = new Site("4","Hermon", "Tel Aviv beach/telAviv1.jfif", 2.6, "bla lba", Location.North, 3,1,1, null, Category.track);
         shapeList.add(octagon);
 
-        Site circle2 = new Site("5", "Circle 2", "Tel Aviv beach/telAviv1.jfif", 1.2, "bla lba", Location.North, 3,1,1, null);
+        Site circle2 = new Site("5", "Circle 2", "Tel Aviv beach/telAviv1.jfif", 1.2, "bla lba", Location.North, 3,1,1, null, Category.picnic);
         shapeList.add(circle2);
 
-        Site triangle2 = new Site("6","Triangle 2", "Tel Aviv beach/telAviv1.jfif", 4, "bla lba", Location.Center, 3,1,1, null);
+        Site triangle2 = new Site("6","Triangle 2", "Tel Aviv beach/telAviv1.jfif", 4, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(triangle2);
 
-        Site square2 = new Site("7","Square 2", "Tel Aviv beach/telAviv1.jfif", 4, "bla lba", Location.Center, 3,1,1, null);
+        Site square2 = new Site("7","Square 2", "Tel Aviv beach/telAviv1.jfif", 4, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(square2);
 
-        Site rectangle2 = new Site("8","Rectangle 2", "Tel Aviv beach/telAviv1.jfif", 3, "bla lba", Location.Center, 3,1,1, null);
+        Site rectangle2 = new Site("8","Rectangle 2", "Tel Aviv beach/telAviv1.jfif", 3, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(rectangle2);
 
-        Site octagon2 = new Site("9","Octagon 2", "Tel Aviv beach/telAviv1.jfif", 1.8, "bla lba", Location.Center, 3,1,1, null);
+        Site octagon2 = new Site("9","Octagon 2", "Tel Aviv beach/telAviv1.jfif", 1.8, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(octagon2);
+
 //        //--------------------------------------------
-//        ******************************************************************8
+//        //******************************************************************
 //        // push all the objects to firebase:
 //        for (Site site: shapeList) {
 //            mDatabase.child("site").push().setValue(site);
 ////            mDatabase.child("site").child(site.getId()).push().setValue("reviews");
 //        }
 //        //--------------------------------------------
+
         // this will hold our collection of all Site's.
         final ArrayList<Site> siteList = new ArrayList<Site>();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -547,60 +562,115 @@ public class MainActivity extends AppCompatActivity
         }
 
         shapeList.clear();
+//        ArrayList<Site> tempShapeList = new ArrayList<Site>();
         Log.d("filterList", "status="+status);
+        if (selectedFilters.isEmpty())
+            allFilterTappedForFlow(SortType.RateUp2Down); //choose 'all' like the start
         for (String filter : selectedFilters) {
-            Query query = myRealTimeDB.getReference().child("site").orderByChild("location").equalTo(filter);
-            // Execute the query and retrieve the matching items
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot snapshot)
-                {
-                    // get all of the children at this level.
-                    Iterable<DataSnapshot> children = snapshot.getChildren();
-                    Log.d("initSearchWidgets", "empty:" + shapeList.size());
-                    for (DataSnapshot child : children) {
-                        Site s = child.getValue(Site.class);
-                        assert s != null;
-                        if (!shapeList.contains(s))
-                            shapeList.add(s);
+            if (is_category(filter)) {
+                Query query = myRealTimeDB.getReference().child("site").orderByChild("category").equalTo(filter);
+                // Execute the query and retrieve the matching items
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        // get all of the children at this level.
+                        Iterable<DataSnapshot> children = snapshot.getChildren();
+                        for (DataSnapshot child : children) {
+                            Site s = child.getValue(Site.class);
+                            assert s != null;
+                            if (!shapeList.contains(s))
+                                shapeList.add(s);
+                            Log.d("initSearchWidgets", "shapeList.size=" + shapeList.size());
+                            Log.d("initSearchWidgets", "site name=" + s.getName());
+                        }
+                        if (type != null)
+                            sortList(type);
                         Log.d("initSearchWidgets", "shapeList.size=" + shapeList.size());
-                        Log.d("initSearchWidgets", "site name=" + s.getName());
+                        adapter.notifyDataSetChanged();
+                        Log.d("initSearchWidgets", "shapeList.size=" + shapeList.size());
                     }
-                    if (type != null)
-                        sortList(type);
-                    Log.d("initSearchWidgets", "shapeList.size=" + shapeList.size());
-                    adapter.notifyDataSetChanged();
-                    Log.d("initSearchWidgets", "shapeList.size=" + shapeList.size());
 
-                }
-
-                private void sortList(SortType type) {
-                    switch (type) {
-                        case RateUp2Down:
-                            Collections.sort(shapeList, Site.rateSort);
-                            Collections.reverse(shapeList);
-                            break;
-                        case RateDown2Up:
-                            Collections.sort(shapeList, Site.rateSort);
-                            break;
-                        case NameUp2Down:
-                            Collections.sort(shapeList, Site.nameAscending);
-                            Collections.reverse(shapeList);
-                            break;
-                        case NameDown2Up:
-                            Collections.sort(shapeList, Site.nameAscending);
-                            break;
-                        default:
-                            Log.d("sortList", "default !" + type);
-                            break;
+                    private void sortList(SortType type) {
+                        switch (type) {
+                            case RateUp2Down:
+                                Collections.sort(shapeList, Site.rateSort);
+                                Collections.reverse(shapeList);
+                                break;
+                            case RateDown2Up:
+                                Collections.sort(shapeList, Site.rateSort);
+                                break;
+                            case NameUp2Down:
+                                Collections.sort(shapeList, Site.nameAscending);
+                                Collections.reverse(shapeList);
+                                break;
+                            case NameDown2Up:
+                                Collections.sort(shapeList, Site.nameAscending);
+                                break;
+                            default:
+                                Log.d("sortList", "default !" + type);
+                                break;
+                        }
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Handle error
-                }
-            });
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Handle error
+                    }
+                });
+            }
+            else{
+                Query query = myRealTimeDB.getReference().child("site").orderByChild("location").equalTo(filter);
+                // Execute the query and retrieve the matching items
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        // get all of the children at this level.
+                        Iterable<DataSnapshot> children = snapshot.getChildren();
+                        Log.d("initSearchWidgets", "empty:" + shapeList.size());
+                        for (DataSnapshot child : children) {
+                            Site s = child.getValue(Site.class);
+                            assert s != null;
+                            if (!shapeList.contains(s))
+                                shapeList.add(s);
+                            Log.d("initSearchWidgets", "shapeList.size=" + shapeList.size());
+                            Log.d("initSearchWidgets", "site name=" + s.getName());
+                        }
+                        if (type != null)
+                            sortList(type);
+                        Log.d("initSearchWidgets", "shapeList.size=" + shapeList.size());
+                        adapter.notifyDataSetChanged();
+                        Log.d("initSearchWidgets", "shapeList.size=" + shapeList.size());
+
+                    }
+
+                    private void sortList(SortType type) {
+                        switch (type) {
+                            case RateUp2Down:
+                                Collections.sort(shapeList, Site.rateSort);
+                                Collections.reverse(shapeList);
+                                break;
+                            case RateDown2Up:
+                                Collections.sort(shapeList, Site.rateSort);
+                                break;
+                            case NameUp2Down:
+                                Collections.sort(shapeList, Site.nameAscending);
+                                Collections.reverse(shapeList);
+                                break;
+                            case NameDown2Up:
+                                Collections.sort(shapeList, Site.nameAscending);
+                                break;
+                            default:
+                                Log.d("sortList", "default !" + type);
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Handle error
+                    }
+                });
+            }
         }
 //        ArrayList<Site> filteredShapes = new ArrayList<Site>();
 //        for(Site site : shapeList)
@@ -643,6 +713,14 @@ public class MainActivity extends AppCompatActivity
 //        }
 //
 //        setAdapter(filteredShapes);
+    }
+
+    private boolean is_category(String filter) {
+        for (Category c : Category.values()) {
+            if (c.name().equals(filter))
+                return true;
+        }
+        return false;
     }
 
     private String isLocation(String filter) {
@@ -736,6 +814,52 @@ public class MainActivity extends AppCompatActivity
         northSelected = !northSelected;
     }
 
+
+
+    public void trackFilterTapped(View view)
+    {
+        filterList("track", null);
+        if (!trackSelected) {
+            lookSelected(trackButton);
+            lookUnSelected(allButton);
+        }
+        else {
+            lookUnSelected(trackButton);
+        }
+        trackSelected = !trackSelected;
+    }
+
+    public void picnicFilterTapped(View view)
+    {
+        filterList("picnic", null);
+        if (!picnicSelected) {
+            lookSelected(picnicButton);
+            lookUnSelected(allButton);
+        }
+        else {
+            lookUnSelected(picnicButton);
+        }
+        picnicSelected = !picnicSelected;
+    }
+
+    public void swimmingFilterTapped(View view)
+    {
+        filterList("swimming", null);
+        if (!swimmingSelected) {
+            lookSelected(swimmingButton);
+            lookUnSelected(allButton);
+        }
+        else {
+            lookUnSelected(swimmingButton);
+        }
+        swimmingSelected = !swimmingSelected;
+    }
+
+
+
+
+
+
     public void showFilterTapped(View view)
     {
         if(filterHidden == true)
@@ -769,6 +893,7 @@ public class MainActivity extends AppCompatActivity
         searchView.setVisibility(View.GONE);
         filterView1.setVisibility(View.GONE);
         filterView2.setVisibility(View.GONE);
+        filterView3.setVisibility(View.GONE);
         filterButton.setText("FILTER");
     }
 
@@ -777,6 +902,7 @@ public class MainActivity extends AppCompatActivity
         searchView.setVisibility(View.VISIBLE);
         filterView1.setVisibility(View.VISIBLE);
         filterView2.setVisibility(View.VISIBLE);
+        filterView3.setVisibility(View.VISIBLE);
         filterButton.setText("HIDE");
     }
 

@@ -17,33 +17,11 @@ class Site
     private String detail;
     private Location location;
     private GroupEvent event;
+    private Category category;
     public Site(){};
 
-    public double getRate() {
-        return rate;
-    }
 
-    public int getMainRateReviewNum() {
-        return mainRateReviewNum;
-    }
-
-    public double getShadeRate() {
-        return shadeRate;
-    }
-
-    public int getShadeRateReviewNum() {
-        return shadeRateReviewNum;
-    }
-
-    public GroupEvent getEvent() {
-        return event;
-    }
-
-    public void setEvent(GroupEvent event) {
-        this.event = event;
-    }
-
-    public Site(String id, String name, String image, double mainRate, String detail, Location location, double shadeRate, int shadeRateReviewNum, int mainRateReviewNum, GroupEvent event) {
+    public Site(String id, String name, String image, double mainRate, String detail, Location location, double shadeRate, int shadeRateReviewNum, int mainRateReviewNum, GroupEvent event, Category category) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -54,6 +32,7 @@ class Site
         this.shadeRateReviewNum = 1;
         this.mainRateReviewNum = 1;
         this.event = event;
+        this.category = category;
     }
 
     public void updateRate(double rate) {
@@ -137,5 +116,35 @@ class Site
         }
     };
 
+    public double getRate() {
+        return rate;
+    }
 
+    public int getMainRateReviewNum() {
+        return mainRateReviewNum;
+    }
+
+    public double getShadeRate() {
+        return shadeRate;
+    }
+
+    public int getShadeRateReviewNum() {
+        return shadeRateReviewNum;
+    }
+
+    public GroupEvent getEvent() {
+        return event;
+    }
+
+    public void setEvent(GroupEvent event) {
+        this.event = event;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }
