@@ -12,4 +12,11 @@
     <color name="colorAccent">#EEEEEE</color>
     <color name="darkerGray">#DDDDDD</color>
     <color name="red">#8B0000</color>
+    <color name="green">#1DC1D6</color>
+    <color name="green2">#0026FC</color>
+    <color name="green3">#632FC0</color>
+    <color name="green4">#6CC957</color>
+    <color name="green5">#A7DA6D</color>
+    <color name="green6">#1DE725</color>
+    <color name="green7">#9BDA63</color>
 </resources>
