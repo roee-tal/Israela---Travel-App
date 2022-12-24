@@ -99,7 +99,8 @@
                 android:layout_weight="1"
                 android:background="@color/darkerGray"
                 android:onClick="northFilterTapped"
-                android:text="North" />
+                android:text="North"
+                android:textColor="@color/red" />
 
             <Button
                 android:id="@+id/southFilter"
@@ -112,6 +113,44 @@
                 android:textColor="@color/red" />
 
         </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/filterTabsLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/picnicFilter"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/darkerGray"
+            android:onClick="picnicFilterTapped"
+            android:text="Picnic"
+            android:textColor="@color/red" />
+
+        <Button
+            android:id="@+id/swimmingFilter"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/darkerGray"
+            android:onClick="swimmingFilterTapped"
+            android:text="Swimming"
+            android:textColor="@color/red" />
+
+        <Button
+            android:id="@+id/trackFilter"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/darkerGray"
+            android:onClick="trackFilterTapped"
+            android:text="Track"
+            android:textColor="@color/red" />
+
+    </LinearLayout>
 
         <LinearLayout
             android:id="@+id/sortTabsLayout2"
