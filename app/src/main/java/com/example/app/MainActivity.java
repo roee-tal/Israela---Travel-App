@@ -419,14 +419,14 @@ public class MainActivity extends AppCompatActivity
             {
                 final Site selectShape = (Site) (listView.getItemAtPosition(position));
                 Intent showDetail;
-//                if (is_admin(selectShape)) {
-//                    showDetail = new Intent(getApplicationContext(), AdminDetailActivity.class);
-//                    Log.d("MainActivity", "----ADMIN Done :)");
-//                }
-//                else {
+                if (is_admin(selectShape)) {
+                    showDetail = new Intent(getApplicationContext(), AdminDetailActivity.class);
+                    Log.d("MainActivity", "----ADMIN Done :)");
+                }
+                else {
                     showDetail = new Intent(getApplicationContext(), DetailActivity.class); //Todo: change detail load by user not work with my user
-//                    Log.d("MainActivity", "----admin NOT done");
-//                }
+                    Log.d("MainActivity", "----admin NOT done");
+                }
 
                 showDetail.putExtra("id",selectShape.getId());
                 showDetail.putExtra("name",selectShape.getName());
