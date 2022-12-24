@@ -4,16 +4,22 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AlertDialog;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,11 +63,13 @@ public class DetailActivity extends AppCompatActivity
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
+    DatabaseReference siteRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.try2);
         getSelectedShape();
 //        updateSelectedName();
         this.updateImageDetailList(selectedShapeName);
@@ -113,6 +121,7 @@ public class DetailActivity extends AppCompatActivity
                 siteSingalAtList.clear();
                 Log.d("getParsedShape", "empty:"+siteSingalAtList.size());
                 for (DataSnapshot child : children) {
+                    siteRef = child.getRef();
                     Site s = child.getValue(Site.class);
                     siteSingalAtList.add(s);
                     this.setValues(s);
@@ -234,14 +243,80 @@ public class DetailActivity extends AppCompatActivity
     }
 
     public void addRatingTapped(View view){
-        Intent AddRate = new Intent(getApplicationContext(), AddRating.class);
-        AddRate.putExtra("id",selectedShapeID);
-        AddRate.putExtra("name",selectedShapeName);
-        startActivity(AddRate);
 
-//        startActivity(new Intent(DetailActivity.this, AddRating.class)); // Todo: disable this to skip authentication phase - Debug Mode
-//        finish();
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailActivity.this);
+        View mView = getLayoutInflater().inflate(R.layout.rating_add, null);
+        mBuilder.setView(mView);
+
+        final RatingBar mainRateBar = (RatingBar) mView.findViewById(R.id.mainRateBar);
+        final RatingBar shadeRateBar = (RatingBar) mView.findViewById(R.id.shadeRateBar);
+
+
+        Button submitButton = (Button) mView.findViewById(R.id.submitButton);
+
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+
+
+
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // get values and then displayed in a toast
+                final int totalStars = mainRateBar.getNumStars();
+                final double rating = mainRateBar.getRating();
+                final double shdeRating = shadeRateBar.getRating();
+                Log.d("AddRating", "totalStars=" + totalStars + " rating=" + rating);
+                Log.d("AddRating", "Shade rating=" + shdeRating);
+
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final DatabaseReference databaseReference = database.getReference();
+                databaseReference.child("site").orderByChild("id").equalTo(selectedShapeID).addListenerForSingleValueEvent(new ValueEventListener() {
+                    /**
+                     * This method will be invoked any time the data on the database changes.
+                     * Additionally, it will be invoked as soon as we connect the listener, so that we can get an initial snapshot of the data on the database.
+                     *
+                     * @param dataSnapshot
+                     */
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // get all of the children at this level.
+                        Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                        for (DataSnapshot child : children) { //not really for, have only one with this ID!
+                            String objectDB_Id = child.getKey();
+                            Log.d("AddRating", "child.getKey()=" + objectDB_Id);
+                            Site s = child.getValue(Site.class);
+//                                s.updateRate(rating);
+                            updateSite(s, objectDB_Id, rating, shdeRating, database);
+                            Log.d("AddRating", "s.getName()=" + s.getName());
+                            assert s != null;
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+                dialog.dismiss();
+            }
+        });
     }
+
+    private void updateSite(Site s, String objectDB_Id, double rating, double shdeRating, FirebaseDatabase database)  {
+
+        s.updateRate(rating);
+        s.updateShadeRate(shdeRating);
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("rate", s.getRate());
+        updates.put("mainRateReviewNum", (s.getMainRateReviewNum()+1));
+        updates.put("shadeRate", s.getShadeRate());
+        updates.put("shadeRateReviewNum", (s.getShadeRateReviewNum()+1));
+        String path = "site/" + objectDB_Id;
+        database.getReference(path).updateChildren(updates);
+        Log.d("AddRating", "in update - s.rate="+s.getRate());
+    }
+
 
     public void showGroupEvent(View view){
 //        AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -510,4 +585,87 @@ public class DetailActivity extends AppCompatActivity
 //            e.printStackTrace();
 //        }
 //    }
+
+    public void addReviewTapped(View view)  {
+
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailActivity.this);
+        View mView = getLayoutInflater().inflate(R.layout.activity_add_review, null);
+        final EditText mName = (EditText) mView.findViewById(R.id.name);
+        final EditText mReview = (EditText) mView.findViewById(R.id.review);
+        Button mAdd = (Button) mView.findViewById(R.id.add);
+
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+
+        mAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String name = mName.getText().toString();
+                String review = mReview.getText().toString();
+                if(!name.isEmpty() && !review.isEmpty()){
+                    siteRef.child("reviews").child(name).setValue(review);
+                    Toast.makeText(DetailActivity.this, "success", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }else{
+                    Toast.makeText(DetailActivity.this, "try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public void showReviewsTapped(View view) {
+
+        ArrayList<String> arrayListReviews = new ArrayList<>();
+        ArrayAdapter<String> adapterReview = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrayListReviews);
+
+
+        siteRef.child("reviews").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                arrayListReviews.clear();
+                Log.d("reviews", "start");
+                Iterable<DataSnapshot> children = snapshot.getChildren();
+                for (DataSnapshot child : children) {
+
+                    String review = "Name: " + child.getKey()+ "\n";
+                    review += "Review: " + child.getValue().toString() + "\n";
+                    arrayListReviews.add(review);
+                    Log.d("reviews", review);
+                }
+                adapterReview.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+                Log.d("getParsedShape", "siteSingalAtList.size="+siteSingalAtList.size());
+
+
+            }
+
+        });
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View convertView = (View) inflater.inflate(R.layout.reviews_list_view, null);
+        alertDialog.setView(convertView);
+
+        ListView lv = (ListView) convertView.findViewById(R.id.lv);
+        lv.setAdapter(adapterReview);
+
+
+        if (adapterReview.isEmpty()) {
+
+            alertDialog.setTitle("There Are No Reviews Yet");
+        }
+        else {
+
+            alertDialog.setTitle("Reviews:\n");
+        }
+        alertDialog.show();
+    }
 }

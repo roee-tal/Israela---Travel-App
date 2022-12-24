@@ -416,6 +416,7 @@ public class MainActivity extends AppCompatActivity
         Site octagon2 = new Site("9","Octagon 2", "Tel Aviv beach/telAviv1.jfif", 1.8, "bla lba", Location.Center, 3,1,1, null);
         shapeList.add(octagon2);
 //        //--------------------------------------------
+//        ******************************************************************8
 //        // push all the objects to firebase:
 //        for (Site site: shapeList) {
 //            mDatabase.child("site").push().setValue(site);

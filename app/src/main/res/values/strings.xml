@@ -10,6 +10,11 @@
     <string name="your_name">Your Name</string>
     <string name="your_review">Your Review</string>
     <string name="add">Add</string>
+    <string name="change_shade_rate">Change Shade Rate</string>
+    <string name="change_detail">Change Detail</string>
+    <string name="change_location">Change Location</string>
+    <string name="change_shade_rate_review_num">Change Shade Rate Review Num</string>
+    <string name="change_rate">Change Rate</string>
 
 
 </resources>
