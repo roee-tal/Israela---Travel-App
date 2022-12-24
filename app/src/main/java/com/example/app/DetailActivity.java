@@ -1,6 +1,7 @@
 package com.example.app;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AlertDialog;
@@ -43,6 +44,8 @@ public class DetailActivity extends AppCompatActivity
 {
     // creating object of ViewPager
     ViewPager mViewPager;
+    private Button eventGroup;
+    private AlertDialog.Builder builder;
 
     // images array
     final ArrayList<Bitmap>  images = new ArrayList<Bitmap>();
@@ -57,6 +60,8 @@ public class DetailActivity extends AppCompatActivity
     String selectedShapeName;
     String selectedShapeID;
     private StorageReference myStorage;
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
 
     DatabaseReference siteRef;
 
@@ -68,6 +73,8 @@ public class DetailActivity extends AppCompatActivity
         getSelectedShape();
 //        updateSelectedName();
         this.updateImageDetailList(selectedShapeName);
+        eventGroup = findViewById(R.id.event);
+
 
 //        setValues();
 
@@ -83,6 +90,7 @@ public class DetailActivity extends AppCompatActivity
         // Adding the Adapter to the ViewPager
         mViewPager.setAdapter(mViewPagerAdapter);
 
+        loadEvent();
     }
 
     private void getSelectedShape()
@@ -141,6 +149,10 @@ public class DetailActivity extends AppCompatActivity
                         "\n\nDetail: " + s.getDetail();
                 siteName.setText(s.getName());
                 siteDetail.setText(detail);
+                if (s.getEvent() != null)
+                    eventGroup.setVisibility(View.VISIBLE);
+                else
+                    eventGroup.setVisibility(View.GONE);
 //        setImageList();
 
 //        iv.setImageResource(selectedShape.getImage()); //Todo: do all image like this
@@ -305,6 +317,184 @@ public class DetailActivity extends AppCompatActivity
         Log.d("AddRating", "in update - s.rate="+s.getRate());
     }
 
+
+    public void showGroupEvent(View view){
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        //get site DB - ID
+//        final DatabaseReference databaseReference = database.getReference();
+////        databaseReference.child("site").orderByChild("id").equalTo(selectedShapeID).addListenerForSingleValueEvent(new ValueEventListener() {
+////            @Override
+////            public void onDataChange(DataSnapshot dataSnapshot)
+////            {
+////                // get all of the children at this level.
+////                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+////                for (DataSnapshot child : children) { //not really for, have only one with this ID!
+////                    String objectDB_Id = child.getKey();
+////                    Site s = child.getValue(Site.class);
+////                    this.updateSite(s, objectDB_Id);
+////                    assert s != null;
+////                }
+////            }
+////            @Override
+////            public void onCancelled(DatabaseError databaseError) {
+////            }
+////            private void updateSite(Site s, String objectDB_Id)
+////            {
+////                // show data from Firebase
+////                builder.setTitle("Group Event");
+////                builder.setMessage("Date: " + s.getEvent().getDateEvent() +
+////                                "\nParticipants: " + s.getEvent().getPeopleEvent() +
+////                                  "\nDetail: " + s.getEvent().getMeetingDetail());
+////                final EditText input = new EditText(DetailActivity.this);
+////            }
+////        });
+//        builder.setPositiveButton("Join", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which)
+//            {
+//                //get site DB - ID
+//                final DatabaseReference databaseReference = database.getReference();
+//                databaseReference.child("site").orderByChild("id").equalTo(selectedShapeID).addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot)
+//                    {
+//                        // get all of the children at this level.
+//                        Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+//                        for (DataSnapshot child : children) { //not really for, have only one with this ID!
+//                            String objectDB_Id = child.getKey();
+//                            Log.d("adminDetailActivity", "child.getKey()="+objectDB_Id);
+//                            Site s = child.getValue(Site.class);
+////                                s.updateRate(rating);
+//                            this.updateSite(s, objectDB_Id);
+//                            Log.d("adminDetailActivity", "s.getName()="+s.getName());
+//                            assert s != null;
+//                        }
+//                    }
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//                    }
+//                    private void updateSite(Site s, String objectDB_Id)
+//                    {
+//                        // show data from Firebase
+//                        builder.setTitle("Group Event");
+//                        builder.setMessage("Date: " + s.getEvent().getDateEvent() +
+//                                "\nParticipants: " + s.getEvent().getPeopleEvent() +
+//                                "\nDetail: " + s.getEvent().getMeetingDetail());
+//                        final EditText input = new EditText(DetailActivity.this);
+//                        // Update data in Firebase
+//                        Map<String, Object> updates = new HashMap<>();
+//                        updates.put("event/peopleEvent", (s.getEvent().getPeopleEvent() + 1));
+//                        String path = "site/" + objectDB_Id;
+//                        database.getReference(path).updateChildren(updates);
+//                    }
+//                });
+//            }
+//        });
+//
+//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.cancel();
+//            }
+//        });
+        //start dialog:
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void loadEvent(){
+        builder = new AlertDialog.Builder(this);
+        //get site DB - ID
+        final DatabaseReference databaseReference = database.getReference();
+        databaseReference.child("site").orderByChild("id").equalTo(selectedShapeID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                // get all of the children at this level.
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                for (DataSnapshot child : children) { //not really for, have only one with this ID!
+                    String objectDB_Id = child.getKey();
+                    Site s = child.getValue(Site.class);
+                    this.updateSite(s, objectDB_Id);
+                    assert s != null;
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+            private void updateSite(Site s, String objectDB_Id)
+            {
+                // show data from Firebase
+                builder.setTitle("Group Event");
+                builder.setMessage("Date: " + s.getEvent().getDateEvent() +
+                                "\nParticipants: " + s.getEvent().getPeopleEvent() +
+                                  "\nDetail: " + s.getEvent().getMeetingDetail());
+                final EditText input = new EditText(DetailActivity.this);
+            }
+        });
+        builder.setPositiveButton("Join", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                //get site DB - ID
+                final DatabaseReference databaseReference = database.getReference();
+                databaseReference.child("site").orderByChild("id").equalTo(selectedShapeID).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot)
+                    {
+                        // get all of the children at this level.
+                        Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                        for (DataSnapshot child : children) { //not really for, have only one with this ID!
+                            String objectDB_Id = child.getKey();
+                            Log.d("adminDetailActivity", "child.getKey()="+objectDB_Id);
+                            Site s = child.getValue(Site.class);
+//                                s.updateRate(rating);
+                            this.updateSite(s, objectDB_Id);
+                            Log.d("adminDetailActivity", "s.getName()="+s.getName());
+                            assert s != null;
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                    private void updateSite(Site s, String objectDB_Id)
+                    {
+                        // Update data in Firebase
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("event/peopleEvent", (s.getEvent().getPeopleEvent() + 1));
+                        String path = "site/" + objectDB_Id;
+                        database.getReference(path).updateChildren(updates);
+                    }
+                });
+                this.welcomeMessage();
+            }
+
+            private void welcomeMessage() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
+                builder.setTitle("Welcome");
+                builder.setMessage("Welcome to our group trip!\n" +
+                        "If you you want to see detail about the trip,\n" +
+                        "pleas click again on the detail event button." +
+                        "\nFor more info you can contact us.");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do something when the "OK" button is clicked
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+    }
 
 //    private void setimageView(String shapeName) {
 //        shapeName = "Jerusalem Forest";

@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                     FirebaseDatabase.getInstance().getReference().child("Users").push().updateChildren(us_info);
                     df.set(us_info);
                     Toast.makeText(LoginActivity.this, "success, verify email", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    startActivity(new Intent(LoginActivity.this, StartActivity.class));
                     finish();
                 }
                 else{
