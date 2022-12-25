@@ -47,7 +47,8 @@
 
   </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+
         android:id="@+id/send"
         android:layout_width="150dp"
         android:layout_height="60dp"
