@@ -19,4 +19,9 @@
     <color name="green5">#A7DA6D</color>
     <color name="green6">#1DE725</color>
     <color name="green7">#9BDA63</color>
+    <color name="green9">#BCE988</color>
+    <color name="green10">#A1CCD1</color>
+    <color name="buttons">#00F1EBEB</color>
+    <color name="buttons1">#B2F5F2F2</color>
+    <color name="buttons2">#7ABEB8B8</color>
 </resources>

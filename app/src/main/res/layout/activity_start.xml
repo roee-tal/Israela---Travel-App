@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green4"
+    android:background="@color/green10"
     tools:context=".StartActivity">
 
 
@@ -74,26 +74,31 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="364dp"
-        android:layout_height="210dp"
+        android:layout_width="374dp"
+        android:layout_height="240dp"
         android:layout_marginEnd="24dp"
-        android:src="@drawable/logo"
+        android:src="@drawable/logo2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.03" />
 
 
-    <EditText
-        android:layout_width="184dp"
-        android:layout_height="81dp"
-        android:layout_marginEnd="88dp"
-        android:hint="or continue with"
-        android:textColorHint="@color/black"
+    <TextView
+        android:layout_width="244dp"
+        android:layout_height="36dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="433dp"
+        android:text="or continue with"
+        android:textColor="@color/black"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.664"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.821" />
+        app:layout_constraintVertical_bias="0.454" />
 
     <LinearLayout
         android:id="@+id/linearLayout13"
@@ -114,7 +119,7 @@
             android:id="@+id/faceb"
             android:layout_width="68dp"
             android:layout_height="68dp"
-            android:src="@drawable/logogoogle"
+            android:src="@drawable/gc"
             tools:layout_editor_absoluteX="169dp"
             tools:layout_editor_absoluteY="644dp" />
     </LinearLayout>
