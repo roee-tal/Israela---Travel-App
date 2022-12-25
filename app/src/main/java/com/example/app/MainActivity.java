@@ -525,9 +525,6 @@ public class MainActivity extends AppCompatActivity
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        Site circle = new Site("11", "Jerusalem Forest", 5, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
-        shapeList.add(circle);
-
 //        final String[] ans = new String[1];
 //        mDatabase.child("site").child("1").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
 //            @Override
@@ -560,17 +557,20 @@ public class MainActivity extends AppCompatActivity
         Site circle2 = new Site("5", "Nahal Hazbany", 1.2, "bla lba", Location.North, 3,1,1, null, Category.swimming);
         shapeList.add(circle2);
 
-        Site triangle2 = new Site("6","Triangle 2", 4, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
+        Site triangle2 = new Site("6","Dead Sea", 4, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(triangle2);
 
-        Site square2 = new Site("7","Square 2", 4, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
+        Site square2 = new Site("7","Ben Shemen Forest", 4, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(square2);
 
-        Site rectangle2 = new Site("8","Rectangle 2", 3, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
+        Site rectangle2 = new Site("8","Ein Hanatziv", 3, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(rectangle2);
 
-        Site octagon2 = new Site("9","Octagon 2", 1.8, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
+        Site octagon2 = new Site("9","Red Canyon", 1.8, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(octagon2);
+
+        Site circle = new Site("10", "Jerusalem Forest", 5, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
+        shapeList.add(circle);
 
 //        //--------------------------------------------
 //        //******************************************************************
