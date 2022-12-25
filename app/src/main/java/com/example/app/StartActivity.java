@@ -226,11 +226,11 @@ public class StartActivity extends AppCompatActivity {
                 if (document.exists()) {
                         Log.d("TAG", "DocumentSnapshot data: " + document.getData());
                         if (document.getString("isUser").equals("1")) {
-                            startActivity(new Intent(StartActivity.this, AdminActivity.class));
+                            startActivity(new Intent(StartActivity.this, MainActivity.class));
                             finish();
                         }
                         else{
-                            startActivity(new Intent(StartActivity.this, MainActivity.class));
+                            startActivity(new Intent(StartActivity.this, AdminActivity.class));
                             finish();
                         }
                     }
