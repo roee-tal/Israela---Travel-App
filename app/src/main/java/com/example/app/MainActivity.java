@@ -222,7 +222,6 @@ public class MainActivity extends AppCompatActivity
 
 
         final EditText mName = (EditText) mView.findViewById(R.id.name);
-        final EditText mImage = (EditText) mView.findViewById(R.id.image);
         final EditText mRate = (EditText) mView.findViewById(R.id.rate);
         final EditText mShadeRate = (EditText) mView.findViewById(R.id.shade_rate);
         final EditText mDetails = (EditText) mView.findViewById(R.id.details);
@@ -250,7 +249,6 @@ public class MainActivity extends AppCompatActivity
 
 
                 String name = mName.getText().toString();
-                String image = mImage.getText().toString();
                 String rate = mRate.getText().toString();
                 String shade_rate = mShadeRate.getText().toString();
                 String details = mDetails.getText().toString();
@@ -276,9 +274,8 @@ public class MainActivity extends AppCompatActivity
 
                 }else{
 
-                    if (image.isEmpty() ) image = "Tel Aviv beach/telAviv1.jfif";
 
-                    Site newSite = new Site("13",name, image, Integer.parseInt(rate), details, currLocation, Integer.parseInt(shade_rate),1,1, null, currCategory);
+                    Site newSite = new Site("13",name, Integer.parseInt(rate), details, currLocation, Integer.parseInt(shade_rate),1,1, null, currCategory);
 
                     DatabaseReference mDatabase;
                     mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -528,7 +525,7 @@ public class MainActivity extends AppCompatActivity
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        Site circle = new Site("11", "Jerusalem Forest", "Jerusalem Forest/image1.jfif", 5, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
+        Site circle = new Site("11", "Jerusalem Forest", 5, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(circle);
 
 //        final String[] ans = new String[1];
@@ -548,31 +545,31 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
 
-        Site triangle = new Site("1","Tel Aviv beach", "Tel Aviv beach/telAviv1.jfif", 0.2, "bla lba", Location.Center, 3,1,1, null, Category.swimming);
+        Site triangle = new Site("1","Tel Aviv beach", 0.2, "bla lba", Location.Center, 3,1,1, null, Category.swimming);
         shapeList.add(triangle);
 
-        Site square = new Site("2","Herzliya beach", "Tel Aviv beach/telAviv1.jfif", 3, "bla lba", Location.South, 3,1,1, null, Category.swimming);
+        Site square = new Site("2","Herzliya beach", 3, "bla lba", Location.South, 3,1,1, null, Category.swimming);
         shapeList.add(square);
 
-        Site rectangle = new Site("3","Mezada", "Tel Aviv beach/telAviv1.jfif", 1, "bla lba", Location.South, 3,1,1, null, Category.track);
+        Site rectangle = new Site("3","Mezada", 1, "bla lba", Location.South, 3,1,1, null, Category.track);
         shapeList.add(rectangle);
 
-        Site octagon = new Site("4","Hermon", "Tel Aviv beach/telAviv1.jfif", 2.6, "bla lba", Location.North, 3,1,1, null, Category.track);
+        Site octagon = new Site("4","Hermon", 2.6, "bla lba", Location.North, 3,1,1, null, Category.track);
         shapeList.add(octagon);
 
-        Site circle2 = new Site("5", "Nahal Hazbany", "Tel Aviv beach/telAviv1.jfif", 1.2, "bla lba", Location.North, 3,1,1, null, Category.swimming);
+        Site circle2 = new Site("5", "Nahal Hazbany", 1.2, "bla lba", Location.North, 3,1,1, null, Category.swimming);
         shapeList.add(circle2);
 
-        Site triangle2 = new Site("6","Triangle 2", "Tel Aviv beach/telAviv1.jfif", 4, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
+        Site triangle2 = new Site("6","Triangle 2", 4, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(triangle2);
 
-        Site square2 = new Site("7","Square 2", "Tel Aviv beach/telAviv1.jfif", 4, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
+        Site square2 = new Site("7","Square 2", 4, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(square2);
 
-        Site rectangle2 = new Site("8","Rectangle 2", "Tel Aviv beach/telAviv1.jfif", 3, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
+        Site rectangle2 = new Site("8","Rectangle 2", 3, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(rectangle2);
 
-        Site octagon2 = new Site("9","Octagon 2", "Tel Aviv beach/telAviv1.jfif", 1.8, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
+        Site octagon2 = new Site("9","Octagon 2", 1.8, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(octagon2);
 
 //        //--------------------------------------------
