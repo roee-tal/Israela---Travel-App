@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,9 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,14 +22,33 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp" />
 
-    <TextView
-        android:id="@+id/siteName"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="site name"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="35dp" />
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/siteName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="site name"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="40dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/event"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:onClick="showGroupEvent"
+            android:text="Event Detail"
+            android:textColor="@color/red" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/siteDetail"
@@ -48,55 +66,48 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/addRating"
-            android:textSize="11dp"
-            android:textStyle="italic"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:onClick="addRatingTapped"
             android:text="Add Your Rating"
-            android:textColor="@color/white" />
+            android:textColor="@color/red" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/addReviewButton"
-            android:textSize="11dp"
-            android:textStyle="italic"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="@string/add_review"
+            android:layout_weight="1"
             android:onClick="addReviewTapped"
-            android:textColor="@color/white" />
+            android:text="Add   Review"
+            android:textColor="@color/red" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/ShowReviewsButton"
-            android:textSize="11dp"
-            android:textStyle="italic"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_marginStart="10dp"
             android:layout_height="wrap_content"
             android:text="Show Review"
             android:onClick="showReviewsTapped"
-            android:textColor="@color/white" />
+            android:textColor="@color/red" />
 
-        <Button
-            android:id="@+id/event"
-            android:textSize="11dp"
-            android:textStyle="italic"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/addSiteButton"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_marginStart="10dp"
             android:layout_height="wrap_content"
-            android:text="Group Event"
-            android:onClick="showGroupEvent"
-            android:textColor="@color/white" />
+            android:text="Add Site"
+            android:onClick="addSiteTapped"
+            android:textColor="@color/red" />
+
 
     </LinearLayout>
 
 </LinearLayout>
-</ScrollView>
 
+</ScrollView>

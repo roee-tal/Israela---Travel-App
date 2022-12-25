@@ -48,6 +48,10 @@ public class AdminActivity extends AppCompatActivity {
         usersList = findViewById(R.id.users_list);
         messages = findViewById(R.id.messages);
         admin = findViewById(R.id.nam);
+//        signOut = findViewById(R.id.sign_out);
+        nav = findViewById(R.id.bottom_nav_admi);
+
+
 
         String mail = user.getEmail();
         admin.setText(mail);

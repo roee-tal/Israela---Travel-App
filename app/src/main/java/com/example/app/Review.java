@@ -5,6 +5,8 @@ public class Review {
         private String name;
         private String review;
 
+        public Review() {}
+
         public Review (String name, String review) {
 
                 this.name = name;

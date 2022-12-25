@@ -17,13 +17,14 @@
         android:textStyle="bold" />
 
 
-    <!--    <EditText-->
-    <!--        android:id="@+id/id"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="10dp"-->
-    <!--        android:hint="ID"-->
-    <!--        android:minHeight="48dp" />-->
+<!--    <EditText-->
+<!--        android:id="@+id/id"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:hint="ID"-->
+<!--        android:minHeight="48dp" />-->
+
 
     <EditText
         android:id="@+id/name"
@@ -43,10 +44,10 @@
 
     <EditText
         android:id="@+id/rate"
-        android:inputType="number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:inputType="number"
         android:hint="Rate"
         android:minHeight="48dp" />
 

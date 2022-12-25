@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -346,11 +347,15 @@ public class DetailActivity extends AppCompatActivity
             private void updateSite(Site s, String objectDB_Id)
             {
                 // show data from Firebase
-                builder.setTitle("Group Event");
-                builder.setMessage("Date: " + s.getEvent().getDateEvent() +
-                                "\nParticipants: " + s.getEvent().getPeopleEvent() +
-                                  "\nDetail: " + s.getEvent().getMeetingDetail());
-                final EditText input = new EditText(DetailActivity.this);
+                if (s.getEvent() != null) {
+
+                    builder.setTitle("Group Event");
+                    builder.setMessage("Date: " + s.getEvent().getDateEvent() +
+                            "\nParticipants: " + s.getEvent().getPeopleEvent() +
+                            "\nDetail: " + s.getEvent().getMeetingDetail());
+                    final EditText input = new EditText(DetailActivity.this);
+
+                }
             }
         });
         builder.setPositiveButton("Join", new DialogInterface.OnClickListener() {
@@ -526,7 +531,9 @@ public class DetailActivity extends AppCompatActivity
                 String name = mName.getText().toString();
                 String review = mReview.getText().toString();
                 if(!name.isEmpty() && !review.isEmpty()){
-                    siteRef.child("reviews").child(name).setValue(review);
+                    Review newReview = new Review(name, review);
+                    siteRef.child("reviews").push().setValue(newReview);
+//                    siteRef.child("reviews").child(name).setValue(review);
                     Toast.makeText(DetailActivity.this, "success", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }else{
@@ -552,8 +559,13 @@ public class DetailActivity extends AppCompatActivity
                 Iterable<DataSnapshot> children = snapshot.getChildren();
                 for (DataSnapshot child : children) {
 
-                    String review = "Name: " + child.getKey()+ "\n";
-                    review += "Review: " + child.getValue().toString() + "\n";
+                    Review r = child.getValue(Review.class);
+                    assert r != null;
+                    String review = "Name: " + r.getName()+ "\n";
+                    review += "Review: " + r.getReview()+ "\n";
+
+//                    String review = "Name: " + child.getKey()+ "\n";
+//                    review += "Review: " + child.getValue().toString() + "\n";
                     arrayListReviews.add(review);
                     Log.d("reviews", review);
                 }
@@ -578,15 +590,69 @@ public class DetailActivity extends AppCompatActivity
         ListView lv = (ListView) convertView.findViewById(R.id.lv);
         lv.setAdapter(adapterReview);
 
+        alertDialog.setTitle("Reviews:\n");
 
-        if (adapterReview.isEmpty()) {
-
-            alertDialog.setTitle("There Are No Reviews Yet");
-        }
-        else {
-
-            alertDialog.setTitle("Reviews:\n");
-        }
         alertDialog.show();
+    }
+
+    public void addSiteTapped(View view)  {
+
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailActivity.this);
+        View mView = getLayoutInflater().inflate(R.layout.activity_add_site, null);
+
+        final EditText mID = (EditText) mView.findViewById(R.id.id);
+        final EditText mName = (EditText) mView.findViewById(R.id.name);
+        final EditText mImage = (EditText) mView.findViewById(R.id.image);
+        final EditText mRate = (EditText) mView.findViewById(R.id.rate);
+        final EditText mShadeRate = (EditText) mView.findViewById(R.id.shade_rate);
+        final EditText mDetails = (EditText) mView.findViewById(R.id.details);
+        final EditText mLocation = (EditText) mView.findViewById(R.id.location);
+
+        Button mAdd = (Button) mView.findViewById(R.id.add);
+
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+
+        mAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String ID = mID.getText().toString();
+                String name = mName.getText().toString();
+                String image = mImage.getText().toString();
+                String rate = mRate.getText().toString();
+                String shade_rate = mShadeRate.getText().toString();
+                String details = mDetails.getText().toString();
+                String location = mLocation.getText().toString();
+                Location currLocation = Location.Center;
+
+                if (location.equals("center")) currLocation = Location.Center;
+                else if (location.equals("north")) currLocation = Location.North;
+                else if  (location.equals("south")) currLocation = Location.South;
+                else location = "";
+
+
+                if ( ID.isEmpty() || name.isEmpty() || rate.isEmpty() ||
+                        shade_rate.isEmpty() || details.isEmpty() || location.isEmpty() ) {
+
+                    Toast.makeText(DetailActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+
+
+                }else{
+
+                    if (image.isEmpty() ) image = "Tel Aviv beach/telAviv1.jfif";
+
+                    Site newSite = new Site(ID,name, image, Integer.parseInt(rate), details, currLocation, Integer.parseInt(shade_rate),1,1, null);
+
+                    DatabaseReference mDatabase;
+                    mDatabase = FirebaseDatabase.getInstance().getReference();
+                    mDatabase.child("site").push().setValue(newSite);
+
+                    Toast.makeText(DetailActivity.this, "success", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            }
+        });
     }
 }
