@@ -526,7 +526,7 @@ public class MainActivity extends AppCompatActivity
                         DocumentSnapshot doc = task.getResult();
                         if(doc.exists()){
                             String is_us = doc.getString("isUser");
-                            if(is_us.equals("0")){
+                            if(is_us.equals("1")){
                                 Log.d("MainActivity", "is admin");
                                 showDetail[0] = new Intent(getApplicationContext(), AdminDetailActivity.class);
                                 Log.d("MainActivity", "ADMIN LOADED :)");

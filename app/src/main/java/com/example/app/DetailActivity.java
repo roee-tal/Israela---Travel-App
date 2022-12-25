@@ -71,7 +71,7 @@ public class DetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_detail);
         getSelectedShape();
 //        updateSelectedName();
-        this.updateImageDetailList(selectedShapeName);
+        this.updateImageDetailList(selectedShapeID);
         eventGroup = findViewById(R.id.event);
 
 
@@ -194,10 +194,10 @@ public class DetailActivity extends AppCompatActivity
 //        myStorage = FirebaseStorage.getInstance().getReference().child("picture/"+pictureName).listAll();
 //    }
 
-    private void updateImageDetailList(String shapeName) {
+    private void updateImageDetailList(String shapeID) {
 //        shapeName = "Jerusalem Forest";
-        Log.d("updateImageDetailList", "shapeName="+shapeName);
-        myStorage = FirebaseStorage.getInstance().getReference().child("picture/"+shapeName);//+shapeName
+        Log.d("updateImageDetailList", "shapeName="+shapeID);
+        myStorage = FirebaseStorage.getInstance().getReference().child("picture/"+shapeID);//+shapeName
         try {
             final File localTempFile = File.createTempFile("shvil", "jpg");
 
