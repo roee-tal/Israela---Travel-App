@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,73 +12,81 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
-        android:text="Edit"
+        android:text="New Site"
         android:textSize="25sp"
         android:textStyle="bold" />
 
 
     <EditText
-        android:id="@+id/change_id"
+        android:id="@+id/id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="Change ID"
+        android:hint="ID"
         android:minHeight="48dp" />
 
     <EditText
-        android:id="@+id/change_name"
+        android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:hint="Change Name"
+        android:hint="Name"
         android:minHeight="48dp" />
 
     <EditText
-        android:id="@+id/change_rate"
+        android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:hint="@string/change_rate"
+        android:hint="Image"
         android:minHeight="48dp" />
 
     <EditText
-        android:id="@+id/main_rate_review_num"
+        android:id="@+id/rate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:hint="Change Main Rate Review Num"
+        android:hint="Rate"
+        android:minHeight="48dp" />
+
+<!--    <EditText-->
+<!--        android:id="@+id/main_rate_review_num"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:hint="Change Main Rate Review Num"-->
+<!--        android:minHeight="48dp" />-->
+
+    <EditText
+        android:id="@+id/shade_rate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:hint="Shade Rate"
+        android:minHeight="48dp" />
+
+<!--    <EditText-->
+<!--        android:id="@+id/change_shade_rate_review_num"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:hint="@string/change_shade_rate_review_num"-->
+<!--        android:minHeight="48dp" />-->
+
+    <EditText
+        android:id="@+id/details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:hint="Details"
         android:minHeight="48dp" />
 
     <EditText
-        android:id="@+id/change_shade_rate"
+        android:id="@+id/location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:hint="@string/change_shade_rate"
-        android:minHeight="48dp" />
-
-    <EditText
-        android:id="@+id/change_shade_rate_review_num"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:hint="@string/change_shade_rate_review_num"
-        android:minHeight="48dp" />
-
-    <EditText
-        android:id="@+id/change_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:hint="@string/change_detail"
-        android:minHeight="48dp" />
-
-    <EditText
-        android:id="@+id/change_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:hint="@string/change_location"
+        android:hint="Location"
         android:minHeight="48dp" />
 
     <Button
