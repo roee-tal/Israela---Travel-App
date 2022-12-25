@@ -530,7 +530,9 @@ public class DetailActivity extends AppCompatActivity
                 String name = mName.getText().toString();
                 String review = mReview.getText().toString();
                 if(!name.isEmpty() && !review.isEmpty()){
-                    siteRef.child("reviews").child(name).setValue(review);
+                    Review newReview = new Review(name, review);
+                    siteRef.child("reviews").push().setValue(newReview);
+//                    siteRef.child("reviews").child(name).setValue(review);
                     Toast.makeText(DetailActivity.this, "success", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }else{
@@ -556,8 +558,13 @@ public class DetailActivity extends AppCompatActivity
                 Iterable<DataSnapshot> children = snapshot.getChildren();
                 for (DataSnapshot child : children) {
 
-                    String review = "Name: " + child.getKey()+ "\n";
-                    review += "Review: " + child.getValue().toString() + "\n";
+                    Review r = child.getValue(Review.class);
+                    assert r != null;
+                    String review = "Name: " + r.getName()+ "\n";
+                    review += "Review: " + r.getReview()+ "\n";
+
+//                    String review = "Name: " + child.getKey()+ "\n";
+//                    review += "Review: " + child.getValue().toString() + "\n";
                     arrayListReviews.add(review);
                     Log.d("reviews", review);
                 }
@@ -582,15 +589,8 @@ public class DetailActivity extends AppCompatActivity
         ListView lv = (ListView) convertView.findViewById(R.id.lv);
         lv.setAdapter(adapterReview);
 
+        alertDialog.setTitle("Reviews:\n");
 
-        if (adapterReview.isEmpty()) {
-
-            alertDialog.setTitle("There Are No Reviews Yet");
-        }
-        else {
-
-            alertDialog.setTitle("Reviews:\n");
-        }
         alertDialog.show();
     }
 

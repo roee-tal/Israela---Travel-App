@@ -3,6 +3,7 @@ package com.example.app;
 import android.util.Log;
 
 import java.util.Comparator;
+import java.util.HashMap;
 
 
 class Site
@@ -18,6 +19,7 @@ class Site
     private Location location;
     private GroupEvent event;
     private Category category;
+    private HashMap<String, Review> reviews;
     public Site(){};
 
 
