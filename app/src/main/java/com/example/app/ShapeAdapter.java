@@ -66,7 +66,7 @@ public class ShapeAdapter extends ArrayAdapter<Site>
             name.setText(site.getName());
             rate.setText("\n" + site.getRate() + "/5");
 //        iv.setImageResource(site.getImage());
-            this.setimageView(site.getImage(), convertView);
+            this.setimageView(site.getId(), convertView);
 //        }
 //        else /*if (position < sortTypeList.size())*/ {
 //            Log.d("getView", "sort="+sortTypeList.get(position));
@@ -76,27 +76,67 @@ public class ShapeAdapter extends ArrayAdapter<Site>
         return convertView;
     }
 
-    private void setimageView(String pictureName, View convertView) {
-//        pictureName = "Jerusalem Forest/image1.jfif";
-        myStorage = FirebaseStorage.getInstance().getReference().child("picture/"+pictureName);
+    private void setimageView(String siteID, View convertView) {
+//        myStorage = FirebaseStorage.getInstance().getReference().child("picture/"+pictureName);
+
+        myStorage = FirebaseStorage.getInstance().getReference().child("picture/"+siteID);//+shapeName
         try {
             final File localTempFile = File.createTempFile("shvil", "jpg");
-            myStorage.getFile(localTempFile)
-                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            Toast.makeText(getContext(), "Picture Retrieved",Toast.LENGTH_SHORT).show();
-                            Bitmap bitmap = BitmapFactory.decodeFile(localTempFile.getAbsolutePath());
-                            ((ImageView) convertView.findViewById(R.id.mainImage)).setImageBitmap(bitmap);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
+
+            myStorage.list(1)
+                    .addOnSuccessListener(new OnSuccessListener<ListResult>() {
+                                              @Override
+                                              public void onSuccess(ListResult listResult) {
+
+                                                  for(StorageReference file:listResult.getItems())
+                                                  {
+                                                      Log.d("mainImage", "file.getName="+file.getName());
+                                                      file.getFile(localTempFile).addOnSuccessListener((new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                                          @Override
+                                                          public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+//                                        Toast.makeText(DetailActivity.this, "Picture Retrieved",Toast.LENGTH_SHORT).show();
+                                                              Bitmap bitmap = BitmapFactory.decodeFile(localTempFile.getAbsolutePath());
+                                                              ((ImageView) convertView.findViewById(R.id.mainImage)).setImageBitmap(bitmap);
+                                                          }
+                                                      })).addOnFailureListener(new OnFailureListener() {
+                                                          @Override
+                                                          public void onFailure(@NonNull Exception e) {
+                                                              Log.e("mainImage", e.getMessage());
+                                                          }
+                                                      });
+                                                  }
+                                              }
+                                          }
+                    ).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getContext(), "Error During Picture Retrieved",Toast.LENGTH_SHORT).show();
+                            Log.e("mainImage", "error!");
                         }
                     });
-        }catch (IOException e){
+
+        }catch (Exception e){
             e.printStackTrace();
         }
+
+//        try {
+//            final File localTempFile = File.createTempFile("shvil", "jpg");
+////            myStorage.getFile(localTempFile)
+//            myStorage.getFile(localTempFile)
+//                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+//                            Toast.makeText(getContext(), "Picture Retrieved",Toast.LENGTH_SHORT).show();
+//                            Bitmap bitmap = BitmapFactory.decodeFile(localTempFile.getAbsolutePath());
+//                            ((ImageView) convertView.findViewById(R.id.mainImage)).setImageBitmap(bitmap);
+//                        }
+//                    }).addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            Toast.makeText(getContext(), "Error During Picture Retrieved",Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//        }catch (IOException e){
+//            e.printStackTrace();
+//        }
     }
 }

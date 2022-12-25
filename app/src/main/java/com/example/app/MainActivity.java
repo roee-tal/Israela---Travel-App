@@ -230,11 +230,20 @@ public class MainActivity extends AppCompatActivity
         final EditText mCategory = (EditText) mView.findViewById(R.id.category);
 
         Button mAdd = (Button) mView.findViewById(R.id.add);
+        Button loadImage = (Button) mView.findViewById(R.id.loadImage);
 
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
         dialog.show();
 
+        loadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ImageLoad.class);
+                intent.putExtra("siteID", "13");
+                startActivity(intent);
+            }
+        });
         mAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -950,8 +959,6 @@ public class MainActivity extends AppCompatActivity
         }
         northSelected = !northSelected;
     }
-
-
 
     public void trackFilterTapped(View view)
     {

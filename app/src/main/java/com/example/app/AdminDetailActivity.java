@@ -538,9 +538,6 @@ public class AdminDetailActivity extends AppCompatActivity
         Intent intent = new Intent(AdminDetailActivity.this, ImageLoad.class);
         intent.putExtra("siteID", selectedShapeID);
         startActivity(intent);
-//        startActivity(new Intent(AdminDetailActivity.this, ImageLoad.class));
-
-
     }
 
 
