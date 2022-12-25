@@ -5,9 +5,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -15,11 +18,20 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -32,14 +44,16 @@ import java.util.Collections;
 public class UsersActivity extends AppCompatActivity
 {
 
-    public static ArrayList<User> shapeList = new ArrayList<User>();
-
+    public static ArrayList<User> UsersList = new ArrayList<User>();
     private ListView listView;
     private Button nameAscButton, messages, allButton;
     private ArrayList<String> selectedFilters = new ArrayList<String>();
     private String currentSearchText = "";
     private SearchView searchView;
-    Location[] allLocations = {Location.Center, Location.North, Location.South};
+    private BottomNavigationView nav;
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
+    private UserAdapter adapter;
 
     private int white, darkGray, red;
 
@@ -49,17 +63,157 @@ public class UsersActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
 
+
         initSearchWidgets();
         initWidgets();
-        setupData();
-//        allTapped();
+        clickOnBottomNav();
         setUpList();
         setUpOnclickListener();
         initColors();
         lookSelected(nameAscButton);
         lookSelected(allButton);
-//        selectedFilters.add("all");
+        allFiltering();
     }
+
+
+    private void clickOnBottomNav(){
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this,gso);
+        nav = findViewById(R.id.bottom_nav_admin);
+        nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.sign_out_admin:
+                        areYouSureMessage();
+                        break;
+
+                    case R.id.u:
+                        startActivity(new Intent(UsersActivity.this, UsersActivity.class));
+                        break;
+
+                    case R.id.p:
+                        startActivity(new Intent(UsersActivity.this, MainActivity.class));
+                        break;
+
+                }
+                return true;
+            }
+        });
+    }
+
+    private void areYouSureMessage(){
+        new AlertDialog.Builder(this).setMessage("Are you sure you want to exit?").
+                setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        signOut();
+                    }
+                })
+                .setNegativeButton("No",null).show();
+    }
+
+    void signOut(){
+        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(Task<Void> task) {
+                if (task.isSuccessful()) {
+
+                    finish();
+                    startActivity(new Intent(UsersActivity.this, StartActivity.class));
+                }
+                else {
+                    startActivity(new Intent(UsersActivity.this, StartActivity.class));
+                }
+            }
+
+        });
+    }
+
+    private void allFiltering(){
+        selectedFilters.clear();
+        selectedFilters.add("all");
+        FirebaseFirestore fstore;
+        fstore = FirebaseFirestore.getInstance();
+        unSelectAllFilterButtons();
+        lookSelected(allButton);
+        UsersList.clear();
+        fstore.collection("Users")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            UsersList.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                String email = document.getString("Email");
+                                String id = document.getString("ID");
+                                String user = document.getString("isUser");
+                                String mes = document.getString("LettersNum");
+                                User u = new User(email,id,user,mes);
+                                UsersList.add(u);
+                            }
+                        }
+                        Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
+                        adapter.notifyDataSetChanged();
+                        Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
+                    }
+                });
+
+    }
+
+    private void NameFilter(SortType type) {
+        selectedFilters.clear();
+        selectedFilters.add("all");
+
+        unSelectAllFilterButtons();
+        lookSelected(allButton);
+
+        UsersList.clear();
+        FirebaseFirestore fstore;
+        fstore = FirebaseFirestore.getInstance();
+
+        fstore.collection("Users")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("TAG", document.getId() + " => " + document.getData());
+                                String email = document.getString("Email");
+                                String id = document.getString("ID");
+                                String user = document.getString("isUser");
+                                String mes = document.getString("LettersNum");
+                                User u = new User(email,id,user,mes);
+                                UsersList.add(u);
+                                if (type != null)
+                                    sortList(type);
+                                Log.d("allFilterTapped", "UsersList.size=" + UsersList.size());
+                                adapter.notifyDataSetChanged();
+                                Log.d("allFilterTapped", "UsersList.size=" + UsersList.size());
+                            }
+
+                        } else {
+                            Log.d("TAG", "Error getting documents: ", task.getException());
+                        }
+                    }
+                    private void sortList(SortType type) {
+                        switch (type) {
+                            case UserNAmeDown2Up:
+                                Collections.sort(UsersList, User.nameAscending);
+
+                                break;
+                            case MessageUp2Down:
+                                Collections.sort(UsersList, User.mesAscending);
+                                break;
+                            default:
+                                Log.d("sortList", "default !" + type);
+                                break;
+                        }
+                    }
+                });
+            }
+
 
     private void initColors()
     {
@@ -89,18 +243,15 @@ public class UsersActivity extends AppCompatActivity
 
     private void initWidgets()
     {
-////        sortButton = (Button) findViewById(R.id.sortButton);
-//        filterButton = (Button) findViewById(R.id.filterButton);
-//        filterView1 = (LinearLayout) findViewById(R.id.filterTabsLayout);
-//        filterView2 = (LinearLayout) findViewById(R.id.filterTabsLayout2);
-//        sortView = (LinearLayout) findViewById(R.id.sortTabsLayout2);
+
         nameAscButton  = (Button) findViewById(R.id.nameAsc);
         messages = (Button) findViewById(R.id.Messag);
         allButton = (Button) findViewById(R.id.all);
     }
-//
     private void initSearchWidgets()
     {
+        FirebaseFirestore fstore;
+        fstore = FirebaseFirestore.getInstance();
         searchView = (SearchView) findViewById(R.id.shapeListSearchView);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -110,77 +261,45 @@ public class UsersActivity extends AppCompatActivity
             }
 
             @Override
-            public boolean onQueryTextChange(String s)
+            public boolean onQueryTextChange(String str)
             {
-                currentSearchText = s;
-                ArrayList<User> filteredShapes = new ArrayList<User>();
+                UsersList.clear();
+                currentSearchText = str;
+                Log.d("initSearchWidgets", "str="+str);
 
-                for(User site : shapeList)
-                {
-                    if(site.getEmail().toLowerCase().contains(s.toLowerCase()))
-                    {
-                        if(selectedFilters.contains("all"))
-                        {
-                            filteredShapes.add(site);
-                        }
-                        else
-                        {
-                            for(String filter: selectedFilters)
-                            {
-                                if (site.getEmail().toLowerCase().contains(filter))
-                                {
-                                    filteredShapes.add(site);
+                fstore.collection("Users")
+                    .orderBy("Email")
+                    .startAt(str)
+                    .endAt(str + "\uf8ff")
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()){
+                                    UsersList.clear();
+                                    for (QueryDocumentSnapshot document : task.getResult()){
+                                        String email = document.getString("Email");
+                                        String id = document.getString("ID");
+                                        String user = document.getString("isUser");
+                                        String mes = document.getString("LettersNum");
+                                        User u = new User(email,id,user,mes);
+                                        UsersList.add(u);
+                                    }
                                 }
+                                Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
+                                adapter.notifyDataSetChanged();
+                                Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
                             }
-                        }
-                    }
-                }
-                setAdapter(filteredShapes);
-
+                        });
                 return false;
             }
         });
-    }
-
-    private void setupData()
-    {
-        FirebaseAuth auth;
-        auth = FirebaseAuth.getInstance();
-        FirebaseFirestore fstore;
-        fstore = FirebaseFirestore.getInstance();
-        DatabaseReference mDatabase;
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = database.getReference();
-        fstore.collection("Users")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("TAG", document.getId() + " => " + document.getData());
-                                String email = document.getString("Email");
-                                String id = document.getString("ID");
-                                String user = document.getString("isUser");
-                                String mes = document.getString("LettersNum");
-                                User u = new User(email,id,user,mes);
-                                shapeList.add(u);
-                            }
-
-                        } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
     }
 
     private void setUpList()
     {
         listView = (ListView) findViewById(R.id.shapesListView);
 
-        setAdapter(shapeList);
+        setAdapter(UsersList);
     }
 
     private void setUpOnclickListener()
@@ -189,146 +308,76 @@ public class UsersActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l)
             {
-                User selectShape = (User) (listView.getItemAtPosition(position));
+                User selectUser = (User) (listView.getItemAtPosition(position));
                 Intent showDetail = new Intent(getApplicationContext(), DetailUserActivity.class);
-                showDetail.putExtra("id",selectShape.getId());
+                showDetail.putExtra("id",selectUser.getId());
                 startActivity(showDetail);
             }
         });
     }
 
-    private void filterList(String status)
-    {
-        String location;
-        if(status != null && selectedFilters.contains(status)) { // in case of second click on location
-            selectedFilters.remove(status); //in this case remove location from the filter list
-        }
-        else if (status != null)
-            selectedFilters.add(status);
-
-        ArrayList<User> filteredShapes = new ArrayList<User>();
-
-        for(User site : shapeList)
-        {
-            for(String filter: selectedFilters)
-            {
-                // filter for location name:
-                location = isLocation(filter);
-                if(!location.equals("NOTHING"))
-                {
-                    if(currentSearchText == "")
-                    {
-                        filteredShapes.add(site); //Todo: add here wheris.. query and delete 'for(Site site : shapeList)'
-                    }
-                    else
-                    {
-                        if(site.getEmail().toLowerCase().contains(currentSearchText.toLowerCase()))
-                        {
-                            filteredShapes.add(site); //Todo: add here wheris.. query
-                        }
-                    }
-                }
-
-//                // filter for other free text:            //Todo: verify that not need this 'else if':
-//                else if(site.getName().toLowerCase().contains(filter))
-//                {
-//                    if(currentSearchText == "")
-//                    {
-//                        filteredShapes.add(site); //Todo: add here wheris.. query and delete 'for(Site site : shapeList)'
-//                    }
-//                    else
-//                    {
-//                        if(site.getName().toLowerCase().contains(currentSearchText.toLowerCase()))
-//                        {
-//                            filteredShapes.add(site); //Todo: add here wheris.. query
-//                        }
-//                    }
-//                }
-            }
-        }
-
-        setAdapter(filteredShapes);
-    }
-
-    private String isLocation(String filter) {
-        for (Location l:allLocations) {
-            if (filter.equals(l.name())) {
-                Log.println(Log.DEBUG, "check1236", "Find Location - " + l.name().toLowerCase());
-                return l.name();
-            }
-        }
-        return "NOTHING";
-    }
-
     public void AllTapped(View view)
     {
-        Collections.sort(shapeList, User.nameAscending);
-        checkForFilter();
-        unSelectAllFilterButtons();
-        lookSelected(nameAscButton);
+//        adapter.notifyDataSetChanged();
+//        checkForFilter();
+        allFiltering();
     }
 
     public void nameASCTapped(View view)
     {
-        selectedFilters.clear();
-        selectedFilters.add("all");
-
-        lookSelected(allButton);
-
-        setAdapter(shapeList);
+//        adapter.notifyDataSetChanged();
+        NameFilter(SortType.UserNAmeDown2Up);
+//        Collections.sort(shapeList, User.nameAscending);
+        unSelectAllFilterButtons();
+        lookSelected(nameAscButton);
+//        adapter.notifyDataSetChanged();
+//        setAdapter(shapeList);
     }
 
     public void messageTapped(View view)
     {
-        Collections.sort(shapeList, User.mesAscending);
-        checkForMessageFilter();
+//        adapter.notifyDataSetChanged();
+
+        selectedFilters.clear();
+        selectedFilters.add("all");
+        FirebaseFirestore fstore;
+        fstore = FirebaseFirestore.getInstance();
         unSelectAllFilterButtons();
         lookSelected(messages);
-    }
-
-    private void checkForMessageFilter() {
-        ArrayList<User> filteredShapes = new ArrayList<User>();
-        for(User user : shapeList){
-            String mes_num = user.getLetters();
-            int num = Integer.parseInt(mes_num);
-            if ((num>0)){
-                filteredShapes.add(user);
-            }
-        }
-        setAdapter(filteredShapes);
-
-    }
-
-    private void checkForFilter()
-    {
-        if(selectedFilters.contains("all"))
-        {
-            if(currentSearchText.equals(""))
-            {
-                setAdapter(shapeList);
-            }
-            else
-            {
-                ArrayList<User> filteredShapes = new ArrayList<User>();
-                for(User site : shapeList)
-                {
-                    if(site.getEmail().toLowerCase().contains(currentSearchText))
-                    {
-                        filteredShapes.add(site);
+        UsersList.clear();
+        fstore.collection("Users")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            UsersList.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                String email = document.getString("Email");
+                                String id = document.getString("ID");
+                                String user = document.getString("isUser");
+                                String mes = document.getString("LettersNum");
+                                User u = new User(email,id,user,mes);
+                                int num = Integer.parseInt(mes);
+                                if ((num>0)) {
+                                    UsersList.add(u);
+                                }
+                            }
+                        }
+                        Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
+                        adapter.notifyDataSetChanged();
+                        Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
                     }
-                }
-                setAdapter(filteredShapes);
-            }
-        }
-//        else
-//        {
-//            filterList(null);
-//        }
+                });
+        Collections.sort(UsersList, User.mesAscending);
+//        unSelectAllFilterButtons();
+//        lookSelected(messages);
     }
 
-    private void setAdapter(ArrayList<User> shapeList)
+
+
+    private void setAdapter(ArrayList<User> UsersList)
     {
-        UserAdapter adapter = new UserAdapter(getApplicationContext(), 0, shapeList);
+        adapter = new UserAdapter(getApplicationContext(), 0, UsersList);
         listView.setAdapter(adapter);
     }
 }

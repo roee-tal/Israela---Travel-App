@@ -3,16 +3,24 @@ package com.example.app;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -23,6 +31,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class DetailMessageActivity extends AppCompatActivity {
     private Button delete;
     private FirebaseFirestore fstore;
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
+    private BottomNavigationView nav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +44,8 @@ public class DetailMessageActivity extends AppCompatActivity {
         fstore = FirebaseFirestore.getInstance();
 
 
+        clickOnBottomNav();
+
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -41,13 +54,95 @@ public class DetailMessageActivity extends AppCompatActivity {
                 deleteAccount(parsedStringID);
             }
         });
+    }
+
+    private void clickOnBottomNav(){
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this,gso);
+        nav = findViewById(R.id.bottom_nav_admi);
+        nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.sign_out_admin:
+                        areYouSureMessageToExit();
+                        break;
+
+                    case R.id.u:
+                        startActivity(new Intent(DetailMessageActivity.this, UsersActivity.class));
+                        break;
+
+                    case R.id.p:
+                        startActivity(new Intent(DetailMessageActivity.this, MainActivity.class));
+                        break;
+
+                }
+                return true;
+            }
+        });
+    }
+
+    private void areYouSureMessage(String parsedMail,String id){
+        new AlertDialog.Builder(this).setMessage("Are you sure you want to delete the message?").
+                setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        del(parsedMail);
+                        Toast.makeText(DetailMessageActivity.this, "message removed!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(DetailMessageActivity.this, UsersActivity.class));
+                        fstore.collection("Users").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    String s = document.getString("LettersNum");
+                                    int num = Integer.parseInt(s);
+                                    num--;
+                                    s = Integer.toString(num);
+                                    fstore.collection("Users").document(id).update("LettersNum", s);
+                                }
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("No",null).show();
 
     }
 
+    private void areYouSureMessageToExit(){
+        new AlertDialog.Builder(this).setMessage("Are you sure you want to exit?").
+                setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        signOut();
+                    }
+                })
+                .setNegativeButton("No",null).show();
+    }
+
+    void signOut(){
+        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(Task<Void> task) {
+                if (task.isSuccessful()) {
+
+                    finish();
+                    startActivity(new Intent(DetailMessageActivity.this, StartActivity.class));
+                }
+                else {
+                    startActivity(new Intent(DetailMessageActivity.this, StartActivity.class));
+                }
+            }
+
+        });
+    }
+
+    void del(String parsedMail){
+        fstore.collection("Messages").document(parsedMail).delete();
+    }
+
     private void getSelectedShape(){
-//        String parsedStringID = previousIntent.getStringExtra("messsage");
-//        Log.d("updateSelectedName", "id="+parsedStringID);
-//        getParsedShape(parsedStringID);
+
         Intent intent = getIntent();
         String text = intent.getStringExtra(Intent.EXTRA_TEXT);
         String mail = intent.getStringExtra("mail");
@@ -66,50 +161,15 @@ public class DetailMessageActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
                     DocumentSnapshot document = task.getResult();
-
                     String uId = document.getString("ID");
                     String uuId = document.getString("mesId");
                     Log.d("String uIdNamess", "id="+uId);
-                    down1Mes(uId);
+                    areYouSureMessage(parsedMail,uId);
                 }
             }
 
-            private void down1Mes(String uId) {
-                fstore.collection("Users").document(uId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            String s = document.getString("LettersNum");
-                            int num = Integer.parseInt(s);
-                            num--;
-                            s = Integer.toString(num);
-                            fstore.collection("Users").document(uId).update("LettersNum",s);
-                        }
-                    }
-                });
-            }
         });
-        fstore.collection("Messages").document(parsedMail).delete();
-        Toast.makeText(DetailMessageActivity.this, "message removed!", Toast.LENGTH_SHORT).show();
 
-
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if(task.isSuccessful()){
-//                            for (QueryDocumentSnapshot document : task.getResult()){
-//                                Log.d("TAG", document.getId() + " => " + document.getData());
-//                                String mess = document.getString("Message");
-//                                Message m = new Message(mess);
-//                                Log.d("TAG", m.getText());
-//                            }
-//                        } else {
-//                            Log.d("TAG", "Error getting documents: ", task.getException());
-//                        }
-//                    }
-//                });
     }
 
 }

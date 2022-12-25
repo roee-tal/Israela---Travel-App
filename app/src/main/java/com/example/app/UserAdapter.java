@@ -25,11 +25,10 @@ import java.util.List;
 
 public class UserAdapter extends ArrayAdapter<User>
 {
-    private StorageReference myStorage;
 
-    public UserAdapter(Context context, int resource, List<User> shapeList)
+    public UserAdapter(Context context, int resource, List<User> userListt)
     {
-        super(context,resource,shapeList);
+        super(context,resource,userListt);
     }
 
 
@@ -50,29 +49,5 @@ public class UserAdapter extends ArrayAdapter<User>
 //        this.setimageView(site.getUsername(), convertView);
 
         return convertView;
-    }
-
-    private void setimageView(String pictureName, View convertView) {
-        pictureName = "shvil.jpg";
-        myStorage = FirebaseStorage.getInstance().getReference().child("picture/"+pictureName);
-        try {
-            final File localTempFile = File.createTempFile("shvil", "jpg");
-            myStorage.getFile(localTempFile)
-                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            Toast.makeText(getContext(), "Picture Retrieved",Toast.LENGTH_SHORT).show();
-                            Bitmap bitmap = BitmapFactory.decodeFile(localTempFile.getAbsolutePath());
-                            ((ImageView) convertView.findViewById(R.id.mainImage)).setImageBitmap(bitmap);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getContext(), "Error During Picture Retrieved",Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }catch (IOException e){
-            e.printStackTrace();
-        }
     }
 }
