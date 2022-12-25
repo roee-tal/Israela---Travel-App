@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -65,7 +67,7 @@ public class AdminDetailActivity extends AppCompatActivity
         setContentView(R.layout.admin_activity_detail);
         getSelectedShape();
 //        updateSelectedName();
-        this.updateImageDetailList(selectedShapeName);
+        this.updateImageDetailList(selectedShapeID);
 
 //        setValues();
 
@@ -159,10 +161,10 @@ public class AdminDetailActivity extends AppCompatActivity
 
 
 
-    private void updateImageDetailList(String shapeName) {
+    private void updateImageDetailList(String shapeID) {
 //        shapeName = "Jerusalem Forest";
-        Log.d("updateImageDetailList", "shapeName="+shapeName);
-        myStorage = FirebaseStorage.getInstance().getReference().child("picture/"+shapeName);//+shapeName
+        Log.d("updateImageDetailList", "shapeName="+shapeID);
+        myStorage = FirebaseStorage.getInstance().getReference().child("picture/"+shapeID);//+shapeName
         try {
             final File localTempFile = File.createTempFile("shvil", "jpg");
 
@@ -532,6 +534,14 @@ public class AdminDetailActivity extends AppCompatActivity
         dialog.show();
     }
 
+    public void loadImageButtonClicked(View view){
+        Intent intent = new Intent(AdminDetailActivity.this, ImageLoad.class);
+        intent.putExtra("siteID", selectedShapeID);
+        startActivity(intent);
+//        startActivity(new Intent(AdminDetailActivity.this, ImageLoad.class));
+
+
+    }
 
 
 
