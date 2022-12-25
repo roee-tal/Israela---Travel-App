@@ -29,7 +29,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/editTabsLayout1">
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+
             android:id="@+id/editName"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -39,7 +40,8 @@
             android:textSize="13dp"
             android:onClick="nameEditButtonClicked" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+
             android:id="@+id/loadImage"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -66,7 +68,8 @@
             android:orientation="horizontal"
             android:id="@+id/editTabsLayout2">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
+
                 android:id="@+id/addEvent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -76,7 +79,8 @@
                 android:textStyle="italic"
                 android:textSize="13dp"
                 android:onClick="addEventButtonClicked" />
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
+
                 android:id="@+id/editRating"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -87,7 +91,8 @@
                 android:textStyle="italic"
                 android:onClick="rateEditButtonClicked" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
+
                 android:id="@+id/editLocation"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -98,7 +103,8 @@
                 android:text="Edit Location"
                 android:textStyle="italic" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
+
                 android:id="@+id/editDetail"
                 android:layout_width="0dp"
                 android:layout_weight="1"

@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/addRating"
             android:textSize="11dp"
             android:textStyle="italic"
@@ -59,7 +59,7 @@
             android:text="Add Your Rating"
             android:textColor="@color/white" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/addReviewButton"
             android:textSize="11dp"
             android:textStyle="italic"
@@ -71,7 +71,7 @@
             android:onClick="addReviewTapped"
             android:textColor="@color/white" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/ShowReviewsButton"
             android:textSize="11dp"
             android:textStyle="italic"
@@ -83,7 +83,7 @@
             android:onClick="showReviewsTapped"
             android:textColor="@color/white" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/event"
             android:textSize="11dp"
             android:textStyle="italic"
