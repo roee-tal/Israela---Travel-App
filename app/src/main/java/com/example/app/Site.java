@@ -10,7 +10,6 @@ class Site
 {
     private String id;
     private String name;
-    private String image;
     private double rate;
     private int mainRateReviewNum;
     private double shadeRate;
@@ -23,10 +22,9 @@ class Site
     public Site(){};
 
 
-    public Site(String id, String name, String image, double mainRate, String detail, Location location, double shadeRate, int shadeRateReviewNum, int mainRateReviewNum, GroupEvent event, Category category) {
+    public Site(String id, String name, double mainRate, String detail, Location location, double shadeRate, int shadeRateReviewNum, int mainRateReviewNum, GroupEvent event, Category category) {
         this.id = id;
         this.name = name;
-        this.image = image;
         this.rate = mainRate;
         this.detail = detail;
         this.location = location;
@@ -83,14 +81,6 @@ class Site
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public static Comparator<Site> rateSort = new Comparator<Site>()
