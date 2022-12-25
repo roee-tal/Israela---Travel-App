@@ -4,5 +4,7 @@ public enum SortType {
     RateDown2Up,
     RateUp2Down,
     NameDown2Up,
-    NameUp2Down
+    NameUp2Down,
+    MessageUp2Down,
+    UserNAmeDown2Up
 }

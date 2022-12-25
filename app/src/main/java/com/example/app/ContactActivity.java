@@ -28,7 +28,6 @@ import java.util.Map;
 
 public class ContactActivity extends AppCompatActivity {
     private Button send;
-    private TextInputLayout mail;
     private TextInputLayout mes;
 
     private FirebaseAuth auth;
@@ -39,7 +38,6 @@ public class ContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
         send = findViewById(R.id.send);
-//        mail = findViewById(R.id.emailContact);
         mes = findViewById(R.id.Message);
         Editable text = mes.getEditText().getText();
         auth = FirebaseAuth.getInstance();
@@ -52,8 +50,7 @@ public class ContactActivity extends AppCompatActivity {
                 Log.d("TAG", "message: " + text);
                 String s = text.toString();
                 String e_mail = user.getEmail();
-//                ArrayList<String> messagess = new ArrayList<String>();
-//                messagess.add(s);
+
                 updateMesSize(user.getUid());
                 DocumentReference df = fstore.collection("Messages").document();
                 Map<String,Object> us_info = new HashMap<>();
@@ -62,7 +59,7 @@ public class ContactActivity extends AppCompatActivity {
                 us_info.put("Message", s);
                 us_info.put("mesId",df.getId());
                 df.set(us_info);
-                Toast.makeText(getApplicationContext(), "הודעה נשלחה", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "message sent", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(ContactActivity.this, MainActivity.class));
                 finish();
             }

@@ -29,6 +29,8 @@ public class AdminActivity extends AppCompatActivity {
     private Button usersList;
     private Button messages;
     private Button signOut;
+    private Button Users;
+    private Button places;
     private TextView admin;
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
@@ -42,17 +44,17 @@ public class AdminActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
+
         usersList = findViewById(R.id.users_list);
         messages = findViewById(R.id.messages);
         admin = findViewById(R.id.nam);
-        signOut = findViewById(R.id.sign_out);
-        nav = findViewById(R.id.bottom_nav_admi);
-
 
         String mail = user.getEmail();
         admin.setText(mail);
 
 
+
+        clickOnBottomNav();
 
         usersList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,22 +71,32 @@ public class AdminActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void clickOnBottomNav(){
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this,gso);
+        nav = findViewById(R.id.bottom_nav_admi);
         nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.sign_out_admin:
                         areYouSureMessage();
+                        break;
+
+                    case R.id.u:
+                        startActivity(new Intent(AdminActivity.this, UsersActivity.class));
+                        break;
+
+                    case R.id.p:
+                        startActivity(new Intent(AdminActivity.this, MainActivity.class));
+                        break;
 
                 }
                 return true;
             }
         });
-
-
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        gsc = GoogleSignIn.getClient(this,gso);
-
     }
     private void areYouSureMessage(){
         new AlertDialog.Builder(this).setMessage("Are you sure you want to exit?").

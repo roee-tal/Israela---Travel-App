@@ -11,11 +11,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.ViewFlipper;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,6 +34,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.Query;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -73,8 +76,11 @@ public class MainActivity extends AppCompatActivity
     private String currentSearchText = "";
     private SearchView searchView;
     private BottomNavigationView nav;
+    private BottomNavigationView nav_admin;
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
+    private FirebaseAuth auth;
+    private FirebaseFirestore fstore;
     private int white, darkGray, red;
 
     @Override
@@ -83,51 +89,13 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         myRealTimeDB = FirebaseDatabase.getInstance();
-//        try {
-//            final File localTempFile = File.createTempFile("shvil", "jpg");
-//            myRealTimeDB.child("picture/shvil.jpg").getFile(localTempFile)
-//                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-////                            Log.d("firebaseFailed", "in!");
-////                            Log.d("firebaseFailed", localTempFile.getName());
-//
-//                            Toast.makeText(MainActivity.this, "Picture Retrieved",Toast.LENGTH_SHORT).show();
-//                            Bitmap bitmap = BitmapFactory.decodeFile(localTempFile.getAbsolutePath());
-//                            ((ImageView) findViewById(R.id.mainImage)).setImageBitmap(bitmap);
-//                        }
-//                    }).addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            Toast.makeText(MainActivity.this, "Error During Picture Retrieved",Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//        }catch (IOException e){
-//            e.printStackTrace();
-//        }
+
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(this,gso);
-        nav = findViewById(R.id.bottom_nav);
-        nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        auth = FirebaseAuth.getInstance();
+        fstore = FirebaseFirestore.getInstance();
 
-                switch (item.getItemId()){
-                    case R.id.contactt:
-                        startActivity(new Intent(MainActivity.this, ContactActivity.class));
-                        break;
-
-                    case R.id.sign_out:
-                        areYouSureMessage();
-
-                    default:
-
-                }
-
-                return true;
-            }
-        });
-
+        check_bottom_user();
         setUpList();
 
 //        setAdapter(null);
@@ -143,6 +111,100 @@ public class MainActivity extends AppCompatActivity
         lookSelected(allButton);
         unSelectAllFilterButtons();
         allFilterTappedForFlow(SortType.RateUp2Down);
+    }
+
+    private void check_bottom_user(){
+        nav_admin = findViewById(R.id.bottom_nav_a);
+        nav = findViewById(R.id.bottom_nav);
+        ViewFlipper navViewFlipper = findViewById(R.id.nav_view_flipper);
+        ViewGroup parent = (ViewGroup) nav.getParent();
+        if (parent != null) {
+            parent.removeView(nav);
+        }
+        navViewFlipper.addView(nav);
+
+        ViewGroup parent2 = (ViewGroup) nav_admin.getParent();
+        if (parent2 != null) {
+            parent2.removeView(nav_admin);
+        }// Replace "navigationBar1" with the view for your first navigation bar
+        navViewFlipper.addView(nav_admin);
+
+        FirebaseUser user = auth.getCurrentUser();
+        String uid = user.getUid();
+
+        DocumentReference df =  fstore.collection("Users").document(uid);
+        df.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+
+                    if (document.exists()) {
+                        Log.d("TAG", "DocumentSnapshot data: " + document.getData());
+                        if (document.getString("isUser").equals("1")) {
+                            applyUser();
+
+                        }
+                        else{
+                            Log.d("TAG", "dasssssssssssssss: " + document.getData());
+
+                            applyAdmin();
+
+                        }
+                    }
+                }
+            }
+
+            private void applyAdmin() {
+                navViewFlipper.setDisplayedChild(1);
+                nav_admin.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                        switch (item.getItemId()){
+                            case R.id.sign_out_admin:
+                                areYouSureMessage();
+                                break;
+
+                            case R.id.u:
+                                startActivity(new Intent(MainActivity.this, UsersActivity.class));
+                                break;
+
+                            case R.id.p:
+                                startActivity(new Intent(MainActivity.this, MainActivity.class));
+                                break;
+                        }
+
+                        return true;
+                    }
+                });
+            }
+
+            private void applyUser() {
+                navViewFlipper.setDisplayedChild(0);
+                nav = findViewById(R.id.bottom_nav);
+                nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                        switch (item.getItemId()){
+                            case R.id.contactt:
+                                startActivity(new Intent(MainActivity.this, ContactActivity.class));
+                                break;
+
+                            case R.id.sign_out:
+                                areYouSureMessage();
+                                break;
+
+                            default:
+
+                        }
+
+                        return true;
+                    }
+                });
+            }
+        });
     }
 
 

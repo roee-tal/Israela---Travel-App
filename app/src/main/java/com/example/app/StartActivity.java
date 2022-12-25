@@ -48,6 +48,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.auth.User;
 
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -177,21 +179,12 @@ public class StartActivity extends AppCompatActivity {
                     FirebaseDatabase.getInstance().getReference().child("Users").push().updateChildren(us_info);
                     Toast.makeText(getApplicationContext(), "account created", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Exist", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Welcome", Toast.LENGTH_SHORT).show();
                 }
                 checkUserAccessLevel(uid);
             }
         });
     }
-
-
-    void navigateToSecondActivity(){
-        finish();
-        Intent intent = new Intent(StartActivity.this,SecActivity.class);
-        startActivity(intent);
-    }
-
-
 
 
     private void loginu(String txt_email, String pas_email) {
@@ -202,7 +195,7 @@ public class StartActivity extends AppCompatActivity {
                     FirebaseUser user = auth.getCurrentUser();
                     assert user != null;
                     if(user.isEmailVerified()) {
-                        Toast.makeText(StartActivity.this, "success", Toast.LENGTH_LONG).show();
+                        Toast.makeText(StartActivity.this, "welcome", Toast.LENGTH_LONG).show();
                         checkUserAccessLevel(user.getUid());
                         finish();
                     }
@@ -221,7 +214,6 @@ public class StartActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                Toast.makeText(StartActivity.this, "balblabla", Toast.LENGTH_LONG).show();
 
                 if (document.exists()) {
                         Log.d("TAG", "DocumentSnapshot data: " + document.getData());

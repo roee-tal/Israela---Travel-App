@@ -11,16 +11,22 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -57,6 +63,9 @@ public class DetailUserActivity extends AppCompatActivity
     private FirebaseAuth auth;
     private FirebaseFirestore fstore;
     String selectedShapeName;
+    private BottomNavigationView nav;
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -68,8 +77,10 @@ public class DetailUserActivity extends AppCompatActivity
         email = findViewById(R.id.Email);
         fstore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
+        nav = findViewById(R.id.bottom_nav_admin);
+
         getSelectedShape();
-//        deleteUser();
+        clickOnBottomNav();
 
 
         contact.setOnClickListener(new View.OnClickListener() {
@@ -89,21 +100,37 @@ public class DetailUserActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 areYouSureMessage();
-//                Intent previousIntent = getIntent();
-//                String parsedStringID = previousIntent.getStringExtra("id");
-//                deleteAccount(parsedStringID);
+
             }
         });
 
+    }
 
 
-//        contact.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(DetailUserActivity.this, ContactActivity.class));
-//                finish();
-//            }
-//        });
+    private void clickOnBottomNav(){
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this,gso);
+        nav = findViewById(R.id.bottom_nav_admin);
+        nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.sign_out_admin:
+                        areYouSureMessageOut();
+                        break;
+
+                    case R.id.u:
+                        startActivity(new Intent(DetailUserActivity.this, UsersActivity.class));
+                        break;
+
+                    case R.id.p:
+                        startActivity(new Intent(DetailUserActivity.this, MainActivity.class));
+                        break;
+
+                }
+                return true;
+            }
+        });
     }
 
     private void areYouSureMessage(){
@@ -117,6 +144,37 @@ public class DetailUserActivity extends AppCompatActivity
                     }
                 })
                 .setNegativeButton("No",null).show();
+    }
+
+    private void areYouSureMessageOut(){
+        new AlertDialog.Builder(this).setMessage("Are you sure you want to exit?").
+                setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        signOut();
+                    }
+                })
+                .setNegativeButton("No",null).show();
+    }
+
+    void signOut(){
+        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(Task<Void> task) {
+                if (task.isSuccessful()) {
+
+                    finish();
+                    startActivity(new Intent(DetailUserActivity.this, StartActivity.class));
+                }
+                else {
+                    startActivity(new Intent(DetailUserActivity.this, StartActivity.class));
+                }
+            }
+
+        });
+
+
+
     }
 
     private void getSelectedShape()
@@ -143,10 +201,11 @@ public class DetailUserActivity extends AppCompatActivity
                     fstore.collection("BlockedUsers").document(parsedID).set(blockUser);
                     fstore.collection("Users").document(parsedID).delete();
                     Toast.makeText(DetailUserActivity.this, "removed", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(DetailUserActivity.this, UsersActivity.class));
+
                 }
                 else{
                     Toast.makeText(DetailUserActivity.this, "dont exist", Toast.LENGTH_SHORT).show();
-
                 }
             }
         });

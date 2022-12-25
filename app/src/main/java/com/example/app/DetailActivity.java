@@ -212,7 +212,7 @@ public class DetailActivity extends AppCompatActivity
                                 file.getFile(localTempFile).addOnSuccessListener((new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                     @Override
                                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                        Toast.makeText(DetailActivity.this, "Picture Retrieved",Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(DetailActivity.this, "Picture Retrieved",Toast.LENGTH_SHORT).show();
                                         Bitmap bitmap = BitmapFactory.decodeFile(localTempFile.getAbsolutePath());
                                         images.add(bitmap);
                                         Log.d("firebaseFailed", "images.size="+images.size());

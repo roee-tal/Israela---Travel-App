@@ -24,26 +24,22 @@ import java.io.IOException;
 import java.util.List;
 
 public class MessageAdapter extends ArrayAdapter<Message> {
-    private StorageReference myStorage;
 
-    public MessageAdapter(Context context, int resource, List<Message> shapeList) {
-        super(context, resource, shapeList);
+    public MessageAdapter(Context context, int resource, List<Message> messageList) {
+        super(context, resource, messageList);
     }
 
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Message site = getItem(position);
+        Message mes = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.shape_cell_users, parent, false);
         }
         TextView tv = (TextView) convertView.findViewById(R.id.Usern);
-//        ImageView iv = (ImageView) convertView.findViewById(R.id.mainImage);
 
-        tv.setText(site.getText());
-//        iv.setImageResource(site.getImage());
-//        this.setimageView(site.getUsername(), convertView);
+        tv.setText(mes.getText());
 
         return convertView;
     }
