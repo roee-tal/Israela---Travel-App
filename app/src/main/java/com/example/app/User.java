@@ -11,7 +11,6 @@ public class User {
     private String Id;
     private String isUser;
     private String LettersNum;
-    private ArrayList<String> let;
 
     public User(String Email, String Id, String isUser){
         this.Email = Email;
@@ -29,9 +28,6 @@ public class User {
 
     public User(){}
 
-    public ArrayList<String> getArr(){
-        return this.let;
-    }
 
     public String getEmail(){
         return this.Email;

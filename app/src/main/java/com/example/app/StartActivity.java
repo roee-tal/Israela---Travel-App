@@ -45,6 +45,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.auth.User;
 
 
@@ -83,7 +85,6 @@ public class StartActivity extends AppCompatActivity {
                 requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         gsc = GoogleSignIn.getClient(this, gso);
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-
 //        Map<String,Object> us_info = new HashMap<>();
 //        us_info.put("name", "roee");
 //        us_info.put("fam", "tal");
@@ -168,16 +169,16 @@ public class StartActivity extends AppCompatActivity {
             public void onSuccess(AuthResult authResult) {
                 FirebaseUser user = auth.getCurrentUser();
                 String uid = user.getUid();
+                String e_mail = user.getEmail();
                 if (authResult.getAdditionalUserInfo().isNewUser()) {
-                    String e_mail = user.getEmail();
-                    DocumentReference df = fstore.collection("Users").document(user.getUid());
-                    Map<String,Object> us_info = new HashMap<>();
-                    us_info.put("ID", uid);
-                    us_info.put("Email", e_mail);
-                    us_info.put("isUser", "1");
-                    df.set(us_info);
-                    FirebaseDatabase.getInstance().getReference().child("Users").push().updateChildren(us_info);
-                    Toast.makeText(getApplicationContext(), "account created", Toast.LENGTH_SHORT).show();
+                        DocumentReference df = fstore.collection("Users").document(user.getUid());
+                        Map<String,Object> us_info = new HashMap<>();
+                        us_info.put("ID", uid);
+                        us_info.put("Email", e_mail);
+                        us_info.put("isUser", "1");
+                        df.set(us_info);
+                        FirebaseDatabase.getInstance().getReference().child("Users").push().updateChildren(us_info);
+                        Toast.makeText(getApplicationContext(), "account created", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Welcome", Toast.LENGTH_SHORT).show();
                 }
@@ -185,7 +186,6 @@ public class StartActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void loginu(String txt_email, String pas_email) {
         auth.signInWithEmailAndPassword(txt_email, pas_email).addOnCompleteListener(StartActivity.this, new OnCompleteListener<AuthResult>() {

@@ -14,9 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -173,6 +175,9 @@ public class MainActivity extends AppCompatActivity
                             case R.id.p:
                                 startActivity(new Intent(MainActivity.this, MainActivity.class));
                                 break;
+
+                            case R.id.addS:
+                                addSiteTapped();
                         }
 
                         return true;
@@ -203,6 +208,76 @@ public class MainActivity extends AppCompatActivity
                         return true;
                     }
                 });
+            }
+        });
+    }
+
+
+    public void addSiteTapped()  {
+
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
+        View mView = getLayoutInflater().inflate(R.layout.activity_add_site, null);
+
+        final String[] locations = {Location.North.name(), Location.Center.name(), Location.South.name()};
+
+
+        final EditText mName = (EditText) mView.findViewById(R.id.name);
+        final EditText mImage = (EditText) mView.findViewById(R.id.image);
+        final EditText mRate = (EditText) mView.findViewById(R.id.rate);
+        final EditText mShadeRate = (EditText) mView.findViewById(R.id.shade_rate);
+        final EditText mDetails = (EditText) mView.findViewById(R.id.details);
+        final EditText mLocation = (EditText) mView.findViewById(R.id.location);
+        final EditText mCategory = (EditText) mView.findViewById(R.id.category);
+
+        Button mAdd = (Button) mView.findViewById(R.id.add);
+
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+
+        mAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                String name = mName.getText().toString();
+                String image = mImage.getText().toString();
+                String rate = mRate.getText().toString();
+                String shade_rate = mShadeRate.getText().toString();
+                String details = mDetails.getText().toString();
+                String location = mLocation.getText().toString();
+                String category = mCategory.getText().toString();
+                Location currLocation = Location.Center;
+                Category currCategory = Category.track;
+
+                if (location.equals("center")) currLocation = Location.Center;
+                else if (location.equals("north")) currLocation = Location.North;
+                else if  (location.equals("south")) currLocation = Location.South;
+                else location = "";
+
+                if (category.equals("track")) currCategory = Category.track;
+                else if (category.equals("picnic")) currCategory = Category.picnic;
+                else if  (category.equals("swimming")) currCategory = Category.swimming;
+                else category = "";
+
+                if ( name.isEmpty() || rate.isEmpty() ||
+                        shade_rate.isEmpty() || details.isEmpty() || location.isEmpty() || category.isEmpty()) {
+
+                    Toast.makeText(MainActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+
+                }else{
+
+                    if (image.isEmpty() ) image = "Tel Aviv beach/telAviv1.jfif";
+
+                    Site newSite = new Site("13",name, image, Integer.parseInt(rate), details, currLocation, Integer.parseInt(shade_rate),1,1, null, currCategory);
+
+                    DatabaseReference mDatabase;
+                    mDatabase = FirebaseDatabase.getInstance().getReference();
+                    mDatabase.child("site").push().setValue(newSite);
+
+                    Toast.makeText(MainActivity.this, "success", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
             }
         });
     }
