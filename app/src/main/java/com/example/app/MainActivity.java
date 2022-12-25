@@ -551,7 +551,7 @@ public class MainActivity extends AppCompatActivity
         Site octagon = new Site("4","Hermon", "Tel Aviv beach/telAviv1.jfif", 2.6, "bla lba", Location.North, 3,1,1, null, Category.track);
         shapeList.add(octagon);
 
-        Site circle2 = new Site("5", "Circle 2", "Tel Aviv beach/telAviv1.jfif", 1.2, "bla lba", Location.North, 3,1,1, null, Category.picnic);
+        Site circle2 = new Site("5", "Nahal Hazbany", "Tel Aviv beach/telAviv1.jfif", 1.2, "bla lba", Location.North, 3,1,1, null, Category.swimming);
         shapeList.add(circle2);
 
         Site triangle2 = new Site("6","Triangle 2", "Tel Aviv beach/telAviv1.jfif", 4, "bla lba", Location.Center, 3,1,1, null, Category.picnic);
@@ -663,7 +663,7 @@ public class MainActivity extends AppCompatActivity
                         DocumentSnapshot doc = task.getResult();
                         if(doc.exists()){
                             String is_us = doc.getString("isUser");
-                            if(is_us.equals("1")){
+                            if(is_us.equals("0")){
                                 Log.d("MainActivity", "is admin");
                                 showDetail[0] = new Intent(getApplicationContext(), AdminDetailActivity.class);
                                 Log.d("MainActivity", "ADMIN LOADED :)");
