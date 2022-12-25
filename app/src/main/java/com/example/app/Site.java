@@ -35,6 +35,7 @@ class Site
         this.mainRateReviewNum = 1;
         this.event = event;
         this.category = category;
+        this.reviews = new HashMap<>();
     }
 
     public void updateRate(double rate) {
@@ -148,5 +149,10 @@ class Site
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public HashMap<String, Review> getReviews() {
+
+        return reviews;
     }
 }
