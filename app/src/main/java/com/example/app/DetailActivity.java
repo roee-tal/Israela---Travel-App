@@ -142,7 +142,7 @@ public class DetailActivity extends AppCompatActivity
                 TextView siteName = (TextView) findViewById(R.id.siteName);
                 TextView siteDetail = (TextView) findViewById(R.id.siteDetail);
 //        ImageView iv = (ImageView) findViewById(R.id.mainImage);
-                String detail = "Name: " + s.getName() +
+                String detail =
                         "\n\nArea: " + s.getLocation() +
                         "\n\nRate: " + s.getRate() + "/5" +
                         "\n\nShade Rate: " + s.getShadeRate() + "/5" +
