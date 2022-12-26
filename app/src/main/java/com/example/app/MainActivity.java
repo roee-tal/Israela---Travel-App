@@ -542,38 +542,38 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
 
-        Site triangle = new Site("1","Tel Aviv beach", 0.2, "The Tel Aviv beach stretches for ages along the whole western edge of the city, moving from historic Yaffo to the northern port near Park Hayarkon. Stretching over 14 kilometers along the Mediterranean, this sparkling coastline has a little bit of everything, and activities for each season. Whether you’re looking to soak up the summer sun, use the stormy winter weather to catch a few waves, or jog along the tayelet, we break down all the beaches in Tel Aviv and their distinctive characters below so you can choose your perfect beach.", Location.Center, 3,1,1, null, Category.swimming);
+        Site triangle = new Site("1","Tel Aviv beach", 0.2, "The Tel Aviv beach stretches for ages along the whole western edge of the city, moving from historic Yaffo to the northern port near Park Hayarkon. \nStretching over 14 kilometers along the Mediterranean, this sparkling coastline has a little bit of everything, and activities for each season. \nWhether you’re looking to soak up the summer sun, use the stormy winter weather to catch a few waves, or jog along the tayelet, we break down all the beaches in Tel Aviv and their distinctive characters below so you can choose your perfect beach.\n", Location.Center, 3,1,1, null, Category.swimming);
         shapeList.add(triangle);
 
-        Site square = new Site("2","Herzliya beach", 3, "At Herzliya, tourists will find a white sand blanket, a beautiful promenade, a marina, a rescue station, as well as excellent restaurants and bars with fun parties. There are no breakwaters on Herzliya beach, which makes it a dream for any surfer. In the beach sports club, you can take diving and surfing lessons, rent surfboards, catamarans, baidarkas, and kayaks.", Location.South, 3,1,1, null, Category.swimming);
+        Site square = new Site("2","Herzliya beach", 3, "At Herzliya, tourists will find a white sand blanket, a beautiful promenade, a marina, a rescue station, as well as excellent restaurants and bars with fun parties. \nThere are no breakwaters on Herzliya beach, which makes it a dream for any surfer. \nIn the beach sports club, you can take diving and surfing lessons, rent surfboards, catamarans, baidarkas, and kayaks.\n", Location.South, 3,1,1, null, Category.swimming);
         shapeList.add(square);
 
         Site rectangle = new Site("3","Mezada", 1, "Masada is not only important because it is a UNESCO World Heritage Site or an ancient fortress occupying a breathtaking, strategic location high on a flat plateau above the Dead Sea, but because of its symbolic importance of determination and heroism which continues to this day with many Israeli soldiers sworn in here.\n" +
                 "\n\n" +
-                "This mountain is one of the greatest archaeological sites in Israel and, perhaps, across the world. Its dramatic ascent can now be made by cable-car, but the drama and imagery that this site portrays is no less powerful than it ever was. Many people opt to join a Masada tour, enjoying a guide who will bring the site to life.", Location.South, 3,1,1, null, Category.track);
+                "This mountain is one of the greatest archaeological sites in Israel and, perhaps, across the world. \nIts dramatic ascent can now be made by cable-car, but the drama and imagery that this site portrays is no less powerful than it ever was. \nMany people opt to join a Masada tour, enjoying a guide who will bring the site to life.\n", Location.South, 3,1,1, null, Category.track);
         shapeList.add(rectangle);
 
-        Site octagon = new Site("4","Hermon", 2.6, "Us Israelis love to brag and boast about the Hermon Mountain, probably because it’s one of the only places that lets us pretend we’re wintering in Europe rather than the Mediterranean. But there’s more to the Hermon than winter time snow, and it’s not just the mountain in northern Israel that’s worth a visit. The area is known for its multitude of trails for amateurs and seasoned hikers alike, as well as babbling brooks and streams. If you’re looking for something a little more specific, check out these great ideas for a good day in Israel’s northernmost peaks.", Location.North, 3,1,1, null, Category.track);
+        Site octagon = new Site("4","Hermon", 2.6, "Us Israelis love to brag and boast about the Hermon Mountain, probably because it’s one of the only places that lets us pretend we’re wintering in Europe rather than the Mediterranean. \nBut there’s more to the Hermon than winter time snow, and it’s not just the mountain in northern Israel that’s worth a visit. \nThe area is known for its multitude of trails for amateurs and seasoned hikers alike, as well as babbling brooks and streams. \nIf you’re looking for something a little more specific, check out these great ideas for a good day in Israel’s northernmost peaks.\n", Location.North, 3,1,1, null, Category.track);
         shapeList.add(octagon);
 
         Site circle2 = new Site("5", "Nahal Hazbany", 1.2, "Nahal Snir (also known as the Hasbani River) has a national park that is found in the Northern Galilee. \nThe park consists of a picnic area, two man made pools and an entrance to the Snir River itself. \nOne of the man made pools is for wading and has a waterfall flowing into it. \nThe other pool, is a refuge for rare water plants such as the Yellow Pond Lily.\n" +
                 "\n\n" +
-                "In addition to the pools in this reserve, is the Snir Stream Ravine, a short hiking trail of 1km that one can do either inside the water or outside it. \nTo the left of this trail are small waterfalls bringing water from the Dan River into the Snir. \nThis nature reserve is great for the whole family. \nDon’t forget to explore Park Chushim, a sensory park within the reserve which is great for young kids. \nThe Nahal Snir National Park needs advanced booking. \nTo book click here", Location.North, 3,1,1, null, Category.swimming);
+                "In addition to the pools in this reserve, is the Snir Stream Ravine, a short hiking trail of 1km that one can do either inside the water or outside it. \nTo the left of this trail are small waterfalls bringing water from the Dan River into the Snir. \nThis nature reserve is great for the whole family. \nDon’t forget to explore Park Chushim, a sensory park within the reserve which is great for young kids. \nThe Nahal Snir National Park needs advanced booking. \nTo book click here\n", Location.North, 3,1,1, null, Category.swimming);
         shapeList.add(circle2);
 
-        Site triangle2 = new Site("6","Dead Sea", 4, "The Dead Sea, known in Hebrew as Yam Ha-Melakh (the Sea of Salt) is the lowest point on earth. \nIt’s surrounded by the stunning landscape of the Negev Desert. \nThe shores of the Dead Sea are the lowest point on the surface of the earth. \nThe saline waters of the lake means no fish can survive in the salty waters, hence the name. \nThe other result of the salty water is their renowned health and healing properties of the mud. \nYou can also float naturally in them. \nThere are tours to the Dead Sea available from across Israel which allow you to experience this yourself. \nAlternatively, staying at a Dead Sea Hotel provides additional spa and treatment experiences.", Location.Center, 3,1,1, null, Category.picnic);
+        Site triangle2 = new Site("6","Dead Sea", 4, "The Dead Sea, known in Hebrew as Yam Ha-Melakh (the Sea of Salt) is the lowest point on earth. \nIt’s surrounded by the stunning landscape of the Negev Desert. \nThe shores of the Dead Sea are the lowest point on the surface of the earth. \nThe saline waters of the lake means no fish can survive in the salty waters, hence the name. \nThe other result of the salty water is their renowned health and healing properties of the mud. \nYou can also float naturally in them. \nThere are tours to the Dead Sea available from across Israel which allow you to experience this yourself. \nAlternatively, staying at a Dead Sea Hotel provides additional spa and treatment experiences.\n", Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(triangle2);
 
         Site square2 = new Site("7","Ben Shemen Forest", 4, "Want to find the best trails in Ben Shemen Forest for an adventurous hike or a family trip? AllTrails has 14 great trails for hiking and more. " +
                 "\nEnjoy hand-curated trail maps, along with reviews and photos from nature lovers like you. \nReady for your next hike or bike ride? Explore one of 4 easy hiking trails in Ben Shemen Forest that are great for the whole family. " +
                 "\nLooking for a more strenuous hike? We've got you covered, with trails ranging from 40 to 843 meters in elevation gain. " +
-                "\nWhatever you have planned for the day, you can find the perfect trail for your next trip to Ben Shemen Forest.", Location.Center, 3,1,1, null, Category.picnic);
+                "\nWhatever you have planned for the day, you can find the perfect trail for your next trip to Ben Shemen Forest.\n", Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(square2);
 
-        Site rectangle2 = new Site("8","Ein Hanatziv", 3, "Check out this 2.3-km out-and-back trail near Sde Eliyahu, Northern District HaZafon. \nGenerally considered an easy route, it takes an average of 28 min to complete. \nThis trail is great for hiking and walking, and it's unlikely you'll encounter many other people while exploring. \nThe trail is open year-round and is beautiful to visit anytime. \nDogs are welcome, but must be on a leash.", Location.Center, 3,1,1, null, Category.picnic);
+        Site rectangle2 = new Site("8","Ein Hanatziv", 3, "Check out this 2.3-km out-and-back trail near Sde Eliyahu, Northern District HaZafon. \nGenerally considered an easy route, it takes an average of 28 min to complete. \nThis trail is great for hiking and walking, and it's unlikely you'll encounter many other people while exploring. \nThe trail is open year-round and is beautiful to visit anytime. \nDogs are welcome, but must be on a leash.\n", Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(rectangle2);
 
-        Site octagon2 = new Site("9","Red Canyon", 1.8, "The Red Canyon in the Eilat Mountains is one of Israel’s most beautiful yet accessible hiking trails. \nEntrance to the park is completely free. \nTwenty minutes north of Eilat, this stunning geological wonder offers an undisturbed hike through the natural canyons. \nThe Red Canyon gets its name from the phenomenon which occurs when sunlight hits the reddish rock that lines the canyon. \nIt then glows with an intense reddish color. \nThe rock is varied in color and in patches is shades of white and yellow. \nThe colors come from the sandstone that’s been carved by wind and water through the ages.", Location.Center, 3,1,1, null, Category.picnic);
+        Site octagon2 = new Site("9","Red Canyon", 1.8, "The Red Canyon in the Eilat Mountains is one of Israel’s most beautiful yet accessible hiking trails. \nEntrance to the park is completely free. \nTwenty minutes north of Eilat, this stunning geological wonder offers an undisturbed hike through the natural canyons. \nThe Red Canyon gets its name from the phenomenon which occurs when sunlight hits the reddish rock that lines the canyon. \nIt then glows with an intense reddish color. \nThe rock is varied in color and in patches is shades of white and yellow. \nThe colors come from the sandstone that’s been carved by wind and water through the ages.\n", Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(octagon2);
 
         Site circle = new Site("10", "Jerusalem Forest", 5, "In the early years of the state, Jewish National Fund planted thousands of trees along the western edge of Jerusalem, creating a green belt.[1]\n" +
@@ -586,14 +586,7 @@ public class MainActivity extends AppCompatActivity
                 , Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(circle);
 
-//        //--------------------------------------------
-//        //******************************************************************
-//        // push all the objects to firebase:
-//        for (Site site: shapeList) {
-//            mDatabase.child("site").push().setValue(site);
-////            mDatabase.child("site").child(site.getId()).push().setValue("reviews");
-//        }
-//        //--------------------------------------------
+//        //-------------------------------------------
 
         // this will hold our collection of all Site's.
         final ArrayList<Site> siteList = new ArrayList<Site>();
@@ -632,7 +625,14 @@ public class MainActivity extends AppCompatActivity
 //            shapeList.add(site);
 //            Log.d("firebase0129", site.getRate() +"---"+ site.getName());
 //        }
-
+//        --------------------------------------------
+//        //******************************************************************
+//        // push all the objects to firebase:
+//        for (Site site: shapeList) {
+//            mDatabase.child("site").push().setValue(site);
+////            mDatabase.child("site").child(site.getId()).push().setValue("reviews");
+//        }
+//        //-
     }
 
     private void setUpList()
