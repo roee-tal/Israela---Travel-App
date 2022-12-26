@@ -50,6 +50,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/addRating"
+            android:background="@color/b3"
             android:textSize="11dp"
             android:textStyle="italic"
             android:layout_width="0dp"
@@ -62,6 +63,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/addReviewButton"
             android:textSize="11dp"
+            android:background="@color/b3"
             android:textStyle="italic"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -74,6 +76,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/ShowReviewsButton"
             android:textSize="11dp"
+            android:background="@color/b3"
             android:textStyle="italic"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -86,6 +89,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/event"
             android:textSize="11dp"
+            android:background="@color/b3"
             android:textStyle="italic"
             android:layout_width="0dp"
             android:layout_weight="1"

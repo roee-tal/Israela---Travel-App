@@ -56,6 +56,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class StartActivity extends AppCompatActivity {
 
     private EditText email;
@@ -85,14 +86,6 @@ public class StartActivity extends AppCompatActivity {
                 requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         gsc = GoogleSignIn.getClient(this, gso);
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-//        Map<String,Object> us_info = new HashMap<>();
-//        us_info.put("name", "roee");
-//        us_info.put("fam", "tal");
-//        FirebaseDatabase.getInstance().getReference().child("Users").updateChildren(us_info);
-//        Map<String,Object> us_info2 = new HashMap<>();
-//        us_info.put("name", "sivan");
-//        us_info.put("fam", "cohen");
-//        FirebaseDatabase.getInstance().getReference().child("First7").updateChildren(us_info2);
 
 
         googleBtn.setOnClickListener(new View.OnClickListener() {
@@ -119,19 +112,14 @@ public class StartActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(pas_email)){
                     Toast.makeText(StartActivity.this, "Empty Credentials!", Toast.LENGTH_SHORT).show();
                 } else {
-                    loginu(txt_email , pas_email);
+                        notBlocked(txt_email, pas_email);
+//                        loginu(txt_email, pas_email);
 //                    startActivity(new Intent(StartActivity.this, MainActivity.class)); // Todo: disable this to skip authentication phase - Debug Mode
 //                    finish();
                 }
             }
         });
 
-//        fb.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                LoginManager.getInstance().logInWithReadPermissions(StartActivity.this, Arrays.asList("public_profile"));
-//            }
-//        });
     }
 
     void signIn(){
@@ -145,22 +133,40 @@ public class StartActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseauthwithgoogle(account);
-//                GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-//                task.getResult(ApiException.class);
-//                FirebaseUser fu = auth.getCurrentUser();
-//                DocumentReference df = fstore.collection("Users").document(fu.getUid());
-//                Map<String,Object> us_info = new HashMap<>();
-//                us_info.put("FullName", personName.getText().toString());
-//                us_info.put("Email", email.getText().toString());
-//                df.set(us_info);
-//                navigateToSecondActivity();
+                String mail = account.getEmail();
+                notBlockedG(mail, account);
+
             } catch (ApiException e) {
                 Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
             }
         }
-
     }
+
+    private void notBlockedG(String e_mail, GoogleSignInAccount account) {
+        fstore.collection("BlockedUsers").whereEqualTo("email",e_mail)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            QuerySnapshot querySnapshot = task.getResult();
+                            int size = querySnapshot.size();
+                            if(size != 0) {
+                                auth.signOut();
+                                gsc.signOut();
+                                Toast.makeText(StartActivity.this, "You are blocked", Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                firebaseauthwithgoogle(account);
+                            }
+                        }
+                        else {
+                            Log.d("TAG", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
 
     private void firebaseauthwithgoogle(GoogleSignInAccount account) {
         AuthCredential cred = GoogleAuthProvider.getCredential(account.getIdToken(), null);
@@ -171,20 +177,51 @@ public class StartActivity extends AppCompatActivity {
                 String uid = user.getUid();
                 String e_mail = user.getEmail();
                 if (authResult.getAdditionalUserInfo().isNewUser()) {
+//                    if(notBlocked(e_mail)) {
                         DocumentReference df = fstore.collection("Users").document(user.getUid());
-                        Map<String,Object> us_info = new HashMap<>();
+                        Map<String, Object> us_info = new HashMap<>();
                         us_info.put("ID", uid);
                         us_info.put("Email", e_mail);
                         us_info.put("isUser", "1");
                         df.set(us_info);
                         FirebaseDatabase.getInstance().getReference().child("Users").push().updateChildren(us_info);
                         Toast.makeText(getApplicationContext(), "account created", Toast.LENGTH_SHORT).show();
-                } else {
+//                    }
+//                    else {
+//                        Toast.makeText(getApplicationContext(), "You are blocked", Toast.LENGTH_SHORT).show();
+//                    }
+                }
+                else {
                     Toast.makeText(getApplicationContext(), "Welcome", Toast.LENGTH_SHORT).show();
                 }
                 checkUserAccessLevel(uid);
             }
         });
+    }
+
+    private void notBlocked(String e_mail,String pass) {
+
+        fstore.collection("BlockedUsers").whereEqualTo("email",e_mail)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            QuerySnapshot querySnapshot = task.getResult();
+                            int size = querySnapshot.size();
+                            if(size != 0) {
+                                auth.signOut();
+                                Toast.makeText(StartActivity.this, "You are blocked", Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                loginu(e_mail, pass);
+                            }
+                            }
+                         else {
+                            Log.d("TAG", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 
     private void loginu(String txt_email, String pas_email) {
@@ -226,23 +263,14 @@ public class StartActivity extends AppCompatActivity {
                             finish();
                         }
                     }
+                else{
+                    Toast.makeText(StartActivity.this, "failed", Toast.LENGTH_LONG).show();
+
+                }
                 }
             }
         });
-//        df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//            @Override
-//            public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                Log.d("TAG", "onSuccess" + documentSnapshot.getData());
-//                if(documentSnapshot.getString("isAdmin")!=null){
-//                    startActivity(new Intent(StartActivity.this, AdminActivity.class));
-//                    finish();
-//                }
-//                if(documentSnapshot.getString("isUser")!=null){
-//                    startActivity(new Intent(StartActivity.this, SecActivity.class));
-//                    finish();
-//                }
-//            }
-//        });
+
     }
 }
 

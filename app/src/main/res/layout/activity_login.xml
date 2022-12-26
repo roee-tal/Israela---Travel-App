@@ -58,16 +58,16 @@
         android:layout_below="@id/email"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="328dp"
+        android:layout_marginBottom="360dp"
+        android:background="#30ffffff"
+        android:drawableLeft="@drawable/ic_baseline_password_24"
         android:ems="10"
         android:hint="  password"
         android:inputType="textPassword"
         android:textSize="24sp"
-        android:background="#30ffffff"
-        android:drawableLeft="@drawable/ic_baseline_password_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText

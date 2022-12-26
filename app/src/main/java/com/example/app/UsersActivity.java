@@ -118,7 +118,7 @@ public class UsersActivity extends AppCompatActivity
             @Override
             public void onComplete(Task<Void> task) {
                 if (task.isSuccessful()) {
-
+                    gsc.signOut();
                     finish();
                     startActivity(new Intent(UsersActivity.this, StartActivity.class));
                 }
@@ -336,7 +336,6 @@ public class UsersActivity extends AppCompatActivity
 
     public void messageTapped(View view)
     {
-//        adapter.notifyDataSetChanged();
 
         selectedFilters.clear();
         selectedFilters.add("all");
@@ -369,8 +368,7 @@ public class UsersActivity extends AppCompatActivity
                     }
                 });
         Collections.sort(UsersList, User.mesAscending);
-//        unSelectAllFilterButtons();
-//        lookSelected(messages);
+
     }
 
 
