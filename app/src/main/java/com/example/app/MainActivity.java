@@ -542,18 +542,18 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
 
-        Site triangle = new Site("1","Tel Aviv beach", 0.2, "The Tel Aviv beach stretches for ages along the whole western edge of the city, moving from historic Yaffo to the northern port near Park Hayarkon. Stretching over 14 kilometers along the Mediterranean, this sparkling coastline has a little bit of everything, and activities for each season. Whether you’re looking to soak up the summer sun, use the stormy winter weather to catch a few waves, or jog along the tayelet, we break down all the beaches in Tel Aviv and their distinctive characters below so you can choose your perfect beach.\n", Location.Center, 3,1,1, null, Category.swimming);
+        Site triangle = new Site("1","Tel Aviv beach", 0.2, "The Tel Aviv beach stretches for ages along the whole western edge of the city, moving from historic Yaffo to the northern port near Park Hayarkon. \nStretching over 14 kilometers along the Mediterranean, this sparkling coastline has a little bit of everything, and activities for each season. \nWhether you’re looking to soak up the summer sun, use the stormy winter weather to catch a few waves, or jog along the tayelet, we break down all the beaches in Tel Aviv and their distinctive characters below so you can choose your perfect beach.\n", Location.Center, 3,1,1, null, Category.swimming);
         shapeList.add(triangle);
 
-        Site square = new Site("2","Herzliya beach", 3, "At Herzliya, tourists will find a white sand blanket, a beautiful promenade, a marina, a rescue station, as well as excellent restaurants and bars with fun parties. There are no breakwaters on Herzliya beach, which makes it a dream for any surfer. In the beach sports club, you can take diving and surfing lessons, rent surfboards, catamarans, baidarkas, and kayaks.\n", Location.South, 3,1,1, null, Category.swimming);
+        Site square = new Site("2","Herzliya beach", 3, "At Herzliya, tourists will find a white sand blanket, a beautiful promenade, a marina, a rescue station, as well as excellent restaurants and bars with fun parties. \nThere are no breakwaters on Herzliya beach, which makes it a dream for any surfer. \nIn the beach sports club, you can take diving and surfing lessons, rent surfboards, catamarans, baidarkas, and kayaks.\n", Location.South, 3,1,1, null, Category.swimming);
         shapeList.add(square);
 
         Site rectangle = new Site("3","Mezada", 1, "Masada is not only important because it is a UNESCO World Heritage Site or an ancient fortress occupying a breathtaking, strategic location high on a flat plateau above the Dead Sea, but because of its symbolic importance of determination and heroism which continues to this day with many Israeli soldiers sworn in here.\n" +
                 "\n\n" +
-                "This mountain is one of the greatest archaeological sites in Israel and, perhaps, across the world. Its dramatic ascent can now be made by cable-car, but the drama and imagery that this site portrays is no less powerful than it ever was. Many people opt to join a Masada tour, enjoying a guide who will bring the site to life.\n", Location.South, 3,1,1, null, Category.track);
+                "This mountain is one of the greatest archaeological sites in Israel and, perhaps, across the world. \nIts dramatic ascent can now be made by cable-car, but the drama and imagery that this site portrays is no less powerful than it ever was. \nMany people opt to join a Masada tour, enjoying a guide who will bring the site to life.\n", Location.South, 3,1,1, null, Category.track);
         shapeList.add(rectangle);
 
-        Site octagon = new Site("4","Hermon", 2.6, "Us Israelis love to brag and boast about the Hermon Mountain, probably because it’s one of the only places that lets us pretend we’re wintering in Europe rather than the Mediterranean. But there’s more to the Hermon than winter time snow, and it’s not just the mountain in northern Israel that’s worth a visit. The area is known for its multitude of trails for amateurs and seasoned hikers alike, as well as babbling brooks and streams. If you’re looking for something a little more specific, check out these great ideas for a good day in Israel’s northernmost peaks.\n", Location.North, 3,1,1, null, Category.track);
+        Site octagon = new Site("4","Hermon", 2.6, "Us Israelis love to brag and boast about the Hermon Mountain, probably because it’s one of the only places that lets us pretend we’re wintering in Europe rather than the Mediterranean. \nBut there’s more to the Hermon than winter time snow, and it’s not just the mountain in northern Israel that’s worth a visit. \nThe area is known for its multitude of trails for amateurs and seasoned hikers alike, as well as babbling brooks and streams. \nIf you’re looking for something a little more specific, check out these great ideas for a good day in Israel’s northernmost peaks.\n", Location.North, 3,1,1, null, Category.track);
         shapeList.add(octagon);
 
         Site circle2 = new Site("5", "Nahal Hazbany", 1.2, "Nahal Snir (also known as the Hasbani River) has a national park that is found in the Northern Galilee. \nThe park consists of a picnic area, two man made pools and an entrance to the Snir River itself. \nOne of the man made pools is for wading and has a waterfall flowing into it. \nThe other pool, is a refuge for rare water plants such as the Yellow Pond Lily.\n" +
@@ -586,7 +586,7 @@ public class MainActivity extends AppCompatActivity
                 , Location.Center, 3,1,1, null, Category.picnic);
         shapeList.add(circle);
 
-//        /-------------------------------------------
+//        //-------------------------------------------
 
         // this will hold our collection of all Site's.
         final ArrayList<Site> siteList = new ArrayList<Site>();
@@ -625,7 +625,7 @@ public class MainActivity extends AppCompatActivity
 //            shapeList.add(site);
 //            Log.d("firebase0129", site.getRate() +"---"+ site.getName());
 //        }
-/--------------------------------------------
+//        --------------------------------------------
 //        //******************************************************************
 //        // push all the objects to firebase:
 //        for (Site site: shapeList) {
