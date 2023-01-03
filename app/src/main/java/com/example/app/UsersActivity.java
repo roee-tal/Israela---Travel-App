@@ -63,7 +63,6 @@ public class UsersActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
 
-
         initSearchWidgets();
         initWidgets();
         clickOnBottomNav();
@@ -368,9 +367,7 @@ public class UsersActivity extends AppCompatActivity
                     }
                 });
         Collections.sort(UsersList, User.mesAscending);
-
     }
-
 
 
     private void setAdapter(ArrayList<User> UsersList)
