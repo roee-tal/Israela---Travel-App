@@ -200,7 +200,7 @@
         <ListView
             android:id="@+id/shapesListView"
             android:layout_width="match_parent"
-            android:layout_height="638dp">
+            android:layout_height="673dp">
 
         </ListView>
 

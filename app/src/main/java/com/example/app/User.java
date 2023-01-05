@@ -11,12 +11,14 @@ public class User {
     private String Id;
     private String isUser;
     private String LettersNum;
+    private Boolean isBlocked;
 
     public User(String Email, String Id, String isUser){
         this.Email = Email;
         this.Id = Id;
         this.isUser = isUser;
         this.LettersNum = "0";
+        this.isBlocked = false;
     }
 
     public User(String Email, String Id, String isUser, String Let){
@@ -31,6 +33,14 @@ public class User {
 
     public String getEmail(){
         return this.Email;
+    }
+
+    public Boolean getIsBlocked(){
+        return this.isBlocked;
+    }
+
+    public void setIsBlocked(Boolean isBlocked){
+        this.isBlocked=isBlocked;
     }
 
     public void setEmail(String Email){

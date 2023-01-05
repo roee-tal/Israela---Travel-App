@@ -57,7 +57,7 @@ tools:context=".ContactAdminActivity">
 
     <ListView
     android:layout_width="match_parent"
-    android:layout_height="553dp"
+    android:layout_height="599dp"
     android:id="@+id/shapesListView">
 
     </ListView>

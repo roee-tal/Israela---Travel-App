@@ -172,9 +172,6 @@ public class DetailUserActivity extends AppCompatActivity
             }
 
         });
-
-
-
     }
 
     private void getSelectedShape()
