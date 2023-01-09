@@ -43,13 +43,6 @@ class Site
         Log.d("Site", "mainRate="+ this.rate + " mainRateReviewNum="+mainRateReviewNum + " rate="+rate);
     }
 
-    public void updateShadeRate(double rate) {
-        Log.d("Site", "shadeRate="+ this.shadeRate + " shadeRateReviewNum="+shadeRateReviewNum + " rate="+rate);
-        this.shadeRate = (shadeRate * shadeRateReviewNum + rate) / (shadeRateReviewNum + 1.0);
-        this.shadeRate = Math.round(this.shadeRate * 10) / 10.0;
-        Log.d("Site", "shadeRate="+ this.shadeRate + " shadeRateReviewNum="+shadeRateReviewNum + " rate="+rate);
-
-    }
 
     public String getDetail() {
         return detail;
@@ -115,14 +108,6 @@ class Site
 
     public int getMainRateReviewNum() {
         return mainRateReviewNum;
-    }
-
-    public double getShadeRate() {
-        return shadeRate;
-    }
-
-    public int getShadeRateReviewNum() {
-        return shadeRateReviewNum;
     }
 
     public GroupEvent getEvent() {
