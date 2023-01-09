@@ -25,13 +25,19 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
@@ -41,6 +47,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import com.example.app.User;
 
 public class DetailActivity extends AppCompatActivity
 {
@@ -394,14 +401,46 @@ public class DetailActivity extends AppCompatActivity
                         Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                         for (DataSnapshot child : children) { //not really for, have only one with this ID!
                             String objectDB_Id = child.getKey();
-                            Log.d("adminDetailActivity", "child.getKey()="+objectDB_Id);
+                            Log.d("DetailActivity", "child.getKey()="+objectDB_Id);
                             Site s = child.getValue(Site.class);
 //                                s.updateRate(rating);
-                            this.updateSite(s, objectDB_Id);
-                            Log.d("adminDetailActivity", "s.getName()="+s.getName());
+                            this.addToUser(s, objectDB_Id);
+//                                this.updateSite(s, objectDB_Id);
                             assert s != null;
                         }
                     }
+
+                    private void addToUser(Site s, String objectDB_id) {
+                        FirebaseAuth auth;
+                        auth = FirebaseAuth.getInstance();
+                        FirebaseUser user = auth.getCurrentUser();
+                        String id = user.getUid();
+                        FirebaseFirestore fstore = FirebaseFirestore.getInstance();
+                        fstore.collection("Users").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                DocumentSnapshot doc = task.getResult();
+                                if(doc.exists()){
+                                    User usr = doc.toObject(User.class);
+                                    Log.d("TAG", "user-check = "+usr.getEmail());
+                                    if (!usr.addEvents(s, objectDB_id)) { //already joined to this event
+                                        Toast.makeText(DetailActivity.this, "You already joined to this event!", Toast.LENGTH_LONG).show();
+                                        Log.d("DetailActivity", "already joined to this event!");
+                                        return;
+                                    }
+                                    this.updateUser(usr);
+                                    updateSite(s, objectDB_id); // only if already joined to this event
+                                }
+                            }
+                            private void updateUser(User usr) {
+                                Map<String, Object> data = new HashMap<>();
+                                data.put("events", usr.getEvents());
+
+                                fstore.collection("Users").document(id).update("events", usr.getEvents());
+                            }
+                        });
+                    }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                     }
@@ -412,27 +451,27 @@ public class DetailActivity extends AppCompatActivity
                         updates.put("event/peopleEvent", (s.getEvent().getPeopleEvent() + 1));
                         String path = "site/" + objectDB_Id;
                         database.getReference(path).updateChildren(updates);
+                        this.welcomeMessage();
+                    }
+
+                    private void welcomeMessage() {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
+                        builder.setTitle("Welcome");
+                        builder.setMessage("Welcome to our group trip!\n" +
+                                "If you you want to see detail about the trip,\n" +
+                                "pleas click again on the detail event button." +
+                                "\nFor more info you can contact us.");
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do something when the "OK" button is clicked
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+
                     }
                 });
-                this.welcomeMessage();
-            }
-
-            private void welcomeMessage() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
-                builder.setTitle("Welcome");
-                builder.setMessage("Welcome to our group trip!\n" +
-                        "If you you want to see detail about the trip,\n" +
-                        "pleas click again on the detail event button." +
-                        "\nFor more info you can contact us.");
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do something when the "OK" button is clicked
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
             }
         });
 
@@ -568,7 +607,7 @@ public class DetailActivity extends AppCompatActivity
     public void showReviewsTapped(View view) {
 
         ArrayList<String> arrayListReviews = new ArrayList<>();
-        ArrayAdapter<String> adapterReview = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrayListReviews);
+        ArrayAdapter<String> adapterReview = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayListReviews);
 
 
         siteRef.child("reviews").addValueEventListener(new ValueEventListener() {
@@ -591,7 +630,7 @@ public class DetailActivity extends AppCompatActivity
                     arrayListReviews.add(review);
                     Log.d("reviews", review);
                 }
-                adapterReview.notifyDataSetChanged();
+            adapterReview.notifyDataSetChanged();
             }
 
             @Override

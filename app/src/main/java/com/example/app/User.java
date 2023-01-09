@@ -13,12 +13,16 @@ public class User {
     private String LettersNum;
     private Boolean isBlocked;
 
+    private ArrayList<EventID> events;
+
+
     public User(String Email, String Id, String isUser){
         this.Email = Email;
         this.Id = Id;
         this.isUser = isUser;
         this.LettersNum = "0";
         this.isBlocked = false;
+        this.events = new ArrayList<EventID>();
     }
 
     public User(String Email, String Id, String isUser, String Let){
@@ -26,9 +30,19 @@ public class User {
         this.Id = Id;
         this.isUser = isUser;
         this.LettersNum = Let;
+        this.events = new ArrayList<EventID>();
     }
 
-    public User(){}
+    public User(String Email, String Id, String isUser, String Let, Boolean isBlocked, EventID ev){
+        this.Email = Email;
+        this.Id = Id;
+        this.isUser = isUser;
+        this.LettersNum = Let;
+        this.isBlocked = isBlocked;
+        this.events = new ArrayList<EventID>();
+    }
+
+    public User(){};
 
 
     public String getEmail(){
@@ -97,6 +111,13 @@ public class User {
         }
     };
 
+    public ArrayList<EventID> getEvents() {
+        return events;
+    }
+
+    public void setEvents(ArrayList<EventID> events) {
+        this.events = events;
+    }
     public static Comparator<User> nameAscending = new Comparator<User>()
     {
         @Override
@@ -110,4 +131,15 @@ public class User {
             return name1.compareTo(name2);
         }
     };
+
+    public boolean addEvents(Site s, String objectDB_id) {
+        if (this.events == null)
+            this.events = new ArrayList<EventID>();
+        for (EventID e :  this.events) {
+            if  (objectDB_id.equals(e.getSiteDB_ID()))
+                return false; //already joined to this event
+        }
+        this.events.add(new EventID(objectDB_id, 0));
+        return true;
+    }
 }

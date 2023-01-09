@@ -9,10 +9,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -43,6 +45,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -201,11 +205,78 @@ public class MainActivity extends AppCompatActivity
                                 areYouSureMessage();
                                 break;
 
+                            case R.id.events:
+                                popUpEvents();
+                                break;
+
                             default:
 
                         }
 
                         return true;
+                    }
+                    private void popUpEvents(){
+                        df.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                DocumentSnapshot doc = task.getResult();
+                                if(doc.exists()){
+                                    User usr = doc.toObject(User.class);
+                                    Log.d("popUpEvents", "user-check = "+usr.getEmail());
+                                    getAndPopEvent(usr.getEvents());
+                                }
+                            }
+                        });
+                    }
+
+
+                    private void getAndPopEvent(ArrayList<EventID> eventID) {
+                        ArrayList<String> msg = new ArrayList<String>();
+                        ArrayAdapter<String> adapterEvent = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, msg);
+
+                        if (eventID != null && !eventID.isEmpty()) {
+                            for (EventID eID : eventID) {
+                                // Get a reference to the object with the specific ID
+                                DatabaseReference objectRef = myRealTimeDB.getReference("site").child(eID.getSiteDB_ID());
+
+                                // Use the `addListenerForSingleValueEvent` method to get the data at the object's location
+                                objectRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot snapshot) {
+                                        Site s = snapshot.getValue(Site.class);
+                                        msg.add("\n" + s.getName() +
+                                                "\n\nDate: " + s.getEvent().getDateEvent() +
+                                                "\nParticipants: " + s.getEvent().getPeopleEvent() +
+                                                "\nDetail: " + s.getEvent().getMeetingDetail() +
+                                                "\n");
+                                        adapterEvent.notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError error) {
+                                        // Failed to read the object
+                                    }
+                                });
+                            }
+                        }
+                        else {
+                            msg.add("You have no events at that moment\nyou are welcome to join our social events!");
+                            adapterEvent.notifyDataSetChanged();
+                        }
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+                        LayoutInflater inflater = getLayoutInflater();
+                        View convertView = (View) inflater.inflate(R.layout.reviews_list_view, null);
+                        alertDialog.setView(convertView);
+                        ListView lv = (ListView) convertView.findViewById(R.id.lv);
+                        lv.setAdapter(adapterEvent);
+                        alertDialog.setTitle("Your Events");
+                        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do something when the "OK" button is clicked
+                            }
+                        });
+                        alertDialog.show();
                     }
                 });
             }
