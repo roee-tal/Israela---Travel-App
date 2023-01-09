@@ -141,11 +141,12 @@ public class DetailActivity extends AppCompatActivity
 
                 TextView siteName = (TextView) findViewById(R.id.siteName);
                 TextView siteDetail = (TextView) findViewById(R.id.siteDetail);
+                RatingBar ratingBar = findViewById(R.id.rating_bar);
+                ratingBar.setRating((float) s.getRate());
+
 //        ImageView iv = (ImageView) findViewById(R.id.mainImage);
                 String detail =
                         "\n\nArea: " + s.getLocation() +
-                        "\n\nRate: " + s.getRate() + "/5" +
-                        "\n\nShade Rate: " + s.getShadeRate() + "/5" +
                         "\n\nDetail: " + s.getDetail();
                 siteName.setText(s.getName());
                 siteDetail.setText(detail);
@@ -248,7 +249,6 @@ public class DetailActivity extends AppCompatActivity
         mBuilder.setView(mView);
 
         final RatingBar mainRateBar = (RatingBar) mView.findViewById(R.id.mainRateBar);
-        final RatingBar shadeRateBar = (RatingBar) mView.findViewById(R.id.shadeRateBar);
 
 
         Button submitButton = (Button) mView.findViewById(R.id.submitButton);
@@ -266,9 +266,7 @@ public class DetailActivity extends AppCompatActivity
                 // get values and then displayed in a toast
                 final int totalStars = mainRateBar.getNumStars();
                 final double rating = mainRateBar.getRating();
-                final double shdeRating = shadeRateBar.getRating();
                 Log.d("AddRating", "totalStars=" + totalStars + " rating=" + rating);
-                Log.d("AddRating", "Shade rating=" + shdeRating);
 
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference databaseReference = database.getReference();
@@ -288,7 +286,7 @@ public class DetailActivity extends AppCompatActivity
                             Log.d("AddRating", "child.getKey()=" + objectDB_Id);
                             Site s = child.getValue(Site.class);
 //                                s.updateRate(rating);
-                            updateSite(s, objectDB_Id, rating, shdeRating, database);
+                            updateSite(s, objectDB_Id, rating, database);
                             Log.d("AddRating", "s.getName()=" + s.getName());
                             assert s != null;
                         }
@@ -302,15 +300,12 @@ public class DetailActivity extends AppCompatActivity
         });
     }
 
-    private void updateSite(Site s, String objectDB_Id, double rating, double shdeRating, FirebaseDatabase database)  {
+    private void updateSite(Site s, String objectDB_Id, double rating, FirebaseDatabase database)  {
 
         s.updateRate(rating);
-        s.updateShadeRate(shdeRating);
         Map<String, Object> updates = new HashMap<>();
         updates.put("rate", s.getRate());
         updates.put("mainRateReviewNum", (s.getMainRateReviewNum()+1));
-        updates.put("shadeRate", s.getShadeRate());
-        updates.put("shadeRateReviewNum", (s.getShadeRateReviewNum()+1));
         String path = "site/" + objectDB_Id;
         database.getReference(path).updateChildren(updates);
         Log.d("AddRating", "in update - s.rate="+s.getRate());

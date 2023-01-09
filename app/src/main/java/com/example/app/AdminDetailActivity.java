@@ -130,11 +130,11 @@ public class AdminDetailActivity extends AppCompatActivity
             {
                 TextView siteName = (TextView) findViewById(R.id.siteName);
                 TextView siteDetail = (TextView) findViewById(R.id.siteDetail);
+                RatingBar ratingBar = findViewById(R.id.rating_bar);
+                ratingBar.setRating((float) s.getRate());
+
 //        ImageView iv = (ImageView) findViewById(R.id.mainImage);
-                String detail = "Name: " + s.getName() +
-                        "\n\nArea: " + s.getLocation() +
-                        "\n\nRate: " + s.getRate() + "/5" +
-                        "\n\nShade Rate: " + s.getShadeRate() + "/5" +
+                String detail = "Area: " + s.getLocation() +
                         "\n\nDetail: " + s.getDetail();
                 siteName.setText(s.getName());
                 siteDetail.setText(detail);
@@ -210,7 +210,6 @@ public class AdminDetailActivity extends AppCompatActivity
     public void addRatingTapped(View view){
         Intent AddRate = new Intent(getApplicationContext(), AddRating.class);
         AddRate.putExtra("id",selectedShapeID);
-        AddRate.putExtra("name",selectedShapeName);
         startActivity(AddRate);
 //        startActivity(new Intent(DetailActivity.this, AddRating.class)); // Todo: disable this to skip authentication phase - Debug Mode
 //        finish();
@@ -276,19 +275,13 @@ public class AdminDetailActivity extends AppCompatActivity
 //        builder.setMessage("Enter the new shade rate:");
         final RatingBar generalRate = new RatingBar(this);
         generalRate.setMax(5);
-        final RatingBar shadeRate = new RatingBar(this);
-        final TextView textShade = new TextView(this);
         final TextView textGeneralRate = new TextView(this);
-        textShade.setText("Enter the new shade rate:");
-        textGeneralRate.setText("Enter the new general rate:");
-        shadeRate.setNumStars(5);
+        textGeneralRate.setText("Enter the new rate:");
         generalRate.setNumStars(5);
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.addView(textGeneralRate);
         layout.addView(generalRate);
-        layout.addView(textShade);
-        layout.addView(shadeRate);
         builder.setView(layout);
         builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             @Override
@@ -320,9 +313,7 @@ public class AdminDetailActivity extends AppCompatActivity
                         // Update data in Firebase
                         Map<String, Object> updates = new HashMap<>();
                         updates.put("rate", (generalRate.getRating()*1.0) );
-                        updates.put("shadeRate", (shadeRate.getRating()*1.0));
                         updates.put("mainRateReviewNum", (s.getMainRateReviewNum()+1));
-                        updates.put("shadeRateReviewNum", (s.getShadeRateReviewNum()+1));
                         String path = "site/" + objectDB_Id;
                         database.getReference(path).updateChildren(updates);
                     }
