@@ -7,11 +7,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.app.controller.ShowToastAndSignOut;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -21,21 +23,19 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AdminActivity extends AppCompatActivity {
 
     private Button usersList;
     private Button messages;
-    private Button signOut;
-    private Button Users;
-    private Button places;
+//    private Button signOut;
+//    private Button Users;
+//    private Button places;
     private TextView admin;
-    GoogleSignInOptions gso;
-    GoogleSignInClient gsc;
+//    GoogleSignInOptions gso;
+//    GoogleSignInClient gsc;
     private FirebaseAuth auth;
-    private BottomNavigationView nav;
+//    private BottomNavigationView nav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +49,7 @@ public class AdminActivity extends AppCompatActivity {
         messages = findViewById(R.id.messages);
         admin = findViewById(R.id.nam);
 //        signOut = findViewById(R.id.sign_out);
-        nav = findViewById(R.id.bottom_nav_admi);
-
+//        nav = findViewById(R.id.bottom_nav_admi);
 
 
         String mail = user.getEmail();
@@ -71,65 +70,68 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(AdminActivity.this, MainActivity.class));
-
             }
         });
-
     }
 
     private void clickOnBottomNav(){
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        gsc = GoogleSignIn.getClient(this,gso);
-        nav = findViewById(R.id.bottom_nav_admi);
-        nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.sign_out_admin:
-                        areYouSureMessage();
-                        break;
-
-                    case R.id.u:
-                        startActivity(new Intent(AdminActivity.this, UsersActivity.class));
-                        break;
-
-                    case R.id.p:
-                        startActivity(new Intent(AdminActivity.this, MainActivity.class));
-                        break;
-
-                }
-                return true;
-            }
-        });
+        BottomNavActivity bottomNavActivity = new BottomNavActivity();
+        bottomNavActivity.bNav(this);
+//        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+//        gsc = GoogleSignIn.getClient(this,gso);
+//        nav = findViewById(R.id.bottom_nav_admi);
+//        nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                switch (item.getItemId()){
+//                    case R.id.sign_out_admin:
+//                        areYouSureMessage(gsc);
+//                        break;
+//
+//                    case R.id.u:
+//                        startActivity(new Intent(AdminActivity.this, UsersActivity.class));
+//                        break;
+//
+//                    case R.id.p:
+//                        startActivity(new Intent(AdminActivity.this, MainActivity.class));
+//                        break;
+//
+//                }
+//                return true;
+//            }
+//        });
     }
-    private void areYouSureMessage(){
-        new AlertDialog.Builder(this).setMessage("Are you sure you want to exit?").
-                setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        signOut();
-                    }
-                })
-                .setNegativeButton("No",null).show();
-    }
+//    private void areYouSureMessage(GoogleSignInClient gsc){
+//        new AlertDialog.Builder(this).setMessage("Are you sure you want to exit?").
+//                setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        ShowToastAndSignOut showToastAndSignOut = new ShowToastAndSignOut();
+//                        showToastAndSignOut.signOut(gsc,AdminActivity.this);
+////                        signOut();
+//                    }
+//                })
+//                .setNegativeButton("No",null).show();
+//    }
 
-    void signOut(){
-        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(Task<Void> task) {
-                if (task.isSuccessful()) {
-
-                    finish();
-                    startActivity(new Intent(AdminActivity.this, StartActivity.class));
-                }
-                else {
-                    startActivity(new Intent(AdminActivity.this, StartActivity.class));
-                }
-            }
-
-        });
-
-
-
-    }
+//    void signOut(){
+//        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(Task<Void> task) {
+//                if (task.isSuccessful()) {
+//
+//                    finish();
+//                    startActivity(new Intent(AdminActivity.this, StartActivity.class));
+//                }
+//                else {
+//                    startActivity(new Intent(AdminActivity.this, StartActivity.class));
+//                }
+//            }
+//
+//
+//        });
+//
+//
+//
+//    }
 }

@@ -49,11 +49,12 @@ public class ContactActivity extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 //                FirebaseUser user = auth.getCurrentUser();
 //                Log.d("TAG", "message: " + text);
+
                 String s = text.toString();
                 conController.bSend(s);
+
 //                String e_mail = user.getEmail();
 //
 //                updateMesSize(user.getUid());

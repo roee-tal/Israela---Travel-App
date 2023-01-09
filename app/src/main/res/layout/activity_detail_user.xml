@@ -16,12 +16,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/Email"
         android:layout_width="258dp"
         android:layout_height="97dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="205dp"
+        android:layout_marginTop="219dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:gravity="center_vertical"
@@ -30,10 +31,25 @@
         android:textSize="20dp" />
 
 
+    <TextView
+        android:layout_width="258dp"
+        android:layout_height="97dp"
+        android:layout_marginStart="177dp"
+        android:layout_marginTop="155dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_vertical"
+        android:text="User:"
+        android:textStyle="bold"
+        android:textColor="@color/material_dynamic_neutral_variant40"
+        android:textSize="27dp" />
+
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/del"
         android:layout_width="150dp"
         android:layout_height="60dp"
+        android:layout_marginStart="130dp"
         android:layout_marginLeft="120dp"
         android:layout_marginTop="313dp"
         android:text="delete user"
@@ -42,13 +58,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/act"
         android:layout_width="150dp"
         android:layout_height="60dp"
         android:layout_marginLeft="120dp"
         android:layout_marginTop="413dp"
+        android:layout_marginStart="130dp"
         android:text="messages"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,7 +73,7 @@
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav_admin"
+        android:id="@+id/bottom_nav_admi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

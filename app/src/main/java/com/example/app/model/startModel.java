@@ -116,7 +116,6 @@ public class startModel extends AppCompatActivity {
                     assert user != null;
                     if(user.isEmailVerified()) {
                         controller.showToast("welcome");
-
 //                        Toast.makeText(StartActivity.this, "welcome", Toast.LENGTH_LONG).show();
                         checkUserAccessLevel(user.getUid());
 //                        finish();
@@ -128,7 +127,6 @@ public class startModel extends AppCompatActivity {
                 }
                 else {
                     controller.showToast("Wrong password");
-
                 }
             }
         });
@@ -153,12 +151,10 @@ public class startModel extends AppCompatActivity {
                     }
                     else{
                         controller.showToast("failed");
-
                     }
                 }
             }
         });
-
     }
 
     public void bLoginG(Activity activity) {

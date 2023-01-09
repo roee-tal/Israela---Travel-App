@@ -27,11 +27,10 @@ public class startController {
         startmodel.bLoginMail(mail, password);
     }
 
-    public void bLoginG(Activity activity) {
+    public void bLoginG(Activity activity)
+    {
         startmodel.bLoginG(activity);
     }
-
-
 
     public void showUserActivity() {
         view.startActivity(new Intent(view, MainActivity.class));
@@ -42,10 +41,10 @@ public class startController {
         view.startActivity(new Intent(view, AdminActivity.class));
         view.finish();
     }
+
     public void showToast(String message) {
         Toast.makeText(view, message, Toast.LENGTH_LONG).show();
     }
-
 
     public void activityRes(int requestCode, int resultCode, Intent data) {
         startmodel.activityRes(requestCode, resultCode, data);

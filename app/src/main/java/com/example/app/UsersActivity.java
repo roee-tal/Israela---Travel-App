@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import com.example.app.controller.ShowToastAndSignOut;
+import com.example.app.controller.UsersController;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -47,12 +49,14 @@ public class UsersActivity extends AppCompatActivity
     public static ArrayList<User> UsersList = new ArrayList<User>();
     private ListView listView;
     private Button nameAscButton, messages, allButton;
-    private ArrayList<String> selectedFilters = new ArrayList<String>();
-    private String currentSearchText = "";
+//    private ArrayList<String> selectedFilters = new ArrayList<String>();
+//    private String currentSearchText = "";
     private SearchView searchView;
-    private BottomNavigationView nav;
-    GoogleSignInOptions gso;
-    GoogleSignInClient gsc;
+//    private BottomNavigationView nav;
+//    GoogleSignInOptions gso;
+//    GoogleSignInClient gsc;
+
+    UsersController usersController;
     private UserAdapter adapter;
 
     private int white, darkGray, red;
@@ -62,6 +66,8 @@ public class UsersActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
+
+        usersController = new UsersController(this, adapter);
 
         initSearchWidgets();
         initWidgets();
@@ -76,141 +82,148 @@ public class UsersActivity extends AppCompatActivity
 
 
     private void clickOnBottomNav(){
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        gsc = GoogleSignIn.getClient(this,gso);
-        nav = findViewById(R.id.bottom_nav_admin);
-        nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.sign_out_admin:
-                        areYouSureMessage();
-                        break;
-
-                    case R.id.u:
-                        startActivity(new Intent(UsersActivity.this, UsersActivity.class));
-                        break;
-
-                    case R.id.p:
-                        startActivity(new Intent(UsersActivity.this, MainActivity.class));
-                        break;
-
-                }
-                return true;
-            }
-        });
+        BottomNavActivity bottomNavActivity = new BottomNavActivity();
+        bottomNavActivity.bNav(this);
+//        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+//        gsc = GoogleSignIn.getClient(this,gso);
+//        nav = findViewById(R.id.bottom_nav_admi);
+//        nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                switch (item.getItemId()){
+//                    case R.id.sign_out_admin:
+//                        areYouSureMessage(gsc);
+//                        break;
+//
+//                    case R.id.u:
+//                        startActivity(new Intent(UsersActivity.this, UsersActivity.class));
+//                        break;
+//
+//                    case R.id.p:
+//                        startActivity(new Intent(UsersActivity.this, MainActivity.class));
+//                        break;
+//
+//                }
+//                return true;
+//            }
+//        });
     }
+//
+//    private void areYouSureMessage(GoogleSignInClient gsc){
+//        new AlertDialog.Builder(this).setMessage("Are you sure you want to exit?").
+//                setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        ShowToastAndSignOut showToastAndSignOut = new ShowToastAndSignOut();
+//                        showToastAndSignOut.signOut(gsc,UsersActivity.this);
+////                        signOut();
+//                    }
+//                })
+//                .setNegativeButton("No",null).show();
+//    }
 
-    private void areYouSureMessage(){
-        new AlertDialog.Builder(this).setMessage("Are you sure you want to exit?").
-                setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        signOut();
-                    }
-                })
-                .setNegativeButton("No",null).show();
-    }
-
-    void signOut(){
-        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(Task<Void> task) {
-                if (task.isSuccessful()) {
-                    gsc.signOut();
-                    finish();
-                    startActivity(new Intent(UsersActivity.this, StartActivity.class));
-                }
-                else {
-                    startActivity(new Intent(UsersActivity.this, StartActivity.class));
-                }
-            }
-
-        });
-    }
+//    void signOut(){
+//        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(Task<Void> task) {
+//                if (task.isSuccessful()) {
+//                    gsc.signOut();
+//                    finish();
+//                    startActivity(new Intent(UsersActivity.this, StartActivity.class));
+//                }
+//                else {
+//                    startActivity(new Intent(UsersActivity.this, StartActivity.class));
+//                }
+//            }
+//
+//        });
+//    }
 
     private void allFiltering(){
-        selectedFilters.clear();
-        selectedFilters.add("all");
-        FirebaseFirestore fstore;
-        fstore = FirebaseFirestore.getInstance();
+//        selectedFilters.clear();
+//        selectedFilters.add("all");
+//        FirebaseFirestore fstore;
+//        fstore = FirebaseFirestore.getInstance();
         unSelectAllFilterButtons();
         lookSelected(allButton);
-        UsersList.clear();
-        fstore.collection("Users")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            UsersList.clear();
-                            for (QueryDocumentSnapshot document : task.getResult()){
-                                String email = document.getString("Email");
-                                String id = document.getString("ID");
-                                String user = document.getString("isUser");
-                                String mes = document.getString("LettersNum");
-                                User u = new User(email,id,user,mes);
-                                UsersList.add(u);
-                            }
-                        }
-                        Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
-                        adapter.notifyDataSetChanged();
-                        Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
-                    }
-                });
+        usersController.bAllFilter(adapter,UsersList);
+//        UsersList.clear();
+//        fstore.collection("Users")
+//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()){
+//                            UsersList.clear();
+//                            for (QueryDocumentSnapshot document : task.getResult()){
+//                                String email = document.getString("Email");
+//                                String id = document.getString("ID");
+//                                String user = document.getString("isUser");
+//                                String mes = document.getString("LettersNum");
+//                                User u = new User(email,id,user,mes);
+//                                UsersList.add(u);
+//                            }
+//                        }
+//                        Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
+//                        adapter.notifyDataSetChanged();
+//                        Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
+//                    }
+//                });
 
     }
 
     private void NameFilter(SortType type) {
-        selectedFilters.clear();
-        selectedFilters.add("all");
+//        selectedFilters.clear();
+//        selectedFilters.add("all");
 
         unSelectAllFilterButtons();
         lookSelected(allButton);
 
-        UsersList.clear();
-        FirebaseFirestore fstore;
-        fstore = FirebaseFirestore.getInstance();
-
-        fstore.collection("Users")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("TAG", document.getId() + " => " + document.getData());
-                                String email = document.getString("Email");
-                                String id = document.getString("ID");
-                                String user = document.getString("isUser");
-                                String mes = document.getString("LettersNum");
-                                User u = new User(email,id,user,mes);
-                                UsersList.add(u);
-                                if (type != null)
-                                    sortList(type);
-                                Log.d("allFilterTapped", "UsersList.size=" + UsersList.size());
-                                adapter.notifyDataSetChanged();
-                                Log.d("allFilterTapped", "UsersList.size=" + UsersList.size());
-                            }
-
-                        } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
-                        }
-                    }
-                    private void sortList(SortType type) {
-                        switch (type) {
-                            case UserNAmeDown2Up:
-                                Collections.sort(UsersList, User.nameAscending);
-
-                                break;
-                            case MessageUp2Down:
-                                Collections.sort(UsersList, User.mesAscending);
-                                break;
-                            default:
-                                Log.d("sortList", "default !" + type);
-                                break;
-                        }
-                    }
-                });
+        usersController.bNameFilter(adapter, UsersList, type);
+//
+//        UsersList.clear();
+//        FirebaseFirestore fstore;
+//        fstore = FirebaseFirestore.getInstance();
+//
+//        fstore.collection("Users")
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Log.d("TAG", document.getId() + " => " + document.getData());
+//                                String email = document.getString("Email");
+//                                String id = document.getString("ID");
+//                                String user = document.getString("isUser");
+//                                String mes = document.getString("LettersNum");
+//                                User u = new User(email,id,user,mes);
+//                                UsersList.add(u);
+//                                if (type != null)
+//                                    sortList(type);
+//                                Log.d("allFilterTapped", "UsersList.size=" + UsersList.size());
+//                                adapter.notifyDataSetChanged();
+//                                Log.d("allFilterTapped", "UsersList.size=" + UsersList.size());
+//                            }
+//
+//                        } else {
+//                            Log.d("TAG", "Error getting documents: ", task.getException());
+//                        }
+//                    }
+//                    private void sortList(SortType type) {
+//                        switch (type) {
+//                            case UserNAmeDown2Up:
+//                                Collections.sort(UsersList, User.nameAscending);
+//
+//                                break;
+//                            case MessageUp2Down:
+//                                Collections.sort(UsersList, User.mesAscending);
+//                                break;
+//                            default:
+//                                Log.d("sortList", "default !" + type);
+//                                break;
+//                        }
+//                    }
+//                });
             }
 
 
@@ -249,9 +262,11 @@ public class UsersActivity extends AppCompatActivity
     }
     private void initSearchWidgets()
     {
-        FirebaseFirestore fstore;
-        fstore = FirebaseFirestore.getInstance();
+//        FirebaseFirestore fstore;
+//        fstore = FirebaseFirestore.getInstance();
         searchView = (SearchView) findViewById(R.id.shapeListSearchView);
+
+//        usersController.bSearch(adapter,UsersList, searchView);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -262,33 +277,35 @@ public class UsersActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextChange(String str)
             {
-                UsersList.clear();
-                currentSearchText = str;
-                Log.d("initSearchWidgets", "str="+str);
 
-                fstore.collection("Users")
-                    .orderBy("Email")
-                    .startAt(str)
-                    .endAt(str + "\uf8ff")
-                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()){
-                                    UsersList.clear();
-                                    for (QueryDocumentSnapshot document : task.getResult()){
-                                        String email = document.getString("Email");
-                                        String id = document.getString("ID");
-                                        String user = document.getString("isUser");
-                                        String mes = document.getString("LettersNum");
-                                        User u = new User(email,id,user,mes);
-                                        UsersList.add(u);
-                                    }
-                                }
-                                Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
-                                adapter.notifyDataSetChanged();
-                                Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
-                            }
-                        });
+                usersController.bSearch(adapter,UsersList,str);
+//                UsersList.clear();
+//                currentSearchText = str;
+//                Log.d("initSearchWidgets", "str="+str);
+//
+//                fstore.collection("Users")
+//                    .orderBy("Email")
+//                    .startAt(str)
+//                    .endAt(str + "\uf8ff")
+//                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                if (task.isSuccessful()){
+//                                    UsersList.clear();
+//                                    for (QueryDocumentSnapshot document : task.getResult()){
+//                                        String email = document.getString("Email");
+//                                        String id = document.getString("ID");
+//                                        String user = document.getString("isUser");
+//                                        String mes = document.getString("LettersNum");
+//                                        User u = new User(email,id,user,mes);
+//                                        UsersList.add(u);
+//                                    }
+//                                }
+//                                Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
+//                                adapter.notifyDataSetChanged();
+//                                Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
+//                            }
+//                        });
                 return false;
             }
         });
@@ -309,7 +326,7 @@ public class UsersActivity extends AppCompatActivity
             {
                 User selectUser = (User) (listView.getItemAtPosition(position));
                 Intent showDetail = new Intent(getApplicationContext(), DetailUserActivity.class);
-                showDetail.putExtra("id",selectUser.getId());
+                showDetail.putExtra("email",selectUser.getEmail());
                 startActivity(showDetail);
             }
         });
@@ -335,38 +352,38 @@ public class UsersActivity extends AppCompatActivity
 
     public void messageTapped(View view)
     {
-
-        selectedFilters.clear();
-        selectedFilters.add("all");
-        FirebaseFirestore fstore;
-        fstore = FirebaseFirestore.getInstance();
+//        selectedFilters.clear();
+//        selectedFilters.add("all");
+//        FirebaseFirestore fstore;
+//        fstore = FirebaseFirestore.getInstance();
         unSelectAllFilterButtons();
         lookSelected(messages);
-        UsersList.clear();
-        fstore.collection("Users")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            UsersList.clear();
-                            for (QueryDocumentSnapshot document : task.getResult()){
-                                String email = document.getString("Email");
-                                String id = document.getString("ID");
-                                String user = document.getString("isUser");
-                                String mes = document.getString("LettersNum");
-                                User u = new User(email,id,user,mes);
-                                int num = Integer.parseInt(mes);
-                                if ((num>0)) {
-                                    UsersList.add(u);
-                                }
-                            }
-                        }
-                        Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
-                        adapter.notifyDataSetChanged();
-                        Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
-                    }
-                });
-        Collections.sort(UsersList, User.mesAscending);
+        usersController.bMessage(view, adapter, UsersList);
+//        UsersList.clear();
+//        fstore.collection("Users")
+//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()){
+//                            UsersList.clear();
+//                            for (QueryDocumentSnapshot document : task.getResult()){
+//                                String email = document.getString("Email");
+//                                String id = document.getString("ID");
+//                                String user = document.getString("isUser");
+//                                String mes = document.getString("LettersNum");
+//                                User u = new User(email,id,user,mes);
+//                                int num = Integer.parseInt(mes);
+//                                if ((num>0)) {
+//                                    UsersList.add(u);
+//                                }
+//                            }
+//                        }
+//                        Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
+//                        adapter.notifyDataSetChanged();
+//                        Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
+//                    }
+//                });
+//        Collections.sort(UsersList, User.mesAscending);
     }
 
 

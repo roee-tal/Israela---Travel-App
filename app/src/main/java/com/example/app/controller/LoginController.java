@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.example.app.AdminActivity;
 import com.example.app.LoginActivity;
+import com.example.app.StartActivity;
 import com.example.app.model.LoginModel;
 
 public class LoginController {
@@ -25,8 +26,8 @@ public class LoginController {
         Toast.makeText(loginActivity, message, Toast.LENGTH_LONG).show();
     }
 
-    public void showAdminActivity() {
-        loginActivity.startActivity(new Intent(loginActivity, AdminActivity.class));
+    public void showStartActivity() {
+        loginActivity.startActivity(new Intent(loginActivity, StartActivity.class));
         loginActivity.finish();
     }
 }
