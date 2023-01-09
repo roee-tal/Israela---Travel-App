@@ -2,6 +2,7 @@ package com.example.app;
 
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 
@@ -129,5 +130,14 @@ class Site
     public HashMap<String, Review> getReviews() {
 
         return reviews;
+    }
+
+    public ArrayList<String> getTags() {
+        ArrayList<String> tags = new ArrayList<String>();
+        tags.add(this.getCategory().name());
+        tags.add(this.getLocation().name());
+        if (this.getEvent() != null)
+            tags.add("Has Event");
+        return tags;
     }
 }
