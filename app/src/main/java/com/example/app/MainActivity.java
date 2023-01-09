@@ -179,7 +179,6 @@ public class MainActivity extends AppCompatActivity
                             case R.id.addS:
                                 addSiteTapped();
                         }
-
                         return true;
                     }
                 });

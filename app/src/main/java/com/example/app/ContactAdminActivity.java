@@ -21,6 +21,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.app.controller.ContactAdminController;
+import com.example.app.controller.ShowToastAndSignOut;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -59,17 +61,19 @@ public class ContactAdminActivity extends AppCompatActivity
 
     // images array
     public static ArrayList<Message> messList = new ArrayList<Message>();
-    private ArrayList<String> selectedFilters = new ArrayList<String>();
-    private String currentSearchText = "";
+//    private ArrayList<String> selectedFilters = new ArrayList<String>();
+//    private String currentSearchText = "";
     private ListView listView;
     private TextView email;
-    private Button contact;
-    private BottomNavigationView nav;
-    GoogleSignInOptions gso;
-    GoogleSignInClient gsc;
-    private FirebaseAuth auth;
+//    private Button contact;
+//    private BottomNavigationView nav;
+//    GoogleSignInOptions gso;
+//    GoogleSignInClient gsc;
+//    private FirebaseAuth auth;
     private MessageAdapter adapter;
-    private FirebaseFirestore fstore;
+//    private FirebaseFirestore fstore;
+    private ContactAdminController contactAdminController;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -77,76 +81,82 @@ public class ContactAdminActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_admin);
         email = findViewById(R.id.email_con);
-        fstore = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
+//        fstore = FirebaseFirestore.getInstance();
+//        auth = FirebaseAuth.getInstance();
+        contactAdminController = new ContactAdminController(this,adapter);
 
 
 
 
         clickOnBottomNav();
-        getSelectedShape();
         setUpList();
 
+        getSelectedShape();
+
         setUpOnclickListener();
-        selectedFilters.add("all");
+//        selectedFilters.add("all");
 
     }
 
 
     private void clickOnBottomNav(){
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        gsc = GoogleSignIn.getClient(this,gso);
-        nav = findViewById(R.id.bottom_nav_admin);
-        nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.sign_out_admin:
-                        areYouSureMessage();
-                        break;
-
-                    case R.id.u:
-                        startActivity(new Intent(ContactAdminActivity.this, UsersActivity.class));
-                        break;
-
-                    case R.id.p:
-                        startActivity(new Intent(ContactAdminActivity.this, MainActivity.class));
-                        break;
-
-                }
-                return true;
-            }
-        });
+        BottomNavActivity bottomNavActivity = new BottomNavActivity();
+        bottomNavActivity.bNav(this);
+//        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+//        gsc = GoogleSignIn.getClient(this,gso);
+//        nav = findViewById(R.id.bottom_nav_admin);
+//        nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                switch (item.getItemId()){
+//                    case R.id.sign_out_admin:
+//                        areYouSureMessage();
+//                        break;
+//
+//                    case R.id.u:
+//                        startActivity(new Intent(ContactAdminActivity.this, UsersActivity.class));
+//                        break;
+//
+//                    case R.id.p:
+//                        startActivity(new Intent(ContactAdminActivity.this, MainActivity.class));
+//                        break;
+//
+//                }
+//                return true;
+//            }
+//        });
     }
 
 
-    private void areYouSureMessage(){
-        new AlertDialog.Builder(this).setMessage("Are you sure you want to exit?").
-                setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        signOut();
-                    }
-                })
-                .setNegativeButton("No",null).show();
-    }
+//    private void areYouSureMessage(){
+//        new AlertDialog.Builder(this).setMessage("Are you sure you want to exit?").
+//                setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        ShowToastAndSignOut showToastAndSignOut = new ShowToastAndSignOut();
+//                        showToastAndSignOut.signOut(gsc,ContactAdminActivity.this);
+////                        signOut();
+//                    }
+//                })
+//                .setNegativeButton("No",null).show();
+//    }
 
-    void signOut(){
-        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(Task<Void> task) {
-                if (task.isSuccessful()) {
-
-                    finish();
-                    startActivity(new Intent(ContactAdminActivity.this, StartActivity.class));
-                }
-                else {
-                    startActivity(new Intent(ContactAdminActivity.this, StartActivity.class));
-                }
-            }
-
-        });
-    }
+//    void signOut(){
+//        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(Task<Void> task) {
+//                if (task.isSuccessful()) {
+//
+//                    finish();
+//                    startActivity(new Intent(ContactAdminActivity.this, StartActivity.class));
+//                }
+//                else {
+//                    startActivity(new Intent(ContactAdminActivity.this, StartActivity.class));
+//                }
+//            }
+//
+//        });
+//    }
 
     private void getSelectedShape()
     {
@@ -156,40 +166,39 @@ public class ContactAdminActivity extends AppCompatActivity
         // use the text in a TextView
         TextView textView = (TextView) findViewById(R.id.email_con);
         textView.setText(text);
-        Log.d("updateSelectedName", "id="+text);
         setupData(text);
     }
 
     private void setupData(String text)
     {
-        fstore = FirebaseFirestore.getInstance();
-        messList.clear();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = database.getReference();
-        fstore.collection("Messages").whereEqualTo("Email",text)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            messList.clear();
-                            for (QueryDocumentSnapshot document : task.getResult()){
-                                Log.d("TAG", document.getId() + " => " + document.getData());
-                                String mess = document.getString("Message");
-                                String id = document.getString("mesId");
-                                Message m = new Message(mess,id);
-                                Log.d("TAGGGG", m.getText());
-                                Log.d("TAGGGGID", m.getid());
-                                messList.add(m);
-                            }
-                            adapter.notifyDataSetChanged();
-                        } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
+        contactAdminController.showList(adapter,text,messList);
+//        fstore = FirebaseFirestore.getInstance();
+//        messList.clear();
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference databaseReference = database.getReference();
+//        fstore.collection("Messages").whereEqualTo("Email",text)
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if(task.isSuccessful()){
+//                            messList.clear();
+//                            for (QueryDocumentSnapshot document : task.getResult()){
+//                                Log.d("TAG", document.getId() + " => " + document.getData());
+//                                String mess = document.getString("Message");
+//                                String id = document.getString("mesId");
+//                                Message m = new Message(mess,id);
+//                                Log.d("TAGGGG", m.getText());
+//                                Log.d("TAGGGGID", m.getid());
+//                                messList.add(m);
+//                            }
+//                            adapter.notifyDataSetChanged();
+//                        } else {
+//                            Log.d("TAG", "Error getting documents: ", task.getException());
+//                        }
+//                    }
+//                });
     }
-
 
     private void setUpList()
     {
@@ -208,8 +217,8 @@ public class ContactAdminActivity extends AppCompatActivity
                 Message selectMess = (Message) (listView.getItemAtPosition(position));
                 Intent showDetail = new Intent(getApplicationContext(), DetailMessageActivity.class);
                 showDetail.putExtra(Intent.EXTRA_TEXT,selectMess.getText());
-                showDetail.putExtra("mail",s);
-                showDetail.putExtra("id",selectMess.getid());
+//                showDetail.putExtra("mail",s);
+//                showDetail.putExtra("id",selectMess.getid());
                 startActivity(showDetail);
                 finish();
             }

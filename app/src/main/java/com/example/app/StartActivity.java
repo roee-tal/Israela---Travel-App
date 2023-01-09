@@ -68,8 +68,8 @@ public class StartActivity extends AppCompatActivity {
     private startController controller;
 //    private FirebaseAuth auth;
 //    private FirebaseFirestore fstore;
-    GoogleSignInOptions gso;
-    GoogleSignInClient gsc;
+//    GoogleSignInOptions gso;
+//    GoogleSignInClient gsc;
     ImageView googleBtn;
 
     @Override
