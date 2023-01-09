@@ -3,6 +3,7 @@ package com.example.app;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.ActionMenuView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.DialogInterface;
@@ -13,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -133,15 +135,46 @@ public class AdminDetailActivity extends AppCompatActivity
                 RatingBar ratingBar = findViewById(R.id.rating_bar);
                 ratingBar.setRating((float) s.getRate());
 
-//        ImageView iv = (ImageView) findViewById(R.id.mainImage);
-                String detail = "Area: " + s.getLocation() +
-                        "\n\nDetail: " + s.getDetail();
+                LinearLayout tagContainer = findViewById(R.id.tags);
+                ArrayList<String> tagList = s.getTags();
+                int childCount = tagContainer.getChildCount(), childNum = 0;
+                for (int i = 0; i < childCount; i++) {
+                    View child = tagContainer.getChildAt(i);
+                    if (child instanceof TextView) {
+                        TextView textView = (TextView) child;
+                        setText(textView, tagContainer,  tagList.get(childNum), false);
+                        childNum++;
+                    }
+                }
+
+                for (int i = childNum; i<tagList.size(); i++) {
+                    TextView tagData = new TextView(AdminDetailActivity.this);
+                    setText(tagData, tagContainer, tagList.get(i), true);
+                }
+
+
+                String detail = s.getDetail();
                 siteName.setText(s.getName());
                 siteDetail.setText(detail);
 //        setImageList();
 
 //        iv.setImageResource(selectedShape.getImage()); //Todo: do all image like this
-            }});
+            }
+
+            private void setText(TextView tagData, LinearLayout tagContainer, String tag, Boolean is_new) {
+                tagData.setText(tag);
+                if (!is_new)
+                    return; //already has a parent
+                ViewGroup.MarginLayoutParams params = new ActionMenuView.LayoutParams(ActionMenuView.LayoutParams.WRAP_CONTENT, ActionMenuView.LayoutParams.WRAP_CONTENT);
+                params.rightMargin = 8;
+                tagData.setLayoutParams(params);
+                tagData.setBackgroundResource(R.drawable.tag_box_background);
+                tagData.setPadding(20, 20, 20, 20);
+                tagData.setTextSize(20);
+                tagData.setText(tag);
+                tagContainer.addView(tagData);
+            }
+        });
         //--------------------------------------------
 ////        shapeList.clear(); //only for self check of data loading
 //        for (Site site:siteList) {

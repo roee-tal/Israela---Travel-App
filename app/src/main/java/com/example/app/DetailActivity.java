@@ -3,22 +3,23 @@ package com.example.app;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.ActionMenuView;
 import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AlertDialog;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -137,26 +138,52 @@ public class DetailActivity extends AppCompatActivity
             }
             private void setValues(Site s)
             {
-//        Site selectedShape = new Site("2","Herzliya beach", "picture/shvil.jpg", 3, "bla lba", Location.South);
-
                 TextView siteName = (TextView) findViewById(R.id.siteName);
                 TextView siteDetail = (TextView) findViewById(R.id.siteDetail);
                 RatingBar ratingBar = findViewById(R.id.rating_bar);
                 ratingBar.setRating((float) s.getRate());
 
-//        ImageView iv = (ImageView) findViewById(R.id.mainImage);
-                String detail =
-                        "\n\nArea: " + s.getLocation() +
-                        "\n\nDetail: " + s.getDetail();
+                ArrayList<String> tagList = s.getTags();
+                LinearLayout tagContainer = findViewById(R.id.tags);
+                int childCount = tagContainer.getChildCount(), childNum = 0;
+                for (int i = 0; i < childCount; i++) {
+                    View child = tagContainer.getChildAt(i);
+                    if (child instanceof TextView) {
+                        TextView textView = (TextView) child;
+                        setText(textView, tagContainer,  tagList.get(childNum), false);
+                        childNum++;
+                    }
+                }
+
+                for (int i = childNum; i<tagList.size(); i++) {
+                    TextView tagData = new TextView(DetailActivity.this);
+                    setText(tagData, tagContainer, tagList.get(i), true);
+                }
+
+
+                String detail = s.getDetail();
                 siteName.setText(s.getName());
                 siteDetail.setText(detail);
                 if (s.getEvent() != null)
                     eventGroup.setVisibility(View.VISIBLE);
                 else
                     eventGroup.setVisibility(View.GONE);
-//        setImageList();
+            }
 
-            }});
+            private void setText(TextView tagData, LinearLayout tagContainer, String tag, Boolean is_new) {
+                tagData.setText(tag);
+                if (!is_new)
+                    return; //already has a parent
+                ViewGroup.MarginLayoutParams params = new ActionMenuView.LayoutParams(ActionMenuView.LayoutParams.WRAP_CONTENT, ActionMenuView.LayoutParams.WRAP_CONTENT);
+                params.rightMargin = 8;
+                tagData.setLayoutParams(params);
+                tagData.setBackgroundResource(R.drawable.tag_box_background);
+                tagData.setPadding(20, 20, 20, 20);
+                tagData.setTextSize(20);
+                tagData.setText(tag);
+                tagContainer.addView(tagData);
+            }
+        });
         //--------------------------------------------
 ////        shapeList.clear(); //only for self check of data loading
 //        for (Site site:siteList) {
