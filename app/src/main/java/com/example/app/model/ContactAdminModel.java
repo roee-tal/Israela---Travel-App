@@ -4,13 +4,11 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.app.Message;
-import com.example.app.MessageAdapter;
-import com.example.app.controller.ContactAdminController;
+import com.example.app.model.objects.Message;
+import com.example.app.modelView.adapters.MessageAdapter;
+import com.example.app.modelView.ContactAdminMV;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -20,16 +18,22 @@ import java.util.ArrayList;
 public class ContactAdminModel {
 
     private FirebaseFirestore fstore;
-    ContactAdminController contactAdminController;
+    ContactAdminMV contactAdminMV;
 
-    public ContactAdminModel(ContactAdminController contactAdminController) {
-        this.contactAdminController = contactAdminController;
+    public ContactAdminModel(ContactAdminMV contactAdminMV) {
+        this.contactAdminMV = contactAdminMV;
+        fstore = FirebaseFirestore.getInstance();
     }
 
+    /**
+     * Get the messages of the user with help of his email
+     * Then , notify the adapter with help function
+     * @param adapter the message adapter
+     * @param text the mail of the user
+     * @param messList insert his messages to ArrayList 'messList'
+     */
     public void showList(MessageAdapter adapter, String text, ArrayList<Message> messList) {
-        fstore = FirebaseFirestore.getInstance();
         messList.clear();
-
         fstore.collection("Messages").whereEqualTo("Email",text)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -42,15 +46,13 @@ public class ContactAdminModel {
                                 String mess = document.getString("Message");
                                 String id = document.getString("mesId");
                                 Message m = new Message(mess,id);
-                                Log.d("TAGGGG", m.getText());
-                                Log.d("TAGGGGID", m.getid());
                                 messList.add(m);
                             }
-                            adapter.notifyDataSetChanged();
+                            contactAdminMV.notifyAdapter(adapter);
                         } else {
                             Log.d("TAG", "Error getting documents: ", task.getException());
                         }
                     }
-                });
+          });
     }
 }

@@ -5,13 +5,12 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.example.app.SortType;
-import com.example.app.User;
-import com.example.app.UserAdapter;
-import com.example.app.controller.UsersController;
+import com.example.app.model.objects.SortType;
+import com.example.app.model.objects.User;
+import com.example.app.modelView.adapters.UserAdapter;
+import com.example.app.modelView.UsersMV;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -21,19 +20,19 @@ import java.util.Collections;
 
 public class UsersModel {
 
-    UsersController usersController;
+    UsersMV usersMV;
 
-    private FirebaseAuth auth;
     private FirebaseFirestore fstore;
 
-    public UsersModel(UsersController usersController){
-        this.usersController = usersController;
+    public UsersModel(UsersMV usersController){
+        this.usersMV = usersController;
+        fstore = FirebaseFirestore.getInstance();
+
 
     }
 
     public void bMessage(View view, UserAdapter adapter, ArrayList<User> usersList) {
         usersList.clear();
-        fstore = FirebaseFirestore.getInstance();
         fstore.collection("Users")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -52,9 +51,7 @@ public class UsersModel {
                                 }
                             }
                         }
-                        Log.d("initSearchWidgets", "UsersList.size="+usersList.size());
-                        adapter.notifyDataSetChanged();
-                        Log.d("initSearchWidgets", "UsersList.size="+usersList.size());
+                        usersMV.notifyAdapter(adapter);
                     }
                 });
         Collections.sort(usersList, User.mesAscending);
@@ -63,8 +60,6 @@ public class UsersModel {
     public void bNameFilter(UserAdapter adapter, ArrayList<User> UsersList, SortType type) {
 
         UsersList.clear();
-        FirebaseFirestore fstore;
-        fstore = FirebaseFirestore.getInstance();
         fstore.collection("Users")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -81,41 +76,18 @@ public class UsersModel {
                                 UsersList.add(u);
                                 Collections.sort(UsersList, User.nameAscending);
 
-//                                if (type != null)
-//                                    sortList(type);
-                                Log.d("allFilterTapped", "UsersList.size=" + UsersList.size());
-                                adapter.notifyDataSetChanged();
-                                Log.d("allFilterTapped", "UsersList.size=" + UsersList.size());
+                                usersMV.notifyAdapter(adapter);
                             }
 
                         } else {
                             Log.d("TAG", "Error getting documents: ", task.getException());
                         }
                     }
-//                    private void sortList(SortType type) {
-//                        switch (type) {
-//                            case UserNAmeDown2Up:
-//                                Collections.sort(UsersList, User.nameAscending);
-//
-//                                break;
-//                            case MessageUp2Down:
-//                                Collections.sort(UsersList, User.mesAscending);
-//                                break;
-//                            default:
-//                                Log.d("sortList", "default !" + type);
-//                                break;
-//                        }
-//                    }
                 });
-//        Collections.sort(UsersList, User.nameAscending);
     }
 
     public void bSearch(UserAdapter adapter, ArrayList<User> UsersList, String str) {
         UsersList.clear();
-        String currentSearchText = str;
-        Log.d("initSearchWidgets", "str="+str);
-        fstore = FirebaseFirestore.getInstance();
-
         fstore.collection("Users")
                 .orderBy("Email")
                 .startAt(str)
@@ -134,17 +106,13 @@ public class UsersModel {
                                 UsersList.add(u);
                             }
                         }
-                        Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
-                        adapter.notifyDataSetChanged();
-                        Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
+                        usersMV.notifyAdapter(adapter);
                     }
                 });
     }
 
     public void bAllFilter(UserAdapter adapter, ArrayList<User> UsersList) {
         UsersList.clear();
-        fstore = FirebaseFirestore.getInstance();
-
         fstore.collection("Users")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -160,16 +128,8 @@ public class UsersModel {
                                 UsersList.add(u);
                             }
                         }
-                        Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
-                        adapter.notifyDataSetChanged();
-                        Log.d("initSearchWidgets", "UsersList.size="+UsersList.size());
+                        usersMV.notifyAdapter(adapter);
                     }
                 });
     }
-
-//    private void setAdapter(ArrayList<User> UsersList)
-//    {
-//        adapter = new UserAdapter(getApplicationContext(), 0, UsersList);
-//        listView.setAdapter(adapter);
-//    }
 }

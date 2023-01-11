@@ -1,16 +1,9 @@
 package com.example.app.model;
 
-import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 
-import com.example.app.ContactActivity;
-import com.example.app.MainActivity;
-import com.example.app.User;
-import com.example.app.controller.contactController;
-import com.example.app.controller.startController;
+import com.example.app.helpClasses.ShowToastAndSignOut;
+import com.example.app.modelView.contactMV;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,19 +17,21 @@ import java.util.Map;
 
 public class contactModel {
 
-    private contactController contcontroller;
+    private contactMV contactMV;
 
     private FirebaseAuth auth;
     private FirebaseFirestore fstore;
+    ShowToastAndSignOut showToastAndSignOut;
 
-    public contactModel(contactController contactontroller){
-        this.contcontroller = contactontroller;
-    }
-
-
-    public void bSend(String s) {
+    public contactModel(contactMV contactontroller){
+        this.contactMV = contactontroller;
+        showToastAndSignOut = new ShowToastAndSignOut();
         auth = FirebaseAuth.getInstance();
         fstore = FirebaseFirestore.getInstance();
+    }
+
+    // Sends a message by upload it to the database
+    public void bSend(String s) {
         FirebaseUser user = auth.getCurrentUser();
         String e_mail = user.getEmail();
         updateMesSize(user.getUid());
@@ -47,31 +42,25 @@ public class contactModel {
         us_info.put("Message", s);
         us_info.put("mesId",df.getId());
         df.set(us_info);
-        contcontroller.showToast("message sent");
-        contcontroller.showMainActivity();
-//        Toast.makeText(getApplicationContext(), "message sent", Toast.LENGTH_SHORT).show();
-//        startActivity(new Intent(ContactActivity.this, MainActivity.class));
-//        finish();
+        contactMV.showToast("message sent");
+        contactMV.showMainActivity();
     }
 
+    /** increase the field 'LettersNum' for the user in the database by 1
+     * @param id
+     */
     private void updateMesSize(String id){
-        auth = FirebaseAuth.getInstance();
-        fstore = FirebaseFirestore.getInstance();
         fstore.collection("Users").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot doc = task.getResult();
                 if(doc.exists()){
-                    String email = doc.getString("Email");
                     String id = doc.getString("ID");
-                    String user = doc.getString("isUser");
                     String num = doc.getString("LettersNum");
                     int num_cov = Integer.parseInt(num);
                     num_cov++;
                     num = Integer.toString(num_cov);
-                    User user1 = new User(email,id,user,num);
                     fstore.collection("Users").document(id).update("LettersNum",num);
-
                 }
             }
         });
