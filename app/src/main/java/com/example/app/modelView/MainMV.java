@@ -1,4 +1,4 @@
-package com.example.app.model;
+package com.example.app.modelView;
 
 import android.util.Log;
 import android.view.View;
@@ -7,12 +7,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.app.R;
 import com.example.app.activities.MainActivity;
+import com.example.app.model.MainModel;
 import com.example.app.model.objects.Category;
 import com.example.app.model.objects.Location;
 import com.example.app.model.objects.Site;
 import com.example.app.model.objects.SortType;
-import com.example.app.modelView.MainMV;
 import com.example.app.modelView.adapters.ShapeAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -29,7 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class MainModel
+public class MainMV  extends AppCompatActivity
 {
     private FirebaseDatabase myRealTimeDB;
 
@@ -69,16 +72,14 @@ public class MainModel
     private FirebaseAuth auth;
     private FirebaseFirestore fstore;
     private int white, darkGray, red;
-    private MainMV mainMV;
     private MainActivity mainActivity;
+    private MainModel mainModel;
 
-
-
-    public MainModel(ArrayList<Site> shapeList, MainMV mainMV, MainActivity mainActivity, ShapeAdapter adapter) {
+    public MainMV(ArrayList<Site> shapeList, MainActivity mainActivity) {
         this.shapeList = shapeList;
-        this.mainMV = mainMV;
         this.mainActivity = mainActivity;
-        this.myRealTimeDB = FirebaseDatabase.getInstance();
+//        this.initWidgets();
+//        setContentView(R.layout.activity_main);
     }
 
 //    @Override
@@ -383,71 +384,102 @@ public class MainModel
 //
 //    }
 
-    public void allFilterTappedForFlow(SortType type) {
-        selectedFilters.clear();
-        selectedFilters.add("all");
+//    public void allFilterTappedForFlow(SortType type) {
+//        selectedFilters.clear();
+//        selectedFilters.add("all");
+//
+//        unSelectAllFilterButtons();
+//        lookSelected(allButton);
+//
+//        shapeList.clear();
+//        Query query = myRealTimeDB.getReference().child("site");
+//        // Execute the query and retrieve the matching items
+//        query.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot snapshot) {
+//                // get all of the children at this level.
+//                Iterable<DataSnapshot> children = snapshot.getChildren();
+//                Log.d("allFilterTapped", "empty:" + shapeList.size());
+//                for (DataSnapshot child : children) {
+//                    Site s = child.getValue(Site.class);
+//                    assert s != null;
+//                    if (!shapeList.contains(s))
+//                        shapeList.add(s);
+//                    Log.d("allFilterTapped", "shapeList.size=" + shapeList.size());
+//                    Log.d("v", "site name=" + s.getName());
+//                }
+//                if (type != null)
+//                    sortList(type);
+//
+//                Log.d("allFilterTapped", "shapeList.size=" + shapeList.size());
+//                adapter.notifyDataSetChanged();
+//                Log.d("allFilterTapped", "shapeList.size=" + shapeList.size());
+//            }
+//
+//            private void sortList(SortType type) {
+//                switch (type) {
+//                    case RateUp2Down:
+//                        Collections.sort(shapeList, Site.rateSort);
+//                        Collections.reverse(shapeList);
+//                        break;
+//                    case RateDown2Up:
+//                        Collections.sort(shapeList, Site.rateSort);
+//                        break;
+//                    case NameUp2Down:
+//                        Collections.sort(shapeList, Site.nameAscending);
+//                        Collections.reverse(shapeList);
+//                        break;
+//                    case NameDown2Up:
+//                        Collections.sort(shapeList, Site.nameAscending);
+//                        break;
+//                    default:
+//                        Log.d("sortList", "default !" + type);
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//                // Handle error
+//            }
+//        });
+//    }
 
-        mainActivity.unSelectAllFilterButtons();
-        mainActivity.lookSelectedAll();
+    private void initWidgets()
+    {
+        sortButton = (Button) findViewById(R.id.sortButton);
+        filterButton = (Button) findViewById(R.id.filterButton);
+        filterView1 = (LinearLayout) findViewById(R.id.filterTabsLayout);
+        filterView2 = (LinearLayout) findViewById(R.id.filterTabsLayout2);
+        filterView3 = (LinearLayout) findViewById(R.id.filterTabsLayout3);
+        sortView = (LinearLayout) findViewById(R.id.sortTabsLayout2);
 
-        shapeList.clear();
-        Query query = myRealTimeDB.getReference().child("site");
-        // Execute the query and retrieve the matching items
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                // get all of the children at this level.
-                Iterable<DataSnapshot> children = snapshot.getChildren();
-                Log.d("allFilterTapped", "empty:" + shapeList.size());
-                for (DataSnapshot child : children) {
-                    Site s = child.getValue(Site.class);
-                    assert s != null;
-                    if (!shapeList.contains(s))
-                        shapeList.add(s);
-                    Log.d("allFilterTapped", "shapeList.size=" + shapeList.size());
-                    Log.d("v", "site name=" + s.getName());
-                }
-                if (type != null)
-                    sortList(type);
+        southButton = (Button) findViewById(R.id.southFilter);
+        centetButton = (Button) findViewById(R.id.centerFilter);
+        northButton = (Button) findViewById(R.id.northFilter);
+        allButton  = (Button) findViewById(R.id.allFilter);
 
-                Log.d("Filter-mainModel", "shapeList.size=" + shapeList.size());
-                adapter.notifyDataSetChanged();
-                Log.d("Filter-mainModel", "type=" + type);
-                Log.d("Filter-mainModel", "shapeList=" + shapeList);
-            }
+        picnicButton = (Button) findViewById(R.id.picnicFilter);
+        swimmingButton = (Button) findViewById(R.id.swimmingFilter);
+        trackButton  = (Button) findViewById(R.id.trackFilter);
 
-            private void sortList(SortType type) {
-                switch (type) {
-                    case RateUp2Down:
-                        Collections.sort(shapeList, Site.rateSort);
-                        Collections.reverse(shapeList);
-                        break;
-                    case RateDown2Up:
-                        Collections.sort(shapeList, Site.rateSort);
-                        break;
-                    case NameUp2Down:
-                        Collections.sort(shapeList, Site.nameAscending);
-                        Collections.reverse(shapeList);
-                        break;
-                    case NameDown2Up:
-                        Collections.sort(shapeList, Site.nameAscending);
-                        break;
-                    default:
-                        Log.d("sortList", "default !" + type);
-                        break;
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Handle error
-            }
-        });
+        down2upRateButton = (Button) findViewById(R.id.down2upRate);
+        up2downRateButton = (Button) findViewById(R.id.up2downRate);
+        nameAscButton  = (Button) findViewById(R.id.nameAsc);
+        nameDescButton  = (Button) findViewById(R.id.nameDesc);
     }
 
-
-
-
+//    public void lookSelected(Button parsedButton)
+//    {
+//        parsedButton.setTextColor(white);
+//        parsedButton.setBackgroundColor(red);
+//    }
+//
+//    public void lookUnSelected(Button parsedButton)
+//    {
+//        parsedButton.setTextColor(red);
+//        parsedButton.setBackgroundColor(darkGray);
+//    }
 
     public void setupData()
     {
@@ -582,7 +614,7 @@ public class MainModel
 //        ArrayList<Site> tempShapeList = new ArrayList<Site>();
         Log.d("filterList", "status="+status);
         if (selectedFilters.isEmpty())
-            allFilterTappedForFlow(SortType.RateUp2Down); //choose 'all' like the start
+            mainModel.allFilterTappedForFlow(SortType.RateUp2Down); //choose 'all' like the start
         for (String filter : selectedFilters) {
             if (is_category(filter)) {
                 Query query = myRealTimeDB.getReference().child("site").orderByChild("category").equalTo(filter);
@@ -964,17 +996,17 @@ public class MainModel
 //        lookSelected(nameDescButton);
 //    }
 
-    private void checkForFilter(SortType type)
-    {
-        if(selectedFilters.contains("all"))
-        {
-            allFilterTappedForFlow(type);
-        }
-        else
-        {
-            filterList(null, type);
-        }
-    }
+//    private void checkForFilter(SortType type)
+//    {
+//        if(selectedFilters.contains("all"))
+//        {
+//            allFilterTappedForFlow(type);
+//        }
+//        else
+//        {
+//            filterList(null, type);
+//        }
+//    }
 
 //    private void setAdapter(ArrayList<Site> shapeList)
 //    {
@@ -1044,7 +1076,7 @@ public class MainModel
         return false;
     }
 
-    public void setAdapter(ShapeAdapter adapter) {
-        this.adapter = adapter;
+    public void addModel(MainModel mainModel) {
+        this.mainModel = mainModel;
     }
 }

@@ -45,7 +45,7 @@
         android:layout_marginBottom="20dp"
         android:gravity="center"
         android:text="User:"
-        android:textColor="@color/material_dynamic_neutral_variant40"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="27dp"
         android:textStyle="bold" />
 
