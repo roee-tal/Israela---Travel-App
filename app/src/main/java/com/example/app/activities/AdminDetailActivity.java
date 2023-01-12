@@ -22,8 +22,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.app.helpClasses.AddRating;
-import com.example.app.helpClasses.ImageLoad;
+import com.example.app.modelView.helpClasses.AddRating;
+import com.example.app.modelView.helpClasses.ImageLoad;
 import com.example.app.R;
 import com.example.app.modelView.adapters.ViewPagerAdapter;
 import com.example.app.model.objects.GroupEvent;

@@ -2,7 +2,7 @@ package com.example.app.modelView;
 
 import android.view.View;
 
-import com.example.app.helpClasses.ShowToastAndSignOut;
+import com.example.app.modelView.helpClasses.ShowToastAndSignOut;
 import com.example.app.model.objects.SortType;
 import com.example.app.model.objects.User;
 import com.example.app.modelView.adapters.UserAdapter;

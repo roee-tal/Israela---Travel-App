@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.app.helpClasses.BottomNavActivity;
+import com.example.app.modelView.helpClasses.BottomNavActivity;
 import com.example.app.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

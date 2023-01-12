@@ -4,7 +4,7 @@ import android.content.Intent;
 
 import com.example.app.activities.ContactActivity;
 import com.example.app.activities.MainActivity;
-import com.example.app.helpClasses.ShowToastAndSignOut;
+import com.example.app.modelView.helpClasses.ShowToastAndSignOut;
 import com.example.app.model.contactModel;
 
 public class contactMV {

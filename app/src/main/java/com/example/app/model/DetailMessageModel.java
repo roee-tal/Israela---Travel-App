@@ -6,7 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.app.modelView.DetailMessageMV;
-import com.example.app.helpClasses.ShowToastAndSignOut;
+import com.example.app.modelView.helpClasses.ShowToastAndSignOut;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;

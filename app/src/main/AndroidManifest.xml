@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".helpClasses.ImageLoad"
+            android:name=".modelView.helpClasses.ImageLoad"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -37,7 +37,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".helpClasses.AddRating"
+            android:name=".modelView.helpClasses.AddRating"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

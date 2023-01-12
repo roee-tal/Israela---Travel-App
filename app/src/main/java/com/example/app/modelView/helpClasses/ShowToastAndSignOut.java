@@ -1,4 +1,4 @@
-package com.example.app.helpClasses;
+package com.example.app.modelView.helpClasses;
 
 import android.app.Activity;
 import android.content.Intent;

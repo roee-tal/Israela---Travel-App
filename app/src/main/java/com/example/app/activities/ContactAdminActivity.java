@@ -9,7 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.app.helpClasses.BottomNavActivity;
+import com.example.app.modelView.helpClasses.BottomNavActivity;
 import com.example.app.R;
 import com.example.app.modelView.adapters.MessageAdapter;
 import com.example.app.modelView.ContactAdminMV;
@@ -54,7 +54,6 @@ public class ContactAdminActivity extends AppCompatActivity
     private void clickOnBottomNav(){
         BottomNavActivity bottomNavActivity = new BottomNavActivity();
         bottomNavActivity.bNav(this);
-
     }
 
     /**

@@ -11,7 +11,7 @@ import com.example.app.activities.AdminActivity;
 import com.example.app.activities.LoginActivity;
 import com.example.app.activities.MainActivity;
 import com.example.app.activities.StartActivity;
-import com.example.app.helpClasses.ShowToastAndSignOut;
+import com.example.app.modelView.helpClasses.ShowToastAndSignOut;
 import com.example.app.model.api.appServer;
 import com.example.app.model.startModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -26,11 +26,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class startMV {
 
@@ -101,8 +96,8 @@ public class startMV {
      */
     public void connectToServer(String uid) {
         appServer.checkUserAccessLevel(uid, this);
-
     }
+
         // For login with mail and password
         public void loginU(String txt_email, String pas_email) {
             auth.signInWithEmailAndPassword(txt_email, pas_email).addOnCompleteListener(new OnCompleteListener<AuthResult>() {

@@ -23,7 +23,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.example.app.helpClasses.ImageLoad;
+import com.example.app.modelView.helpClasses.ImageLoad;
 import com.example.app.R;
 import com.example.app.modelView.adapters.ShapeAdapter;
 import com.example.app.model.objects.Category;

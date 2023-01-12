@@ -2,10 +2,9 @@ package com.example.app.modelView;
 
 import android.content.Intent;
 
-import com.example.app.activities.ContactAdminActivity;
 import com.example.app.activities.DetailUserActivity;
 import com.example.app.activities.UsersActivity;
-import com.example.app.helpClasses.ShowToastAndSignOut;
+import com.example.app.modelView.helpClasses.ShowToastAndSignOut;
 import com.example.app.model.DetailUserModel;
 
 public class DetailUserMV {
@@ -30,7 +29,7 @@ public class DetailUserMV {
         detailUserActivity.finish();
     }
     public void showContactAdminActivity(Intent intent) {
-        detailUserActivity.startActivity(new Intent(detailUserActivity, ContactAdminActivity.class));
+        detailUserActivity.startActivity(intent);
         detailUserActivity.finish();
     }
 

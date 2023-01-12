@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 
-import com.example.app.helpClasses.BottomNavActivity;
+import com.example.app.modelView.helpClasses.BottomNavActivity;
 import com.example.app.R;
 import com.example.app.modelView.adapters.UserAdapter;
 import com.example.app.modelView.UsersMV;

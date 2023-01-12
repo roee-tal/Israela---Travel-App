@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import com.example.app.activities.LoginActivity;
 import com.example.app.activities.StartActivity;
-import com.example.app.helpClasses.ShowToastAndSignOut;
+import com.example.app.modelView.helpClasses.ShowToastAndSignOut;
 import com.example.app.model.LoginModel;
 
 public class LoginMV {
