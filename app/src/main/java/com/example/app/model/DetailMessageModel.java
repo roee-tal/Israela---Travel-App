@@ -1,16 +1,12 @@
 package com.example.app.model;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.app.DetailMessageActivity;
-import com.example.app.UsersActivity;
-import com.example.app.controller.DetailMessageController;
-import com.example.app.controller.ShowToastAndSignOut;
+import com.example.app.modelView.DetailMessageMV;
+import com.example.app.helpClasses.ShowToastAndSignOut;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -19,18 +15,21 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class DetailMessageModel {
 
     private FirebaseFirestore fstore;
-    DetailMessageController detailMessageController;
+    DetailMessageMV detailMessageMV;
     ShowToastAndSignOut showToastAndSignOut;
 
-    public DetailMessageModel(DetailMessageController detailMessageController) {
-        this.detailMessageController = detailMessageController;
+    public DetailMessageModel(DetailMessageMV detailMessageController) {
+        this.detailMessageMV = detailMessageController;
         showToastAndSignOut = new ShowToastAndSignOut();
+        fstore = FirebaseFirestore.getInstance();
     }
 
-    public void bDelete(String parsedMail) {
-        fstore = FirebaseFirestore.getInstance();
-        Log.d("SSSS",parsedMail);
-            fstore.collection("Messages").document(parsedMail)
+    /**
+     * get the matching message
+     * @param parsedStringID The message ID
+     */
+    public void bDelete(String parsedStringID) {
+            fstore.collection("Messages").document(parsedStringID)
                     .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -39,23 +38,23 @@ public class DetailMessageModel {
                                 String uId = document.getString("ID");
                                 String uuId = document.getString("mesId");
                                 Log.d("String uIdNamess", "id="+uId);
-                                detailMessageController.areYouSureMessage(parsedMail,uId);
+                                detailMessageMV.areYouSureMessage(parsedStringID,uId);
                             }
                         }
                     });
         }
 
-    public void bAreYouSureLogic(Activity activity, String parsedMail, String id) {
-        del(parsedMail);
-        fstore = FirebaseFirestore.getInstance();
 
-//        Toast.makeText(activity, "message removed!", Toast.LENGTH_SHORT).show();
+    public void bAreYouSureLogic(Activity activity, String parsedMail, String id) {
+        //Delete the message
+        del(parsedMail);
         showToastAndSignOut.showToast(activity,"message removed!");
-        detailMessageController.ShowUsers();
+        detailMessageMV.ShowUsers();
         fstore.collection("Users").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
+                    // Decrease 'lettersNum' of the user by 1
                     DocumentSnapshot document = task.getResult();
                     String s = document.getString("LettersNum");
                     int num = Integer.parseInt(s);
