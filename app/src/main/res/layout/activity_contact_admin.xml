@@ -6,7 +6,8 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
-tools:context=".activities.ContactAdminActivity">
+tools:context=".activities.ContactAdminActivity"
+    android:background="@drawable/background_app">
 
 
     <!--    <LinearLayout-->
@@ -18,15 +19,28 @@ tools:context=".activities.ContactAdminActivity">
 
 <!--    </LinearLayout>-->
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_nav_admi"
+        app:itemIconTint="@color/nav_item_color"
+        app:itemTextColor="@color/nav_item_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/bottom_nav_admin"/>
 
     <TextView
         android:id="@+id/email_con"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginTop="53dp"
+        android:gravity="center"
+        android:textStyle="bold"
         android:autoLink="email"
         android:text="email"
+        android:padding="25dp"
         android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,15 +54,16 @@ tools:context=".activities.ContactAdminActivity">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:padding="10dp"
         android:id="@+id/sortTabsLayout2">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:text="Messages"
             android:id="@+id/Messag"
-            android:background="@color/darkerGray"
+            android:background="@color/myGreen"
             android:onClick="messageTapped"/>
 
 
@@ -61,17 +76,5 @@ tools:context=".activities.ContactAdminActivity">
     android:id="@+id/shapesListView">
 
     </ListView>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bottom_nav_admi"
-        app:itemIconTint="@color/nav_item_color"
-        app:itemTextColor="@color/nav_item_color"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/bottom_nav_admin"/>
 
 </LinearLayout>

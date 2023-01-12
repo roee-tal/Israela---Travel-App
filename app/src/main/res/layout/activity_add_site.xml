@@ -76,20 +76,21 @@
         android:hint="Category"
         android:minHeight="48dp" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/loadImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="Load Images"
+        android:background="@color/myGreen"
         android:textColor="#546E7A"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="@color/colorAccent"
+        android:background="@drawable/btn_bg"
         android:text="@string/add"
         android:textColor="#546E7A" />
 

@@ -2,28 +2,32 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="30dp"
+        android:gravity="center"
         android:background="@color/colorAccent">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPagerMain"
             android:layout_width="wrap_content"
             android:layout_height="259dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp" />
 
         <TextView
             android:id="@+id/siteName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:gravity="center"
             android:text="site name"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="35dp" />
+            android:textSize="35dp"  />
 
         <RatingBar
             android:id="@+id/rating_bar"
@@ -36,6 +40,7 @@
 
         <LinearLayout
             android:id="@+id/tags"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -45,14 +50,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
         android:id="@+id/editTabsLayout1">
         <androidx.appcompat.widget.AppCompatButton
 
             android:id="@+id/editName"
             android:layout_width="0dp"
-            android:background="@color/b3"
+            android:padding="10dp"
+            android:background="@color/myGreen"
             android:layout_weight="1"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="Edit name"
             android:textStyle="italic"
             android:textSize="13dp"
@@ -61,10 +70,10 @@
         <androidx.appcompat.widget.AppCompatButton
 
             android:id="@+id/loadImage"
-            android:background="@color/b3"
+            android:background="@color/myGreen"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="Load Images"
             android:textStyle="italic"
             android:textSize="13dp"
@@ -79,6 +88,7 @@
             android:layout_marginTop="20dp"
             android:gravity="center_vertical"
             android:scrollbars="vertical"
+            android:paddingBottom="10dp"
             android:text="Site Detail"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20dp" />
@@ -86,13 +96,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center"
             android:id="@+id/editTabsLayout2">
 
             <androidx.appcompat.widget.AppCompatButton
 
                 android:id="@+id/addEvent"
                 android:layout_width="0dp"
-                android:background="@color/b3"
+                android:background="@color/myGreen"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
@@ -104,7 +115,7 @@
 
                 android:id="@+id/editRating"
                 android:layout_width="0dp"
-                android:background="@color/b3"
+                android:background="@color/myGreen"
 
                 android:layout_weight="1"
                 android:layout_height="match_parent"
@@ -119,7 +130,7 @@
                 android:id="@+id/editLocation"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:background="@color/b3"
+                android:background="@color/myGreen"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:onClick="locationEditButtonClicked"
@@ -132,7 +143,7 @@
                 android:id="@+id/editDetail"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:background="@color/b3"
+                android:background="@color/myGreen"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:text="Edit Detail"

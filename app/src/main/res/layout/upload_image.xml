@@ -14,20 +14,23 @@
         android:orientation="horizontal"
         android:layout_alignParentTop="true"
         android:weightSum="2"
+        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <!--Button for choosing image from gallery-->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnChoose"
             android:text="Choose"
+            android:background="@drawable/btn_bg"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 
         <!--Button for uploading image-->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnUpload"
+            android:background="@drawable/btn_bg"
             android:text="Upload"
             android:layout_weight="1"
             android:layout_width="0dp"

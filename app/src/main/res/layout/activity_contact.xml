@@ -6,15 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.ContactActivity">
+    tools:context=".activities.ContactActivity"
+    android:background="@drawable/background_app">
 
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginTop="53dp"
-        android:text="        Send the message in the box"
+        android:gravity="center"
+        android:text="Send the message in the box"
         android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,18 +36,18 @@
       android:layout_marginStart="16dp"
       style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-      <com.google.android.material.textfield.TextInputEditText
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:gravity="top"
-          android:inputType="textMultiLine"
-          android:lines="10"
-          android:scrollbarStyle="insideInset"
-          android:scrollbars="vertical"
-          android:scrollHorizontally="false" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:lines="10"
+            android:scrollbarStyle="insideInset"
+            android:scrollbars="vertical"
+            android:scrollHorizontally="false" />
 
 
-  </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
 
@@ -58,16 +60,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/btn_bg"/>
 
     <TextView
-        android:layout_width="426dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginTop="33dp"
-        android:layout_marginLeft= "22dp"
         android:text="You will recive the answer on your E-mail!"
         android:textColor="@color/black"
+        android:gravity="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

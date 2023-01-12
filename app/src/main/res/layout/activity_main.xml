@@ -7,18 +7,53 @@
     android:orientation="vertical"
     tools:context=".activities.MainActivity">
 
+    <ViewFlipper
+        android:id="@+id/nav_view_flipper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bottom_nav"
+            app:itemIconTint="@color/nav_item_color"
+            app:itemTextColor="@color/nav_item_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/bottom_nav_menu"/>
+
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bottom_nav_a"
+            app:itemIconTint="@color/nav_item_color"
+            app:itemTextColor="@color/nav_item_color"
+            app:labelVisibilityMode="labeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/admin_main_menu"/>
+
+    </ViewFlipper>
+
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/darkerGray">
+        android:layout_height="90dp"
+        android:padding="10dp"
+        android:background="@drawable/cut_background">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/sortButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@null"
+            android:background="@drawable/btn_bg"
             android:onClick="showSortTapped"
             android:text="SORT"
+            android:padding="15dp"
             android:textColor="@color/red"
             android:textSize="30sp" />
 
@@ -28,18 +63,20 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/app_name"
+            android:textStyle="bold"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="30sp" />
 
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/filterButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginRight="5dp"
-            android:background="@null"
+            android:background="@drawable/btn_bg"
+            android:padding="15dp"
             android:onClick="showFilterTapped"
             android:text="FILTER"
             android:textColor="@color/red"
@@ -64,22 +101,22 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/allFilter"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/darkerGray"
+                android:background="@drawable/btn1"
                 android:onClick="allFilterTapped"
                 android:text="All"
                 android:textColor="@color/red" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/centerFilter"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/darkerGray"
+                android:background="@drawable/btn1"
                 android:onClick="centerFilterTapped"
                 android:text="Center"
                 android:textColor="@color/red" />
@@ -92,22 +129,22 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/northFilter"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/darkerGray"
+                android:background="@drawable/btn1"
                 android:onClick="northFilterTapped"
                 android:text="North"
                 android:textColor="@color/red" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/southFilter"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/darkerGray"
+                android:background="@drawable/btn1"
                 android:onClick="southFilterTapped"
                 android:text="South"
                 android:textColor="@color/red" />
@@ -120,33 +157,32 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/picnicFilter"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/darkerGray"
+            android:background="@drawable/btn1"
             android:onClick="picnicFilterTapped"
             android:text="Picnic"
             android:textColor="@color/red" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/swimmingFilter"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/darkerGray"
+            android:background="@drawable/btn1"
             android:onClick="swimmingFilterTapped"
             android:text="Swimming"
             android:textColor="@color/red" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/trackFilter"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/darkerGray"
-            android:onClick="trackFilterTapped"
+            android:background="@drawable/btn1"
             android:text="Track"
             android:textColor="@color/red" />
 
@@ -158,40 +194,41 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/down2upRate"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/darkerGray"
+                android:background="@drawable/btn1"
                 android:onClick="down2upRateApped"
                 android:text="Upside Rate" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/up2downRate"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/darkerGray"
+                android:background="@drawable/btn1"
                 android:onClick="up2downRateApped"
                 android:text="Rate" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/nameAsc"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/darkerGray"
+                android:background="@drawable/btn1"
                 android:onClick="nameASCTapped"
                 android:text="NAME ASC" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/nameDesc"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/darkerGray"
+                android:background="@drawable/btn1"
                 android:onClick="nameDESCTapped"
+
                 android:text="NAME DESC" />
 
         </LinearLayout>
@@ -199,41 +236,11 @@
 
         <ListView
             android:id="@+id/shapesListView"
+            android:background="@drawable/background_app"
             android:layout_width="match_parent"
             android:layout_height="673dp">
 
         </ListView>
 
-    <ViewFlipper
-        android:id="@+id/nav_view_flipper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bottom_nav"
-        app:itemIconTint="@color/nav_item_color"
-        app:itemTextColor="@color/nav_item_color"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/bottom_nav_menu"/>
-
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bottom_nav_a"
-        app:itemIconTint="@color/nav_item_color"
-        app:itemTextColor="@color/nav_item_color"
-        app:labelVisibilityMode="labeled"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/admin_main_menu"/>
-
-    </ViewFlipper>
 </LinearLayout>
