@@ -271,17 +271,17 @@ public class MainActivity extends AppCompatActivity
                         }
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
                         LayoutInflater inflater = getLayoutInflater();
-                        View convertView = (View) inflater.inflate(R.layout.reviews_list_view, null);
+                        View convertView = (View) inflater.inflate(R.layout.events_list_view, null);
                         alertDialog.setView(convertView);
                         ListView lv = (ListView) convertView.findViewById(R.id.lv);
                         lv.setAdapter(adapterEvent);
-                        alertDialog.setTitle("Your Events");
-                        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // do something when the "OK" button is clicked
-                            }
-                        });
+
+//                        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                // do something when the "OK" button is clicked
+//                            }
+//                        });
                         alertDialog.show();
                     }
                 });

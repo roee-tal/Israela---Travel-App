@@ -8,22 +8,35 @@
     android:orientation="vertical"
     tools:context=".activities.MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/darkerGray">
+        android:id="@+id/bottom_nav_admi"
+        app:itemIconTint="@color/nav_item_color"
+        app:itemTextColor="@color/nav_item_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/bottom_nav_admin"/>
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/cut_background"
+        android:gravity="center">
 
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="30dp"
             android:text="Users list"
             android:textAllCaps="true"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="30sp" />
-
-
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
 
     </androidx.appcompat.widget.Toolbar>
@@ -50,12 +63,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/filterTabsLayout2">
-
-
-
-
-
-
     </LinearLayout>
 
 
@@ -65,7 +72,7 @@
         android:orientation="horizontal"
         android:id="@+id/sortTabsLayout2">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
@@ -76,7 +83,7 @@
 
 
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
@@ -85,7 +92,7 @@
             android:background="@color/darkerGray"
             android:onClick="nameASCTapped"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
@@ -96,22 +103,12 @@
 
     </LinearLayout>
 
-
     <ListView
         android:id="@+id/shapesListView"
+        android:background="@drawable/background_app"
         android:layout_width="match_parent"
-        android:layout_height="578dp" >
+        android:layout_height="wrap_content" >
 </ListView>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bottom_nav_admi"
-        app:itemIconTint="@color/nav_item_color"
-        app:itemTextColor="@color/nav_item_color"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/bottom_nav_admin"/>
+
 </LinearLayout>
