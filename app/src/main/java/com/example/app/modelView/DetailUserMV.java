@@ -30,7 +30,7 @@ public class DetailUserMV {
         detailUserActivity.finish();
     }
     public void showContactAdminActivity(Intent intent) {
-        detailUserActivity.startActivity(new Intent(detailUserActivity, ContactAdminActivity.class));
+        detailUserActivity.startActivity(intent);
         detailUserActivity.finish();
     }
 

@@ -114,7 +114,9 @@ public class startMV {
                         // If the email is verified check if the account is for user or admin via the server app
                         if(user.isEmailVerified()) {
                             showToast("welcome");
-                            connectToServer(user.getUid());
+                            view.startActivity(new Intent(view, MainActivity.class)); // Debug Mode
+                            view.finish(); // Debug Mode
+//                            connectToServer(user.getUid());
                         }
                         else{
                             showToast("Please verify your email");
