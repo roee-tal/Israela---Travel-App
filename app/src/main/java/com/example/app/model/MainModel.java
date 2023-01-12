@@ -390,12 +390,13 @@ public class MainModel
         mainActivity.unSelectAllFilterButtons();
         mainActivity.lookSelectedAll();
 
-        shapeList.clear();
+//        shapeList.clear();
         Query query = myRealTimeDB.getReference().child("site");
         // Execute the query and retrieve the matching items
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                shapeList.clear();
                 // get all of the children at this level.
                 Iterable<DataSnapshot> children = snapshot.getChildren();
                 Log.d("allFilterTapped", "empty:" + shapeList.size());
@@ -566,7 +567,7 @@ public class MainModel
 
 
 
-    private void filterList(String status, SortType type)
+    public void filterList(String status, SortType type)
     {
         String location;
         if(status != null && selectedFilters.contains(status)) { // in case of second click on location
@@ -1047,4 +1048,46 @@ public class MainModel
     public void setAdapter(ShapeAdapter adapter) {
         this.adapter = adapter;
     }
+
+    public void allFilterTapped() {
+        selectedFilters.clear();
+        selectedFilters.add("all");
+        shapeList.clear();
+        Query query = myRealTimeDB.getReference().child("site");
+        // Execute the query and retrieve the matching items
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                // get all of the children at this level.
+                Iterable<DataSnapshot> children = snapshot.getChildren();
+                Log.d("allFilterTapped", "empty:" + shapeList.size());
+                for (DataSnapshot child : children) {
+                    Site s = child.getValue(Site.class);
+                    assert s != null;
+                    if (!shapeList.contains(s))
+                        shapeList.add(s);
+                    Log.d("allFilterTapped", "shapeList.size=" + shapeList.size());
+                    Log.d("v", "site name=" + s.getName());
+                }
+
+                Log.d("allFilterTapped-model", "shapeList.size=" + shapeList.size());
+                adapter.notifyDataSetChanged();
+                Log.d("allFilterTapped-model", "shapeList.size=" + shapeList.size());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Handle error
+            }
+        });
+
+    }
+
+
+
+    public ArrayList<String> getselectedFilters() {
+        return selectedFilters;
+    }
+
 }
