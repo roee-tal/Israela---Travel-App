@@ -1,4 +1,4 @@
-package com.example.app.modelView.helpClasses;
+package com.example.app.model.helpClassesModel;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;

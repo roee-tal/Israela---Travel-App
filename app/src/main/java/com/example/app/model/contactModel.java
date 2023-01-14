@@ -2,7 +2,7 @@ package com.example.app.model;
 
 import androidx.annotation.NonNull;
 
-import com.example.app.modelView.helpClasses.ShowToastAndSignOut;
+import com.example.app.modelView.helpClassesMV.ShowToastAndSignOut;
 import com.example.app.modelView.contactMV;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

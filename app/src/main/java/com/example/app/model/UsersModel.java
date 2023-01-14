@@ -27,8 +27,6 @@ public class UsersModel {
     public UsersModel(UsersMV usersController){
         this.usersMV = usersController;
         fstore = FirebaseFirestore.getInstance();
-
-
     }
 
     public void bMessage(View view, UserAdapter adapter, ArrayList<User> usersList) {

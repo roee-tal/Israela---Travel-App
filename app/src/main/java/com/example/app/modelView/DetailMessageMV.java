@@ -3,8 +3,8 @@ package com.example.app.modelView;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.example.app.activities.DetailMessageActivity;
-import com.example.app.activities.UsersActivity;
+import com.example.app.View.DetailMessageActivity;
+import com.example.app.View.UsersActivity;
 import com.example.app.model.DetailMessageModel;
 
 public class DetailMessageMV {

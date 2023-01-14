@@ -1,4 +1,4 @@
-package com.example.app.modelView.helpClasses;
+package com.example.app.model.helpClassesModel;
 
 
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.app.R;
-import com.example.app.activities.DetailActivity;
+import com.example.app.View.DetailActivity;
 import com.example.app.model.objects.Site;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

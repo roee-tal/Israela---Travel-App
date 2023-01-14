@@ -17,13 +17,4 @@ public interface API {
             @Query("uid") String uid
     );
 
-    @FormUrlEncoded
-    @POST("createUser")
-    Call<ResponseBody> createUser
-            (
-            @Field("ID") String ID,
-            @Field("Email") String Email,
-            @Field("isUser") String isUser,
-            @Field("LettersNum") String LettersNum
-    );
 }

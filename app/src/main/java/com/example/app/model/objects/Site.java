@@ -37,6 +37,10 @@ public class Site
         this.reviews = new HashMap<>();
     }
 
+    /**
+     * the calculate to update rate and update it
+     * @param rate the new rate
+     */
     public void updateRate(double rate) {
         Log.d("Site", "mainRate="+ this.rate + " mainRateReviewNum="+mainRateReviewNum + " rate="+rate);
         this.rate = ((this.rate * mainRateReviewNum + rate) / (mainRateReviewNum + 1.0));

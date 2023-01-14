@@ -2,9 +2,9 @@ package com.example.app.modelView;
 
 import android.content.Intent;
 
-import com.example.app.activities.ContactActivity;
-import com.example.app.activities.MainActivity;
-import com.example.app.modelView.helpClasses.ShowToastAndSignOut;
+import com.example.app.View.ContactActivity;
+import com.example.app.View.MainActivity;
+import com.example.app.modelView.helpClassesMV.ShowToastAndSignOut;
 import com.example.app.model.contactModel;
 
 public class contactMV {

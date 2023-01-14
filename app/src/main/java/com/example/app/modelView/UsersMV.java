@@ -2,11 +2,11 @@ package com.example.app.modelView;
 
 import android.view.View;
 
-import com.example.app.modelView.helpClasses.ShowToastAndSignOut;
+import com.example.app.modelView.helpClassesMV.ShowToastAndSignOut;
 import com.example.app.model.objects.SortType;
 import com.example.app.model.objects.User;
 import com.example.app.modelView.adapters.UserAdapter;
-import com.example.app.activities.UsersActivity;
+import com.example.app.View.UsersActivity;
 import com.example.app.model.UsersModel;
 
 import java.util.ArrayList;

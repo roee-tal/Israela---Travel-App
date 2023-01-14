@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.example.app.modelView.LoginMV;
 //import com.example.app.helpClasses.ShowToastAndSignOut;
-import com.example.app.modelView.helpClasses.ShowToastAndSignOut;
+import com.example.app.modelView.helpClassesMV.ShowToastAndSignOut;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -24,28 +24,12 @@ public class LoginModel {
     LoginMV loginMV;
     private FirebaseAuth auth;
     private FirebaseFirestore fstore;
-    private ShowToastAndSignOut showToastAndSignOut;
 
 
     public LoginModel(LoginMV loginController){
         this.loginMV = loginController;
-        showToastAndSignOut = new ShowToastAndSignOut();
         auth = FirebaseAuth.getInstance();
         fstore = FirebaseFirestore.getInstance();
-    }
-
-    public void bCreate(String mail, String password) {
-
-//        if(TextUtils.isEmpty(mail)|| TextUtils.isEmpty(password)){
-//            loginController.showToast("Empty");
-//            }
-//
-//        else if(password.length()<9){
-//            loginController.showToast("you need more than 9 chars");
-//        }
-//        else{
-//            notBlocked(mail,password);
-//        }
     }
 
     // Check if the user not blocked
@@ -58,7 +42,7 @@ public class LoginModel {
                         if(task.isSuccessful()) {
                             QuerySnapshot querySnapshot = task.getResult();
                             int size = querySnapshot.size();
-                            if (size != 0) {
+                            if (size != 0) { // If a doc found, so it means he is in the 'black list'
                                 auth.signOut();
                                 loginMV.showToast("You are blocked");
                             } else {

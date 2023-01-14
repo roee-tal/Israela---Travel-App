@@ -1,4 +1,4 @@
-package com.example.app.modelView.helpClasses;
+package com.example.app.modelView.helpClassesMV;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,8 +9,8 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 
 import com.example.app.R;
-import com.example.app.activities.MainActivity;
-import com.example.app.activities.UsersActivity;
+import com.example.app.View.MainActivity;
+import com.example.app.View.UsersActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -23,7 +23,10 @@ public class BottomNavActivity {
     GoogleSignInClient gsc;
     private BottomNavigationView nav;
 
-
+    /**
+     * Navigate on the menu bar of admin
+     * @param activity the curr activity
+     */
     public void bNav(Activity activity) {
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
@@ -33,15 +36,15 @@ public class BottomNavActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
-                    case R.id.sign_out_admin:
+                    case R.id.sign_out_admin://Sign out
                         areYouSureMessage(gsc,activity);
                         break;
 
-                    case R.id.u:
+                    case R.id.u: //nav to users list
                         activity.startActivity(new Intent(activity, UsersActivity.class));
                         break;
 
-                    case R.id.p:
+                    case R.id.p: //nav to sitess list
                         activity.startActivity(new Intent(activity, MainActivity.class));
                         break;
 

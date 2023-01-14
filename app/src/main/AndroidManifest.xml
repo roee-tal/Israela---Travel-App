@@ -16,35 +16,35 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".modelView.helpClasses.ImageLoad"
+            android:name=".model.helpClassesModel.ImageLoad"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.AdminDetailActivity"
+            android:name=".View.AdminDetailActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.DetailActivity"
+            android:name=".View.DetailActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".modelView.helpClasses.AddRating"
+            android:name=".model.helpClassesModel.AddRating"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.DetailMessageActivity"
+            android:name=".View.DetailMessageActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -72,21 +72,21 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.ContactAdminActivity"
+            android:name=".View.ContactAdminActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.ContactActivity"
+            android:name=".View.ContactActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.DetailUserActivity"
+            android:name=".View.DetailUserActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -128,36 +128,36 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.UsersActivity"
+            android:name=".View.UsersActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.AdminActivity"
+            android:name=".View.AdminActivity"
             android:exported="false"
-            android:parentActivityName=".activities.StartActivity">
+            android:parentActivityName=".View.StartActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".View.MainActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".View.LoginActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.StartActivity"
+            android:name=".View.StartActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

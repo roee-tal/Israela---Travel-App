@@ -1,10 +1,10 @@
-package com.example.app.modelView.helpClasses;
+package com.example.app.modelView.helpClassesMV;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.example.app.activities.StartActivity;
+import com.example.app.View.StartActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:padding="30dp"
     android:gravity="center"
-    tools:context=".modelView.helpClasses.AddRating">
+    tools:context=".model.helpClassesModel.AddRating">
 
     <TextView
         android:id="@+id/mainRateBarText"

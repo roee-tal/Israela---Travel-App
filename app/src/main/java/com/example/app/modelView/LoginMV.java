@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.example.app.activities.LoginActivity;
-import com.example.app.activities.StartActivity;
-import com.example.app.modelView.helpClasses.ShowToastAndSignOut;
+import com.example.app.View.LoginActivity;
+import com.example.app.View.StartActivity;
+import com.example.app.modelView.helpClassesMV.ShowToastAndSignOut;
 import com.example.app.model.LoginModel;
 
 public class LoginMV {

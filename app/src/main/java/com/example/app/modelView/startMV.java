@@ -7,11 +7,11 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import com.example.app.R;
-import com.example.app.activities.AdminActivity;
-import com.example.app.activities.LoginActivity;
-import com.example.app.activities.MainActivity;
-import com.example.app.activities.StartActivity;
-import com.example.app.modelView.helpClasses.ShowToastAndSignOut;
+import com.example.app.View.AdminActivity;
+import com.example.app.View.LoginActivity;
+import com.example.app.View.MainActivity;
+import com.example.app.View.StartActivity;
+import com.example.app.modelView.helpClassesMV.ShowToastAndSignOut;
 import com.example.app.model.api.appServer;
 import com.example.app.model.startModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;

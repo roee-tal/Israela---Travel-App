@@ -1,5 +1,5 @@
 
-package com.example.app.activities;
+package com.example.app.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 
-import com.example.app.modelView.helpClasses.BottomNavActivity;
+import com.example.app.modelView.helpClassesMV.BottomNavActivity;
 import com.example.app.R;
 import com.example.app.modelView.adapters.UserAdapter;
 import com.example.app.modelView.UsersMV;

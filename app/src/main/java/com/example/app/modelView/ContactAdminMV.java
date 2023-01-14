@@ -1,6 +1,6 @@
 package com.example.app.modelView;
 
-import com.example.app.activities.ContactAdminActivity;
+import com.example.app.View.ContactAdminActivity;
 import com.example.app.model.objects.Message;
 import com.example.app.modelView.adapters.MessageAdapter;
 import com.example.app.model.ContactAdminModel;

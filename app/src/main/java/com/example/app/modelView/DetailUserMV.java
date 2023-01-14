@@ -2,9 +2,9 @@ package com.example.app.modelView;
 
 import android.content.Intent;
 
-import com.example.app.activities.DetailUserActivity;
-import com.example.app.activities.UsersActivity;
-import com.example.app.modelView.helpClasses.ShowToastAndSignOut;
+import com.example.app.View.DetailUserActivity;
+import com.example.app.View.UsersActivity;
+import com.example.app.modelView.helpClassesMV.ShowToastAndSignOut;
 import com.example.app.model.DetailUserModel;
 
 public class DetailUserMV {
