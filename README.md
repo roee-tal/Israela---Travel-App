@@ -1,12 +1,9 @@
-# Israela
 <img width="298" alt="israela" src="https://github.com/roee-tal/Israela---Travel-App/assets/80206533/3113451f-2a14-44c5-a9c5-0d851adab847">
 
 
-![This is an image](https://github.com/roee-tal/Final-project_Data-Science/blob/main/logooooo.png)
 
-## Our app
 
-ISRAELA is a travel app where you can look for travels using filters, search, recomendations and more. You can also join group travels
+### ISRAELA ###  is a travel app where you can look for travels using filters, search, recomendations and more. You can also join group travels
 that the app allows. You can be a full partner by register us and recommend trips.
 
 Includes:
