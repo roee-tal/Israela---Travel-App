@@ -19,7 +19,8 @@ Includes:
 
 
 
-https://github.com/roee-tal/Israela---Travel-App/assets/80206533/cabf75a3-9e2d-4cbc-a97b-36b7b6691684
+
+https://github.com/roee-tal/Israela---Travel-App/assets/80206533/247a9aa3-5937-463f-9c5e-ee8c52a72fb9
 
 
 
