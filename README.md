@@ -1,4 +1,5 @@
 # Israela
+<img width="298" alt="israela" src="https://github.com/roee-tal/Israela---Travel-App/assets/80206533/3113451f-2a14-44c5-a9c5-0d851adab847">
 
 
 ![This is an image](https://github.com/roee-tal/Final-project_Data-Science/blob/main/logooooo.png)
