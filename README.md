@@ -38,7 +38,7 @@ https://github.com/roee-tal/Israela---Travel-App/assets/80206533/d5b57972-aced-4
 
 
 
-### Link to our server we have created
+## Link to the server we created
 <a href="https://github.com/roee-tal/androidServer">https://github.com/roee-tal/androidServer</a>
 
 
